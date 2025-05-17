@@ -9,11 +9,11 @@ abstract class Kala {
     private Type type;
     private int voteNum;
     private int vote;
-    private int averageScore = 0;  
+    private int averageScore = 0;
     private List<String> agencyCodeOfSelers;
 
     public void averageScore() {
-        this.averageScore = vote/voteNum;
+        this.averageScore = vote / voteNum;
     }
 
     public int getVoteNum() {

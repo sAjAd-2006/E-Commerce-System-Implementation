@@ -87,174 +87,183 @@ public class Vendilo {
     }
 
     // public static void searchKala() {
-    //     System.out.println("- - - - Search Kala - - - -\nEnter at least one of the following fields\nProduct Name: ");
-    //     String productName = scanner.nextLine();
-    //     String productType = searchForProductType();
-    //     System.out.println("Enter price range");
-    //     int min = priceRange("min");
-    //     int max = priceRange("max");
-    //     List<Kala> searchingKala = new ArrayList<>();
-    //     for (Kala kala : Seller.getKalas()) {
-    //         if (kala.getPrice() <= max && kala.getPrice() >= min) {
-    //             if (kala.getName().contains(productName)) {
-    //                 if (!productType.equalsIgnoreCase("all")) {
-    //                     if (kala instanceof Book && productType.equalsIgnoreCase("book")) {
-    //                         searchingKala.add(kala);
-    //                     } else {
-    //                         if (kala instanceof DigitalGoods && productType.equalsIgnoreCase("Digital Goods")) {
-    //                             searchingKala.add(kala);
-    //                         } else {
-    //                             if (kala instanceof Mobile && productType.equalsIgnoreCase("mobile")) {
-    //                                 searchingKala.add(kala);
-    //                             } else {
-    //                                 if (kala instanceof Laptop && productName.equalsIgnoreCase("laptop")) {
-    //                                     searchingKala.add(kala);
-    //                                 }
-    //                             }
-    //                         }
-    //                     }
-    //                 } else {
-    //                     searchingKala.add(kala);
-    //                 }
-    //             }
-    //         }
-    //     }
-    //     showList(searchingKala, productType);
+    // System.out.println("- - - - Search Kala - - - -\nEnter at least one of the
+    // following fields\nProduct Name: ");
+    // String productName = scanner.nextLine();
+    // String productType = searchForProductType();
+    // System.out.println("Enter price range");
+    // int min = priceRange("min");
+    // int max = priceRange("max");
+    // List<Kala> searchingKala = new ArrayList<>();
+    // for (Kala kala : Seller.getKalas()) {
+    // if (kala.getPrice() <= max && kala.getPrice() >= min) {
+    // if (kala.getName().contains(productName)) {
+    // if (!productType.equalsIgnoreCase("all")) {
+    // if (kala instanceof Book && productType.equalsIgnoreCase("book")) {
+    // searchingKala.add(kala);
+    // } else {
+    // if (kala instanceof DigitalGoods && productType.equalsIgnoreCase("Digital
+    // Goods")) {
+    // searchingKala.add(kala);
+    // } else {
+    // if (kala instanceof Mobile && productType.equalsIgnoreCase("mobile")) {
+    // searchingKala.add(kala);
+    // } else {
+    // if (kala instanceof Laptop && productName.equalsIgnoreCase("laptop")) {
+    // searchingKala.add(kala);
+    // }
+    // }
+    // }
+    // }
+    // } else {
+    // searchingKala.add(kala);
+    // }
+    // }
+    // }
+    // }
+    // showList(searchingKala, productType);
     // }
 
     // public static void showList(List<Kala> searchingKala, String productType) {
-    //     while (true) {
-    //         System.out.println(
-    //                 "How would you like the products to be displayed?\n1)From the highest price\n2)From the lowest price\n3)Normal\nPress 0 to go back.");
-    //         String choice = scanner.nextLine();
-    //         switch (choice) {
-    //             case "0":
-    //                 return;
-    //             case "1":
-    //                 upSortList(searchingKala);
-    //                 break;
-    //             case "2":
-    //                 downSortList(searchingKala);
-    //                 break;
-    //             case "3":
-    //                 break;
-    //             default:
-    //                 break;
-    //         }
-    //         for (int i = 0; i < searchingKala.size(); i++) {
-    //             System.out.println(
-    //                     (i + 1) + ")" + searchingKala.get(i).getName() + productType + searchingKala.get(i).getPrice());
-    //         }
-    //         productSelection(searchingKala, productType);
-    //     }
+    // while (true) {
+    // System.out.println(
+    // "How would you like the products to be displayed?\n1)From the highest
+    // price\n2)From the lowest price\n3)Normal\nPress 0 to go back.");
+    // String choice = scanner.nextLine();
+    // switch (choice) {
+    // case "0":
+    // return;
+    // case "1":
+    // upSortList(searchingKala);
+    // break;
+    // case "2":
+    // downSortList(searchingKala);
+    // break;
+    // case "3":
+    // break;
+    // default:
+    // break;
+    // }
+    // for (int i = 0; i < searchingKala.size(); i++) {
+    // System.out.println(
+    // (i + 1) + ")" + searchingKala.get(i).getName() + productType +
+    // searchingKala.get(i).getPrice());
+    // }
+    // productSelection(searchingKala, productType);
+    // }
     // }
 
-    // public static void productSelection(List<Kala> searchingKala, String productType) {
-    //     while (true) {
+    // public static void productSelection(List<Kala> searchingKala, String
+    // productType) {
+    // while (true) {
 
-    //         System.out.println("Select the product you want: ");
-    //         System.out.println("Press 0 to go back.");
-    //         String choice = scanner.nextLine();
-    //         switch (choice) {
-    //             case "0":
-    //                 return;
-    //             default:
-    //                 if (isInteger(choice)) {
-    //                     int ran = Integer.parseInt(choice) - 1;
-    //                     if (ran >= 0 && ran < searchingKala.size()) {
-    //                         displayInformationAboutTheSelectedProduct(searchingKala.get(ran), productType);
-    //                     } else {
-    //                         System.out.println("Incorrect input. Enter a number.");
-    //                     }
-    //                 }
-    //                 break;
-    //         }
-    //     }
+    // System.out.println("Select the product you want: ");
+    // System.out.println("Press 0 to go back.");
+    // String choice = scanner.nextLine();
+    // switch (choice) {
+    // case "0":
+    // return;
+    // default:
+    // if (isInteger(choice)) {
+    // int ran = Integer.parseInt(choice) - 1;
+    // if (ran >= 0 && ran < searchingKala.size()) {
+    // displayInformationAboutTheSelectedProduct(searchingKala.get(ran),
+    // productType);
+    // } else {
+    // System.out.println("Incorrect input. Enter a number.");
+    // }
+    // }
+    // break;
+    // }
+    // }
     // }
 
-    // private static void displayInformationAboutTheSelectedProduct(Kala kala, String productType) {
-    //     Seller a = new Seller();
-    //     for (Seller seller : sellers) {
-    //         for (Kala kala2 : seller.getSellerKala()) {
-    //             if (kala2.equals(kala)) {
-    //                 a = seller;
-    //             }
-    //         }
-    //     }
-    //     System.out.println(kala.getName() + productType + a.getFirstname() + a.getLastname() + kala.getAverageScore()
-    //             + a.getProvinceOfSale());
-    //     addToCart(a, kala);
+    // private static void displayInformationAboutTheSelectedProduct(Kala kala,
+    // String productType) {
+    // Seller a = new Seller();
+    // for (Seller seller : sellers) {
+    // for (Kala kala2 : seller.getSellerKala()) {
+    // if (kala2.equals(kala)) {
+    // a = seller;
+    // }
+    // }
+    // }
+    // System.out.println(kala.getName() + productType + a.getFirstname() +
+    // a.getLastname() + kala.getAverageScore()
+    // + a.getProvinceOfSale());
+    // addToCart(a, kala);
     // }
 
     // private static void addToCart(Seller a, Kala kala) {
-    //     System.out.println("Do you want to add this item to your cart?\n1)YES\n2)NO");
-    //     String choice = scanner.nextLine();
-    //     switch (choice) {
-    //         case "1":
-                
-    //             break;
-    //         default:
-    //             return;
-    //     }
+    // System.out.println("Do you want to add this item to your
+    // cart?\n1)YES\n2)NO");
+    // String choice = scanner.nextLine();
+    // switch (choice) {
+    // case "1":
+
+    // break;
+    // default:
+    // return;
+    // }
     // }
 
     // public static void upSortList(List<Kala> searchingKala) {
-    //     searchingKala = searchingKala.stream()
-    //             .sorted(Comparator.comparingInt(Kala::getPrice))
-    //             .collect(Collectors.toList());
+    // searchingKala = searchingKala.stream()
+    // .sorted(Comparator.comparingInt(Kala::getPrice))
+    // .collect(Collectors.toList());
     // }
 
     // public static void downSortList(List<Kala> searchingKala) {
-    //     searchingKala = searchingKala.stream()
-    //             .sorted(Comparator.comparingInt(Kala::getPrice).reversed())
-    //             .collect(Collectors.toList());
+    // searchingKala = searchingKala.stream()
+    // .sorted(Comparator.comparingInt(Kala::getPrice).reversed())
+    // .collect(Collectors.toList());
     // }
 
     // public static String searchForProductType() {
-    //     System.out.println("Product Type:\n1)Book\n2)Digital Goods\n3)ALL");
-    //     String choice = scanner.nextLine();
-    //     switch (choice) {
-    //         case "1":
-    //             return "Book";
-    //         case "2":
-    //             System.out.println("Digital Goods Type:\n1)Mobile\n2)Laptop\n3)ALL");
-    //             choice = scanner.nextLine();
-    //             switch (choice) {
-    //                 case "1":
-    //                     return "Mobile";
-    //                 case "2":
-    //                     return "Laptop";
-    //                 default:
-    //                     return "Digital Goods";
-    //             }
-    //         default:
-    //             return "ALL";
-    //     }
+    // System.out.println("Product Type:\n1)Book\n2)Digital Goods\n3)ALL");
+    // String choice = scanner.nextLine();
+    // switch (choice) {
+    // case "1":
+    // return "Book";
+    // case "2":
+    // System.out.println("Digital Goods Type:\n1)Mobile\n2)Laptop\n3)ALL");
+    // choice = scanner.nextLine();
+    // switch (choice) {
+    // case "1":
+    // return "Mobile";
+    // case "2":
+    // return "Laptop";
+    // default:
+    // return "Digital Goods";
+    // }
+    // default:
+    // return "ALL";
+    // }
     // }
 
     // public static int priceRange(String val) {
-    //     while (true) {
-    //         System.out.println(val + ": ");
-    //         String range = scanner.nextLine();
-    //         if (range == null) {
-    //             if (val.equalsIgnoreCase("max")) {
-    //                 int ran = Integer.MAX_VALUE;
-    //                 return ran;
-    //             } else {
-    //                 if (val.equalsIgnoreCase("min")) {
-    //                     int ran = Integer.MIN_VALUE;
-    //                     return ran;
-    //                 }
-    //             }
-    //         } else {
-    //             if (isInteger(range)) {
-    //                 int ran = Integer.parseInt(range);
-    //                 return ran;
-    //             } else {
-    //                 System.out.println("Incorrect input. Enter a number.");
-    //             }
-    //         }
-    //     }
+    // while (true) {
+    // System.out.println(val + ": ");
+    // String range = scanner.nextLine();
+    // if (range == null) {
+    // if (val.equalsIgnoreCase("max")) {
+    // int ran = Integer.MAX_VALUE;
+    // return ran;
+    // } else {
+    // if (val.equalsIgnoreCase("min")) {
+    // int ran = Integer.MIN_VALUE;
+    // return ran;
+    // }
+    // }
+    // } else {
+    // if (isInteger(range)) {
+    // int ran = Integer.parseInt(range);
+    // return ran;
+    // } else {
+    // System.out.println("Incorrect input. Enter a number.");
+    // }
+    // }
+    // }
     // }
 
     public static Customer customerLogin() {
@@ -479,11 +488,11 @@ public class Vendilo {
     }
 
     // public static boolean isInteger(String str) {
-    //     try {
-    //         Integer.parseInt(str);
-    //         return true;
-    //     } catch (NumberFormatException e) {
-    //         return false;
-    //     }
+    // try {
+    // Integer.parseInt(str);
+    // return true;
+    // } catch (NumberFormatException e) {
+    // return false;
+    // }
     // }
 }
