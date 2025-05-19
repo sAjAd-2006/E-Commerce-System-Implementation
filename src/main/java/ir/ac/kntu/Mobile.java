@@ -33,5 +33,11 @@ public class Mobile extends DigitalGoods {
         this.setType(Type.DIGITALGOODS);
         this.setModel(Model.MOBILE);
     }
-    
+
+    @Override
+    public String toString() {
+        return (super.toString() + "\nAdditional information Mobile ->" + " Rear Camera Resolution:"
+                + getRearCameraResolution() + " Front Camera Resolution:" + getFrontCameraResolution()
+                + " Internet Network:" + getInternetNetwork());
+    }
 }

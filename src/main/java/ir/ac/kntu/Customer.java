@@ -1,5 +1,6 @@
 package ir.ac.kntu;
 
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -11,6 +12,23 @@ public class Customer extends Person {
     private Wallet wallet;
     private List<Address> addresses;
     private List<Order> orders;
+    private List<Reportage> reportages;
+
+    public List<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
+    }
+
+    public List<Reportage> getReportages() {
+        return reportages;
+    }
+
+    public void setReportages(List<Reportage> reportages) {
+        this.reportages = reportages;
+    }
 
     public Customer() {
         wallet = new Wallet();
@@ -70,24 +88,54 @@ public class Customer extends Person {
             System.out.print("Your choose: ");
             String choice = scanner.nextLine();
             int i = Integer.parseInt(choice) - 1;
+            Address s = addresses.get(i);
             boolean discount = true;
             for (Kala kala : this.shoppingCart.getKalas()) {
                 if (!addresses.get(i).getCity().equalsIgnoreCase(kala.getSelerCity())) {
                     discount = false;
                 }
+                kala.toString();
             }
             if (discount) {
                 shippingCost = shippingCost * 7 / 10;
             }
-            if (this.wallet.WithdrawFromWallet(this.shoppingCart.findTotal() + shippingCost)) {
+            System.out.println("Price: " + shoppingCart.findTotal() + "\nShipping Cost: " + shippingCost);
+            continueShoppingNow(shippingCost, s);
 
-            } else {
-
-            }
         } else {
             System.out.println("Please register your address first.");
             return;
         }
+    }
+
+    private void continueShoppingNow(int shippingCost, Address s) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("1) Complete Purchase\n2) Back");
+        String choice = scanner.nextLine();
+        switch (choice) {
+            case "1":
+                if (this.wallet.WithdrawFromWallet(this.shoppingCart.findTotal() + shippingCost)) {
+                    crOrder(s);
+                    List<Kala> c = new ArrayList<>();
+                    shoppingCart.setKalas(c);
+                    shoppingCart.setTotalPrice(0);
+                }
+                break;
+
+            default:
+                break;
+        }
+    }
+
+    public void crOrder(Address s) {
+        LocalTime b = wallet.getTransactions().getLast().getLocalTime();
+        List<Kala> c = shoppingCart.getKalas();
+        List<String> sellersNames = new ArrayList<>();
+        for (Kala kala : c) {
+            sellersNames.add(kala.getSelerName());
+        }
+        Order a = new Order(c, b, sellersNames, s);
+        orders.add(a);
     }
 
     public void searchKala() {
@@ -185,22 +233,6 @@ public class Customer extends Person {
     }
 
     private void displayInformationAboutTheSelectedProduct(Kala kala, String productType) {
-        // Scanner scanner = new Scanner(System.in);
-        // List<Seller> sellers = Vendilo.getSellers();
-        // Seller a = new Seller();
-        // for (Seller seller : sellers) {
-        // // for (Kala kala2 : seller.getSellerKala()) {
-        // // if (kala2.equals(kala)) {
-        // // a = seller;
-        // // }
-        // // }
-        // if (seller.getAgencyCode().equals(kala.getAgencyCodeOfSelers())) {
-        // a = seller;
-        // }
-        // }
-        // System.out.println("Product name:" + kala.getName() + " Product type:" + productType + " Seler name:"
-        //         + kala.getSelerName() + " Price:" + kala.getPrice() + " Average score:" + kala.getAverageScore()
-        //         + " Seller's province:" + kala.getSelerCity());
         System.out.println(kala.toString());
         addToCart(kala);
     }

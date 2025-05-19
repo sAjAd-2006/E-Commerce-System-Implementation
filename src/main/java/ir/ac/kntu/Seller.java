@@ -12,6 +12,15 @@ public class Seller extends Person {
     private static List<Kala> kalas = new ArrayList<>();
     private List<Kala> sellerKala;
     private Wallet wallet;
+    private String ReasonForRejection;
+
+    public String getReasonForRejection() {
+        return ReasonForRejection;
+    }
+
+    public void setReasonForRejection(String reasonForRejection) {
+        ReasonForRejection = reasonForRejection;
+    }
 
     public void setWallet(Wallet wallet) {
         this.wallet = wallet;
@@ -286,5 +295,11 @@ public class Seller extends Person {
                     break;
             }
         }
+    }
+
+    @Override
+    public String toString() {
+        return ("Name: " + getFirstname() + " " + getLastname() + " Store Title:" + getStoreTitle() + " Email:"
+                + getEmail() + " Agency Code:" + getAgencyCode());
     }
 }

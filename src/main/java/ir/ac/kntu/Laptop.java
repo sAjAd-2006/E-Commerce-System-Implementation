@@ -33,4 +33,10 @@ public class Laptop extends DigitalGoods {
         this.setType(Type.DIGITALGOODS);
         this.setModel(Model.LAPTOP);
     }
+
+    @Override
+    public String toString() {
+        return (super.toString() + "\nAdditional information Laptop ->" + " Graphics Processor:"
+                + getGraphicsProcessor() + " Have Bluetooth:" + isBluetooth() + " Have Webcam:" + isWebcam());
+    }
 }

@@ -45,6 +45,8 @@ public class Book extends Kala {
 
     @Override
     public String toString() {
-        return (super.toString() + "Additional information)" + " Authors name:" +getAuthorsName() + " Number of pages:" + getNumberOfPages() + " Age category:" +getAgeCategory() + " Id ISBN:" +getIdISBN());
+        return (super.toString() + "\nAdditional information Book ->" + " Authors name:" + getAuthorsName()
+                + " Number of pages:" + getNumberOfPages() + " Age category:" + getAgeCategory() + " Id ISBN:"
+                + getIdISBN());
     }
 }

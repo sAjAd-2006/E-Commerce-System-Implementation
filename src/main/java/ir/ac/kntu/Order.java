@@ -1,6 +1,7 @@
 package ir.ac.kntu;
 
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Order {
@@ -8,6 +9,20 @@ public class Order {
     private LocalTime localTime;
     private List<String> sellersNames;
     private Address address;
+
+    public Order() {
+        kalas = new ArrayList<>();
+        sellersNames = new ArrayList<>();
+    }
+
+    public Order(List<Kala> kalas, LocalTime localTime, List<String> sellersNames, Address address) {
+        kalas = new ArrayList<>();
+        sellersNames = new ArrayList<>();
+        this.kalas = kalas;
+        this.localTime = localTime;
+        this.sellersNames = sellersNames;
+        this.address = address;
+    }
 
     public List<Kala> getKalas() {
         return kalas;

@@ -4,7 +4,6 @@ abstract class DigitalGoods extends Kala {
     private String Brand;
     private String internalMemorySize;
     private String amountOfRAM;
-    // private Model model;
 
     public String getBrand() {
         return Brand;
@@ -33,11 +32,9 @@ abstract class DigitalGoods extends Kala {
     public DigitalGoods() {
     }
 
-    // public Model getModel() {
-    //     return model;
-    // }
-
-    // public void setModel(Model model) {
-    //     this.model = model;
-    // }
+    @Override
+    public String toString() {
+        return (super.toString() + "\nAdditional information Digital good ->" + " Brand:" + getBrand()
+                + " Internal memory size:" + getInternalMemorySize() + " Amount of RAM:" + getAmountOfRAM());
+    }
 }
