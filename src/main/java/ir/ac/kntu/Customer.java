@@ -7,18 +7,17 @@ import java.util.Scanner;
 import java.util.stream.Collectors;
 
 public class Customer extends Person {
-    private List<Kala> shoppingCart;
+    private ShoppingCart shoppingCart;
     private Wallet wallet;
     private List<Address> addresses;
+    private List<Order> orders;
 
     public Customer() {
-        shoppingCart = new ArrayList<>();
         wallet = new Wallet();
         addresses = new ArrayList<>();
     }
 
     public Customer(String firstname, String lastname, String email, String phonenumber, String password) {
-        shoppingCart = new ArrayList<>();
         setFirstname(firstname);
         setLastname(lastname);
         setEmail(email);
@@ -26,18 +25,6 @@ public class Customer extends Person {
         setPassword(password);
         wallet = new Wallet();
         addresses = new ArrayList<>();
-    }
-
-    public List<Kala> getShoppingCarts() {
-        return shoppingCart;
-    }
-
-    public void setShoppingCarts(List<Kala> shoppingCarts) {
-        this.shoppingCart = shoppingCart;
-    }
-
-    public void addToShoppingCart(Kala kala) {
-        this.shoppingCart.add(kala);
     }
 
     public Wallet getWallet() {
@@ -58,6 +45,49 @@ public class Customer extends Person {
 
     public void addToWallet(int plus) {
         wallet.setCash(wallet.getCash() + plus);
+    }
+
+    public ShoppingCart getShoppingCart() {
+        return shoppingCart;
+    }
+
+    public void setShoppingCart(ShoppingCart shoppingCart) {
+        this.shoppingCart = shoppingCart;
+    }
+
+    public void continueShopping() {
+        int shippingCost = 10;
+        if (this.shoppingCart.findTotal() == 0) {
+            System.out.println("Your shopping cart is empty."); //
+            return;
+        }
+        if (!addresses.isEmpty()) {
+            Scanner scanner = new Scanner(System.in);
+            System.out.println("Choose your address.");
+            for (int i = 0; i < addresses.size(); i++) {
+                System.out.println((i + 1) + ") " + addresses.get(i).toString());
+            }
+            System.out.print("Your choose: ");
+            String choice = scanner.nextLine();
+            int i = Integer.parseInt(choice) - 1;
+            boolean discount = true;
+            for (Kala kala : this.shoppingCart.getKalas()) {
+                if (!addresses.get(i).getCity().equalsIgnoreCase(kala.getSelerCity())) {
+                    discount = false;
+                }
+            }
+            if (discount) {
+                shippingCost = shippingCost * 7 / 10;
+            }
+            if (this.wallet.WithdrawFromWallet(this.shoppingCart.findTotal() + shippingCost)) {
+
+            } else {
+
+            }
+        } else {
+            System.out.println("Please register your address first.");
+            return;
+        }
     }
 
     public void searchKala() {
@@ -121,7 +151,10 @@ public class Customer extends Person {
             }
             for (int i = 0; i < searchingKala.size(); i++) {
                 System.out.println(
-                        (i + 1) + ")" + searchingKala.get(i).getName() + productType + searchingKala.get(i).getPrice());
+                        (i + 1) + ") Product name:" + searchingKala.get(i).getName() + " Product type:" + productType
+                                + " Seler name:" + searchingKala.get(i).getSelerName() + " Price:"
+                                + searchingKala.get(i).getPrice() + " Average score:"
+                                + searchingKala.get(i).getAverageScore());
             }
             productSelection(searchingKala, productType);
         }
@@ -152,29 +185,34 @@ public class Customer extends Person {
     }
 
     private void displayInformationAboutTheSelectedProduct(Kala kala, String productType) {
-        Scanner scanner = new Scanner(System.in);
-        List<Seller> sellers = Vendilo.getSellers();
-        Seller a = new Seller();
-        for (Seller seller : sellers) {
-            for (Kala kala2 : seller.getSellerKala()) {
-                if (kala2.equals(kala)) {
-                    a = seller;
-                }
-            }
-        }
-        System.out.println(kala.getName() + productType + a.getFirstname() + a.getLastname() + kala.getAverageScore()
-                + a.getProvinceOfSale());
-        addToCart(a, kala);
+        // Scanner scanner = new Scanner(System.in);
+        // List<Seller> sellers = Vendilo.getSellers();
+        // Seller a = new Seller();
+        // for (Seller seller : sellers) {
+        // // for (Kala kala2 : seller.getSellerKala()) {
+        // // if (kala2.equals(kala)) {
+        // // a = seller;
+        // // }
+        // // }
+        // if (seller.getAgencyCode().equals(kala.getAgencyCodeOfSelers())) {
+        // a = seller;
+        // }
+        // }
+        // System.out.println("Product name:" + kala.getName() + " Product type:" + productType + " Seler name:"
+        //         + kala.getSelerName() + " Price:" + kala.getPrice() + " Average score:" + kala.getAverageScore()
+        //         + " Seller's province:" + kala.getSelerCity());
+        System.out.println(kala.toString());
+        addToCart(kala);
     }
 
-    private void addToCart(Seller a, Kala kala) {
+    private void addToCart(Kala kala) {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Do you want to add this item to your cart?\n1)YES\n2)NO");
         String choice = scanner.nextLine();
         scanner.close();
         switch (choice) {
             case "1":
-                addToShoppingCart(kala);
+                this.shoppingCart.getKalas().add(kala);
                 return;
             default:
                 return;

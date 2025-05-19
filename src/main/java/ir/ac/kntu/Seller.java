@@ -136,7 +136,7 @@ public class Seller extends Person {
         addAge(book);
         System.out.println("Enter ISBN id : ");
         book.setIdISBN(scanner.nextLine());
-        book.getAgencyCodeOfSelers().add(agencyCode);
+        book.setSelerInfo((getFirstname() + " " + getLastname()), getAgencyCode(), getProvinceOfSale());
         kalas.add(book);
         sellerKala.add(book);
         scanner.close();
@@ -188,7 +188,7 @@ public class Seller extends Person {
         System.out.println("Enter front camera resolution : ");
         mobile.setFrontCameraResolution(scanner.nextLine());
         addNetwork(mobile);
-        mobile.getAgencyCodeOfSelers().add(agencyCode);
+        mobile.setSelerInfo((getFirstname() + " " + getLastname()), getAgencyCode(), getProvinceOfSale());
         kalas.add(mobile);
         sellerKala.add(mobile);
         scanner.close();
@@ -239,7 +239,7 @@ public class Seller extends Person {
         laptop.setGraphicsProcessor(scanner.nextLine());
         addWebcam(laptop);
         addBlu(laptop);
-        laptop.getAgencyCodeOfSelers().add(agencyCode);
+        laptop.setSelerInfo((getFirstname() + " " + getLastname()), getAgencyCode(), getProvinceOfSale());
         kalas.add(laptop);
         sellerKala.add(laptop);
         scanner.close();
@@ -287,5 +287,4 @@ public class Seller extends Person {
             }
         }
     }
-
 }

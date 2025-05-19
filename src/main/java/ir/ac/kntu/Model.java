@@ -1,5 +1,5 @@
 package ir.ac.kntu;
 
 public enum Model {
-    MOBILE,LAPTOP;
+    MOBILE,LAPTOP,BOOK;
 }

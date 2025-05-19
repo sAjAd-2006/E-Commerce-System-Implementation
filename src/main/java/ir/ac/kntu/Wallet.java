@@ -29,11 +29,15 @@ public class Wallet {
         this.cash = cash;
     }
 
-    public void WithdrawFromWallet(int draw) {
+    public boolean WithdrawFromWallet(int draw) {
         if (this.cash - draw >= 0) {
             this.cash -= draw;
+            Transaction a = new Transaction(draw, "Shopping");
+            transactions.add(a);
+            return true;
         } else {
             System.out.println("The amount requested is greater than your account balance.");
+            return false;
         }
     }
 }

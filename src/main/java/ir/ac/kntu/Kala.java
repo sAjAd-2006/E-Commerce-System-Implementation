@@ -7,12 +7,49 @@ abstract class Kala {
     private int Inventory;
     private int Price;
     private Type type;
+    private Model model;
     private int voteNum;
     private int vote;
-    private int averageScore = 0;
-    private List<String> agencyCodeOfSelers;
+    private boolean voted;
+    private double averageScore = 0;
+    private String agencyCodeOfSelers;
+    private String selerCity;
+    private String selerName;
+
+    public void setSelerInfo(String name, String agencyCode, String city) {
+        setSelerName(name);
+        setAgencyCodeOfSelers(agencyCode);
+        setSelerCity(city);
+    }
+
+    public boolean isVoted() {
+        return voted;
+    }
+
+    public void setVoted(boolean voted) {
+        this.voted = voted;
+    }
+
+    public String getSelerName() {
+        return selerName;
+    }
+
+    public void setSelerName(String selerName) {
+        this.selerName = selerName;
+    }
+
+    public Model getModel() {
+        return model;
+    }
+
+    public void setModel(Model model) {
+        this.model = model;
+    }
 
     public void averageScore() {
+        if (voteNum == 0) {
+            return;
+        }
         this.averageScore = vote / voteNum;
     }
 
@@ -32,7 +69,8 @@ abstract class Kala {
         this.vote = vote;
     }
 
-    public int getAverageScore() {
+    public double getAverageScore() {
+        averageScore();
         return averageScore;
     }
 
@@ -40,11 +78,11 @@ abstract class Kala {
         this.averageScore = averageScore;
     }
 
-    public void setAgencyCodeOfSelers(List<String> sellers) {
+    public void setAgencyCodeOfSelers(String sellers) {
         this.agencyCodeOfSelers = agencyCodeOfSelers;
     }
 
-    public List<String> getAgencyCodeOfSelers() {
+    public String getAgencyCodeOfSelers() {
         return agencyCodeOfSelers;
     }
 
@@ -78,5 +116,23 @@ abstract class Kala {
 
     public void setType(Type type) {
         this.type = type;
+    }
+
+    public Kala() {
+    }
+
+    public String getSelerCity() {
+        return selerCity;
+    }
+
+    public void setSelerCity(String selerCity) {
+        this.selerCity = selerCity;
+    }
+
+    @Override
+    public String toString() {
+        return ("Product name:" + getName() + " Product type:" + getModel() + " Seler name:"
+                + getSelerName() + " Price:" + getPrice() + " Average score:" + getAverageScore()
+                + " Seller's province:" + getSelerCity());
     }
 }

@@ -40,6 +40,11 @@ public class Book extends Kala {
 
     public Book() {
         this.setType(Type.BOOK);
-        
+        this.setModel(Model.BOOK);
+    }
+
+    @Override
+    public String toString() {
+        return (super.toString() + "Additional information)" + " Authors name:" +getAuthorsName() + " Number of pages:" + getNumberOfPages() + " Age category:" +getAgeCategory() + " Id ISBN:" +getIdISBN());
     }
 }

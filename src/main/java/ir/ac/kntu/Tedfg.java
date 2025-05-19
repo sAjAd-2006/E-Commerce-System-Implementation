@@ -1,6 +1,6 @@
 package ir.ac.kntu;
 
-import java.util.Random;
+// import java.util.Random;
 
 public class Tedfg {
     public static void main(String[] args) {
@@ -12,12 +12,16 @@ public class Tedfg {
         // ramz += alpha.substring(35, 36);
         // // }
         // System.out.println(ramz);
-        String a = "sajad 12";
-        String b = "sajad 12 rahimy";
-        if (b.contains(a)) {
-            System.out.println("Ok");
-        } else {
-            System.out.println("No");
-        }
+        // String a = "sajad 12";
+        // String b = "sajad 12 rahimy";
+        // if (b.contains(a)) {
+        //     System.out.println("Ok");
+        // } else {
+        //     System.out.println("No");
+        // }
+        // ShoppingCart a = new ShoppingCart();
+        // System.out.println(a.getClass().getSimpleName());
+        Model a = Model.BOOK;
+        System.out.println(a);
     }
 }
