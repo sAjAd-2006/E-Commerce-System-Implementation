@@ -11,6 +11,23 @@ public class Vendilo {
     private static Scanner scanner = new Scanner(System.in);
     private static List<Customer> customers = new ArrayList<>();
     private static List<Seller> sellers = new ArrayList<>();
+    private static List<Seller> sellersVerification = new ArrayList<>();
+
+    public static void setCustomers(List<Customer> customers) {
+        Vendilo.customers = customers;
+    }
+
+    public static void setSellers(List<Seller> sellers) {
+        Vendilo.sellers = sellers;
+    }
+
+    public static List<Seller> getSellersVerification() {
+        return sellersVerification;
+    }
+
+    public static void setSellersVerification(List<Seller> sellersVerification) {
+        Vendilo.sellersVerification = sellersVerification;
+    }
 
     public static List<Customer> getCustomers() {
         return customers;
@@ -176,8 +193,9 @@ public class Vendilo {
 
         Seller a = new Seller(firstname, lastname, storeTitle, codeMely, phonenumber, password, provinceOfSale);
         a.setAgencyCode(generateAgencyCode());
+        a.setReasonForRejection("Your authentication has not been confirmed yet.");
         Supporter.getSellersVerification().add(a);
-        // sellers.add(a);
+        sellersVerification.add(a);
 
         sellerLogin();
     }
@@ -188,7 +206,14 @@ public class Vendilo {
         System.out.println("Enter password :");
         String password = scanner.nextLine();
         boolean co = false, pas = false;
-
+        for (Seller seller : sellersVerification) {
+            if (seller.getAgencyCode().equals(agencyCode)) {
+                if (seller.getPassword().equals(password)) {
+                    System.out.println(seller.getReasonForRejection());
+                    return null;
+                }
+            }
+        }
         for (Seller seller : sellers) {
             if (seller.getAgencyCode().equals(agencyCode)) {
                 co = true;

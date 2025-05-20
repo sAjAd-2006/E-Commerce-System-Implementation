@@ -91,10 +91,14 @@ public class Customer extends Person {
             Address s = addresses.get(i);
             boolean discount = true;
             for (Kala kala : this.shoppingCart.getKalas()) {
-                if (!addresses.get(i).getCity().equalsIgnoreCase(kala.getSelerCity())) {
-                    discount = false;
-                }
                 kala.toString();
+                if (kala.getInventory() > 1) {
+                    if (!addresses.get(i).getCity().equalsIgnoreCase(kala.getSelerCity())) {
+                        discount = false;
+                    }
+                } else {
+                    System.out.println(" ^ This item is out of stock and will be automatically removed from your shopping list.");
+                }
             }
             if (discount) {
                 shippingCost = shippingCost * 7 / 10;
@@ -115,7 +119,7 @@ public class Customer extends Person {
         switch (choice) {
             case "1":
                 if (this.wallet.WithdrawFromWallet(this.shoppingCart.findTotal() + shippingCost)) {
-                    crOrder(s);
+                    crOrder(s, this.shoppingCart.findTotal(), shippingCost);
                     List<Kala> c = new ArrayList<>();
                     shoppingCart.setKalas(c);
                     shoppingCart.setTotalPrice(0);
@@ -127,14 +131,14 @@ public class Customer extends Person {
         }
     }
 
-    public void crOrder(Address s) {
+    public void crOrder(Address s, int findTotal, int shippingCost) {
         LocalTime b = wallet.getTransactions().getLast().getLocalTime();
         List<Kala> c = shoppingCart.getKalas();
         List<String> sellersNames = new ArrayList<>();
         for (Kala kala : c) {
             sellersNames.add(kala.getSelerName());
         }
-        Order a = new Order(c, b, sellersNames, s);
+        Order a = new Order(c, b, sellersNames, s, findTotal, shippingCost);
         orders.add(a);
     }
 

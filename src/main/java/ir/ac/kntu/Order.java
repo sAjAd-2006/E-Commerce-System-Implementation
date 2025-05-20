@@ -9,19 +9,40 @@ public class Order {
     private LocalTime localTime;
     private List<String> sellersNames;
     private Address address;
+    private int totalPrice;
+    private int shippingCost;
+
+    public int getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(int totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+
+    public int getShippingCost() {
+        return shippingCost;
+    }
+
+    public void setShippingCost(int shippingCost) {
+        this.shippingCost = shippingCost;
+    }
 
     public Order() {
         kalas = new ArrayList<>();
         sellersNames = new ArrayList<>();
     }
 
-    public Order(List<Kala> kalas, LocalTime localTime, List<String> sellersNames, Address address) {
+    public Order(List<Kala> kalas, LocalTime localTime, List<String> sellersNames, Address address, int totalPrice,
+            int shippingCost) {
         kalas = new ArrayList<>();
         sellersNames = new ArrayList<>();
         this.kalas = kalas;
         this.localTime = localTime;
         this.sellersNames = sellersNames;
         this.address = address;
+        this.totalPrice = totalPrice;
+        this.shippingCost = shippingCost;
     }
 
     public List<Kala> getKalas() {
@@ -64,6 +85,7 @@ public class Order {
             System.out.println(kala.toString());
         }
         System.out.println("\nTime:" + getLocalTime());
+        // System.out.println("Customer name:" + );
         System.out.println("Address:" + getAddress());
     }
 }

@@ -4,6 +4,23 @@ public class Reportage {
     private Report reportTopic;
     private String text;
     private Check check;
+    private String answer;
+
+    public Check getCheck() {
+        return check;
+    }
+
+    public void setCheck(Check check) {
+        this.check = check;
+    }
+
+    public String getAnswer() {
+        return answer;
+    }
+
+    public void setAnswer(String answer) {
+        this.answer = answer;
+    }
 
     public Report getReportTopic() {
         return reportTopic;
@@ -27,14 +44,7 @@ public class Reportage {
     }
 
     public Reportage() {
-    }
-
-    public Check getCeck() {
-        return check;
-    }
-
-    public void setCeck(Check check) {
-        this.check = check;
+        this.check = Check.Registered;
     }
 
     @Override
