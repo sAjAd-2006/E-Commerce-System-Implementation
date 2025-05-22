@@ -1,7 +1,5 @@
 package ir.ac.kntu;
 
-import java.util.List;
-
 abstract class Kala {
     private String name;
     private int Inventory;

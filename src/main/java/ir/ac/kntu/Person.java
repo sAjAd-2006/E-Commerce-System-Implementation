@@ -1,5 +1,8 @@
 package ir.ac.kntu;
 
+import java.util.List;
+import java.util.Scanner;
+
 abstract class Person {
     private String firstname;
     private String lastname;
@@ -48,5 +51,27 @@ abstract class Person {
     }
 
     public Person() {
+    }
+
+    public int runBack() {
+        Scanner scanner = new Scanner(System.in);
+        while (true) {
+            System.out.println("Please enter the desired option : 1)Back 2)Exit 3)Continue");
+            String choice = scanner.nextLine();
+            switch (choice) {
+                case "1":
+                    scanner.close();
+                    return 1;
+                case "2":
+                    scanner.close();
+                    System.exit(0);
+                case "3":
+                    scanner.close();
+                    return 3;
+                default:
+                    System.out.println("The selected option is invalid.");
+                    break;
+            }
+        }
     }
 }

@@ -12,7 +12,16 @@ public class Seller extends Person {
     private static List<Kala> kalas = new ArrayList<>();
     private List<Kala> sellerKala;
     private Wallet wallet;
+    private List<Order> orders;
     private String ReasonForRejection;
+
+    public List<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
+    }
 
     public String getReasonForRejection() {
         return ReasonForRejection;
@@ -88,6 +97,10 @@ public class Seller extends Person {
         setPassword(password);
         setProvinceOfSale(provinceOfSale);
         sellerKala = new ArrayList<>();
+    }
+
+    public void menu() {
+
     }
 
     public void addKala() {

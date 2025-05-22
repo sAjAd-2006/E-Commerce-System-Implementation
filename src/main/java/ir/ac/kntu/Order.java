@@ -8,9 +8,27 @@ public class Order {
     private List<Kala> kalas;
     private LocalTime localTime;
     private List<String> sellersNames;
+    private String customerName;
+    private String customerEmail;
     private Address address;
     private int totalPrice;
     private int shippingCost;
+
+    public String getCustomerName() {
+        return customerName;
+    }
+
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
+    }
+
+    public String getCustomerEmail() {
+        return customerEmail;
+    }
+
+    public void setCustomerEmail(String customerEmail) {
+        this.customerEmail = customerEmail;
+    }
 
     public int getTotalPrice() {
         return totalPrice;
@@ -34,7 +52,7 @@ public class Order {
     }
 
     public Order(List<Kala> kalas, LocalTime localTime, List<String> sellersNames, Address address, int totalPrice,
-            int shippingCost) {
+            int shippingCost, String customerName, String customerEmail) {
         kalas = new ArrayList<>();
         sellersNames = new ArrayList<>();
         this.kalas = kalas;
@@ -43,6 +61,8 @@ public class Order {
         this.address = address;
         this.totalPrice = totalPrice;
         this.shippingCost = shippingCost;
+        this.customerName = customerName;
+        this.customerEmail = customerEmail;
     }
 
     public List<Kala> getKalas() {

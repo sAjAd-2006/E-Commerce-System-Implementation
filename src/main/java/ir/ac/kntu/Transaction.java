@@ -2,8 +2,6 @@ package ir.ac.kntu;
 
 import java.time.LocalTime;
 
-import javax.sql.rowset.spi.SyncResolver;
-
 public class Transaction {
     private LocalTime localTime;
     private int price;
@@ -35,9 +33,15 @@ public class Transaction {
         // System.out.println(this.toString());
     }
 
+    public Transaction(LocalTime localTime, int price, String why) {
+        this.localTime = localTime;
+        this.price = price;
+        this.why = why;
+    }
+
     @Override
     public String toString() {
-        return ("Time:" + getLocalTime() + " --- " + "Price:" + getPrice() + getWhy());
+        return ("Time:" + getLocalTime() + " --- " + "Price:" + getPrice() + " -> " + getWhy());
     }
 
     public String getWhy() {

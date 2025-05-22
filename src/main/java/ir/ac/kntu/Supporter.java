@@ -30,10 +30,10 @@ public class Supporter extends Person {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Do you have a specific user in mind? 1) YES 2) NO");
         String specificEmail;
-        switch (scanner.nextInt()) {
-            case 1:
+        switch (scanner.nextLine()) {
+            case "1":
                 System.out.print("Get user email:");
-                scanner.nextLine();
+                // scanner.nextLine();
                 specificEmail = scanner.nextLine();
                 break;
 
