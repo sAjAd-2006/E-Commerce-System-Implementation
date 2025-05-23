@@ -276,7 +276,8 @@ public class Vendilo {
                         pas = true;
                         System.out.println("Successful login.");
                         scanner.close();
-                        seller.menu();
+                        SellerHelper sellerHelper = new SellerHelper(seller);
+                        sellerHelper.menu();
                     }
                 }
             }

@@ -99,22 +99,18 @@ public class Seller extends Person {
         sellerKala = new ArrayList<>();
     }
 
-    public void menu() {
-
-    }
-
     public void addKala() {
         Scanner scanner = new Scanner(System.in);
         boolean runType = true, runDigital = true;
         while (runType) {
             System.out.println(
-                    "What type of product are you interested in?\n1) Digital Goods\n2) Book\nPress any key to go back.\nPlease enter the desired option :");
+                    "What type of product are you interested in?\n1) Digital Goods\n2) Book\n3)Back\n4)Exit\n => ");
             String choice = scanner.nextLine();
             switch (choice) {
                 case "1":
                     while (runDigital) {
                         System.out.println(
-                                "What type of Digital Goods are you interested in?\n1) Laptop\n2) Mobile\nPress any key to go back.\nPlease enter the desired option :");
+                                "What type of Digital Goods are you interested in?\n1) Laptop\n2) Mobile\n3) Back\n4) Exit\n => ");
                         choice = scanner.nextLine();
                         switch (choice) {
                             case "1":
@@ -123,8 +119,14 @@ public class Seller extends Person {
                             case "2":
                                 addMobile();
                                 break;
-                            default:
+                            case "3":
                                 runDigital = false;
+                                break;
+                            case "4":
+                                scanner.close();
+                                System.exit(0);
+                            default:
+                                System.out.println("The selected option is invalid.");
                                 break;
                         }
                     }
@@ -132,8 +134,14 @@ public class Seller extends Person {
                 case "2":
                     addBook();
                     break;
-                default:
+                case "3":
                     runType = false;
+                    break;
+                case "4":
+                    scanner.close();
+                    System.exit(0);
+                default:
+                    System.out.println("The selected option is invalid.");
                     break;
             }
         }
@@ -143,30 +151,49 @@ public class Seller extends Person {
     public void addBook() {
         Book book = new Book();
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Enter name : ");
-        book.setName(scanner.nextLine());
-        System.out.println("Enter amount : ");
-        book.setInventory(scanner.nextInt());
-        System.out.println("Enter price : ");
-        scanner.nextLine();
-        book.setPrice(scanner.nextInt());
-        System.out.println("Enter author name : ");
-        scanner.nextLine();
-        book.setAuthorsName(scanner.nextLine());
-        System.out.println("Enter number of pages : ");
-        book.setNumberOfPages(scanner.nextLine());
-        addAge(book);
-        System.out.println("Enter ISBN id : ");
-        book.setIdISBN(scanner.nextLine());
-        book.setSelerInfo((getFirstname() + " " + getLastname()), getAgencyCode(), getProvinceOfSale());
-        kalas.add(book);
-        sellerKala.add(book);
-        scanner.close();
+        while (true) {
+            if (runBack() == 1) {
+                scanner.close();
+                return;
+            }
+            System.out.println("Enter name : ");
+            book.setName(scanner.nextLine());
+            System.out.println("Enter amount : ");
+            String amount = scanner.nextLine();
+            if (isInteger(amount)) {
+                book.setInventory(Integer.parseInt(amount));
+            } else {
+                continue;
+            }
+            System.out.println("Enter price : ");
+            String price = scanner.nextLine();
+            if (isInteger(price)) {
+                book.setPrice(Integer.parseInt(price));
+            } else {
+                continue;
+            }
+            System.out.println("Enter author name : ");
+            book.setAuthorsName(scanner.nextLine());
+            System.out.println("Enter number of pages : ");
+            book.setNumberOfPages(scanner.nextLine());
+            addAge(book);
+            System.out.println("Enter ISBN id : ");
+            book.setIdISBN(scanner.nextLine());
+            book.setSelerInfo((getFirstname() + " " + getLastname()), getAgencyCode(), getProvinceOfSale());
+            kalas.add(book);
+            sellerKala.add(book);
+            scanner.close();
+            return;
+        }
     }
 
     public void addAge(Book book) {
         Scanner scanner = new Scanner(System.in);
         while (true) {
+            if (runBack() == 1) {
+                scanner.close();
+                return;
+            }
             System.out.println("Enter age category :\n1)CHILD\n2)ADOLESCENT\n3)ADULT\n");
             String choice = scanner.nextLine();
             switch (choice) {
@@ -192,33 +219,53 @@ public class Seller extends Person {
     public void addMobile() {
         Mobile mobile = new Mobile();
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Enter name : ");
-        mobile.setName(scanner.nextLine());
-        System.out.println("Enter amount : ");
-        mobile.setInventory(scanner.nextInt());
-        System.out.println("Enter price : ");
-        mobile.setPrice(scanner.nextInt());
-        System.out.println("Enter brand : ");
-        scanner.nextLine();
-        mobile.setBrand(scanner.nextLine());
-        System.out.println("Enter internal memory size : ");
-        mobile.setInternalMemorySize(scanner.nextLine());
-        System.out.println("Enter amount of RAM : ");
-        mobile.setAmountOfRAM(scanner.nextLine());
-        System.out.println("Enter rear camera resolution : ");
-        mobile.setRearCameraResolution(scanner.nextLine());
-        System.out.println("Enter front camera resolution : ");
-        mobile.setFrontCameraResolution(scanner.nextLine());
-        addNetwork(mobile);
-        mobile.setSelerInfo((getFirstname() + " " + getLastname()), getAgencyCode(), getProvinceOfSale());
-        kalas.add(mobile);
-        sellerKala.add(mobile);
-        scanner.close();
+        while (true) {
+            if (runBack() == 1) {
+                scanner.close();
+                return;
+            }
+            System.out.println("Enter name : ");
+            mobile.setName(scanner.nextLine());
+            System.out.println("Enter amount : ");
+            String amount = scanner.nextLine();
+            if (isInteger(amount)) {
+                mobile.setInventory(Integer.parseInt(amount));
+            } else {
+                continue;
+            }
+            System.out.println("Enter price : ");
+            String price = scanner.nextLine();
+            if (isInteger(price)) {
+                mobile.setPrice(Integer.parseInt(price));
+            } else {
+                continue;
+            }
+            System.out.println("Enter brand : ");
+            mobile.setBrand(scanner.nextLine());
+            System.out.println("Enter internal memory size : ");
+            mobile.setInternalMemorySize(scanner.nextLine());
+            System.out.println("Enter amount of RAM : ");
+            mobile.setAmountOfRAM(scanner.nextLine());
+            System.out.println("Enter rear camera resolution : ");
+            mobile.setRearCameraResolution(scanner.nextLine());
+            System.out.println("Enter front camera resolution : ");
+            mobile.setFrontCameraResolution(scanner.nextLine());
+            addNetwork(mobile);
+            mobile.setSelerInfo((getFirstname() + " " + getLastname()), getAgencyCode(), getProvinceOfSale());
+            kalas.add(mobile);
+            sellerKala.add(mobile);
+            scanner.close();
+            return;
+        }
     }
 
     private void addNetwork(Mobile mobile) {
         Scanner scanner = new Scanner(System.in);
         while (true) {
+            if (runBack() == 1) {
+                scanner.close();
+                return;
+            }
             System.out.println("Enter internet network :\n1) 3G\n2) 4G\n3) 5G\n");
             String choice = scanner.nextLine();
             switch (choice) {
@@ -244,32 +291,52 @@ public class Seller extends Person {
     public void addLaptop() {
         Laptop laptop = new Laptop();
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Enter name : ");
-        laptop.setName(scanner.nextLine());
-        System.out.println("Enter amount : ");
-        laptop.setInventory(scanner.nextInt());
-        System.out.println("Enter price : ");
-        laptop.setPrice(scanner.nextInt());
-        System.out.println("Enter brand : ");
-        scanner.nextLine();
-        laptop.setBrand(scanner.nextLine());
-        System.out.println("Enter internal memory size : ");
-        laptop.setInternalMemorySize(scanner.nextLine());
-        System.out.println("Enter amount of RAM : ");
-        laptop.setAmountOfRAM(scanner.nextLine());
-        System.out.println("Enter graphics processor : ");
-        laptop.setGraphicsProcessor(scanner.nextLine());
-        addWebcam(laptop);
-        addBlu(laptop);
-        laptop.setSelerInfo((getFirstname() + " " + getLastname()), getAgencyCode(), getProvinceOfSale());
-        kalas.add(laptop);
-        sellerKala.add(laptop);
-        scanner.close();
+        while (true) {
+            if (runBack() == 1) {
+                scanner.close();
+                return;
+            }
+            System.out.println("Enter name : ");
+            laptop.setName(scanner.nextLine());
+            System.out.println("Enter amount : ");
+            String amount = scanner.nextLine();
+            if (isInteger(amount)) {
+                laptop.setInventory(Integer.parseInt(amount));
+            } else {
+                continue;
+            }
+            System.out.println("Enter price : ");
+            String price = scanner.nextLine();
+            if (isInteger(price)) {
+                laptop.setPrice(Integer.parseInt(price));
+            } else {
+                continue;
+            }
+            System.out.println("Enter brand : ");
+            laptop.setBrand(scanner.nextLine());
+            System.out.println("Enter internal memory size : ");
+            laptop.setInternalMemorySize(scanner.nextLine());
+            System.out.println("Enter amount of RAM : ");
+            laptop.setAmountOfRAM(scanner.nextLine());
+            System.out.println("Enter graphics processor : ");
+            laptop.setGraphicsProcessor(scanner.nextLine());
+            addWebcam(laptop);
+            addBlu(laptop);
+            laptop.setSelerInfo((getFirstname() + " " + getLastname()), getAgencyCode(), getProvinceOfSale());
+            kalas.add(laptop);
+            sellerKala.add(laptop);
+            scanner.close();
+            return;
+        }
     }
 
     private void addBlu(Laptop laptop) {
         Scanner scanner = new Scanner(System.in);
         while (true) {
+            if (runBack() == 1) {
+                scanner.close();
+                return;
+            }
             System.out.println("Does the laptop have a bluetooth?\n1) YES\n2) NO\n");
             String choice = scanner.nextLine();
             switch (choice) {
@@ -279,7 +346,6 @@ public class Seller extends Person {
                     return;
                 case "2":
                     laptop.setBluetooth(true);
-                    ;
                     scanner.close();
                     return;
                 default:
@@ -292,6 +358,10 @@ public class Seller extends Person {
     private void addWebcam(Laptop laptop) {
         Scanner scanner = new Scanner(System.in);
         while (true) {
+            if (runBack() == 1) {
+                scanner.close();
+                return;
+            }
             System.out.println("Does the laptop have a webcam?\n1) YES\n2) NO\n");
             String choice = scanner.nextLine();
             switch (choice) {
@@ -314,5 +384,14 @@ public class Seller extends Person {
     public String toString() {
         return ("Name: " + getFirstname() + " " + getLastname() + " Store Title:" + getStoreTitle() + " Email:"
                 + getEmail() + " Agency Code:" + getAgencyCode());
+    }
+
+    public static boolean isInteger(String str) {
+        try {
+            Integer.parseInt(str);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
     }
 }

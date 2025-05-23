@@ -1,8 +1,6 @@
 package ir.ac.kntu;
 
-import java.security.SecurityPermission;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -122,7 +120,7 @@ public class Customer extends Person {
         scanner.close();
         switch (choice) {
             case "1":
-                if (this.wallet.WithdrawFromWallet(this.shoppingCart.findTotal() + shippingCost)) {
+                if (this.wallet.WithdrawFromWallet((this.shoppingCart.findTotal() + shippingCost), "Shopping")) {
                     crOrder(s, this.shoppingCart.findTotal(), shippingCost);
                     List<Kala> c = new ArrayList<>();
                     shoppingCart.setKalas(c);

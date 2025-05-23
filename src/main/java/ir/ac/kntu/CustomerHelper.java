@@ -65,7 +65,7 @@ public class CustomerHelper {
     public void supportRun() {
         Scanner scanner = new Scanner(System.in);
         while (true) {
-            System.out.println("1.New Request\n2.View Old Requests\n3.Back\n4.Exit");
+            System.out.println("1.New Request\n2.View Old Requests\n3.Back\n4.Exit\n => ");
             String choice = scanner.nextLine();
             switch (choice) {
                 case "1":
@@ -143,7 +143,8 @@ public class CustomerHelper {
     public void walletRun() {
         Scanner scanner = new Scanner(System.in);
         while (true) {
-            System.out.println("1> View balance\n2> Top up wallet\n3> View previous transactions\n4> Back\n5> Exit");
+            System.out.println(
+                    "1> View balance\n2> Top up wallet\n3> Withdraw from wallet\n4> View previous transactions\n5> Back\n6> Exit");
             String choice = scanner.nextLine();
             switch (choice) {
                 case "1":
@@ -153,18 +154,27 @@ public class CustomerHelper {
                     System.out.print("Enter the amount you want to top up your wallet: ");
                     choice = scanner.nextLine();
                     if (isInteger(choice)) {
-                        customer.getWallet().setCash(customer.getWallet().getCash() + Integer.parseInt(choice));
+                        customer.getWallet().addToWallet(Integer.parseInt(choice));;
                     } else {
                         System.out.println("Incorrect input. Enter a number.");
                     }
                     break;
                 case "3":
-                    viewPreviousTransactions();
+                    System.out.print("Enter the amount you want to Withdraw from wallet: ");
+                    choice = scanner.nextLine();
+                    if (isInteger(choice)) {
+                        customer.getWallet().WithdrawFromWallet(Integer.parseInt(choice), "Withdraw money");
+                    } else {
+                        System.out.println("Incorrect input. Enter a number.");
+                    }
                     break;
                 case "4":
+                    viewPreviousTransactions();
+                    break;
+                case "5":
                     scanner.close();
                     return;
-                case "5":
+                case "6":
                     scanner.close();
                     System.exit(0);
                 default:
@@ -177,7 +187,6 @@ public class CustomerHelper {
         List<Transaction> tran = new ArrayList<>();
         TransactionFilterHelper transactionFilterHelper = new TransactionFilterHelper();
         tran = transactionFilterHelper.filterTransactionsByUserInput(customer.getWallet().getTransactions());
-        // System.out.println("Enter the time period:\n");
         Paginator<Transaction> paginator = new Paginator<>(tran, 10);
         int i = 0;
         while (true) {

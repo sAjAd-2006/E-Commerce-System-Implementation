@@ -143,6 +143,7 @@ public class Order {
             default:
                 break;
         }
+        scanner.close();
     }
 
     @Override
