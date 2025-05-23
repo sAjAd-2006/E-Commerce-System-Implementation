@@ -1,18 +1,18 @@
 package ir.ac.kntu;
 
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 
 public class Transaction {
-    private LocalTime localTime;
+    private LocalDateTime localDateTime;
     private int price;
     private String why;
 
-    public LocalTime getLocalTime() {
-        return localTime;
+    public LocalDateTime getLocalDateTime() {
+        return localDateTime;
     }
 
-    public void setLocalTime(LocalTime localTime) {
-        this.localTime = localTime;
+    public void setLocalDateTime(LocalDateTime localDateTime) {
+        this.localDateTime = localDateTime;
     }
 
     public int getPrice() {
@@ -28,20 +28,20 @@ public class Transaction {
 
     public Transaction(int price, String why) {
         this.why = why;
-        this.localTime = LocalTime.now();
+        this.localDateTime = LocalDateTime.now();
         this.price = price;
         // System.out.println(this.toString());
     }
 
-    public Transaction(LocalTime localTime, int price, String why) {
-        this.localTime = localTime;
+    public Transaction(LocalDateTime localDateTime, int price, String why) {
+        this.localDateTime = localDateTime;
         this.price = price;
         this.why = why;
     }
 
     @Override
     public String toString() {
-        return ("Time:" + getLocalTime() + " --- " + "Price:" + getPrice() + " -> " + getWhy());
+        return ("Time:" + getLocalDateTime() + " -> " + getWhy());
     }
 
     public String getWhy() {

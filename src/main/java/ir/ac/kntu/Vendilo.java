@@ -65,6 +65,7 @@ public class Vendilo {
                     break;
             }
         }
+        scanner.close();
         System.out.println("We look forward to seeing you again.");
     }
 
@@ -147,7 +148,9 @@ public class Vendilo {
                         pas = true;
                         System.out.println("Successful login.");
                         scanner.close();
-                        customer.menu();
+                        // customer.menu();
+                        CustomerHelper a = new CustomerHelper(customer);
+                        a.menu();
                     }
                 }
             }

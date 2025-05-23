@@ -1,41 +1,41 @@
 package ir.ac.kntu;
 
 public class Address {
-    private String Title;
-    private String Province;
-    private String City;
-    private String Description;
+    private String title;
+    private String province;
+    private String city;
+    private String description;
 
     public void setTitle(String title) {
-        Title = title;
+        this.title = title;
     }
 
     public void setProvince(String province) {
-        Province = province;
+        this.province = province;
     }
 
     public void setCity(String city) {
-        City = city;
+        this.city = city;
     }
 
     public void setDescription(String description) {
-        Description = description;
+        this.description = description;
     }
 
     public String getTitle() {
-        return Title;
+        return title;
     }
 
     public String getProvince() {
-        return Province;
+        return province;
     }
 
     public String getCity() {
-        return City;
+        return city;
     }
 
     public String getDescription() {
-        return Description;
+        return description;
     }
 
     public Address(String title, String province, String city, String description) {

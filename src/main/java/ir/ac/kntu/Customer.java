@@ -1,5 +1,7 @@
 package ir.ac.kntu;
 
+import java.security.SecurityPermission;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -73,64 +75,6 @@ public class Customer extends Person {
         this.shoppingCart = shoppingCart;
     }
 
-    public void menu() {
-        Scanner scanner = new Scanner(System.in);
-        boolean runMenu = true;
-        while (runMenu) {
-            System.out.println("- - - - Customer Menu - - - -\n1-Product Search\n2-Shopping Cart\n3-Addresses");
-            System.out.println("4-Wallet\n5-Orders\n6-Settings\n7-Support\n8-Log out\n9-Exit");
-            String choice = scanner.nextLine();
-            switch (choice) {
-                case "1" -> searchKala();
-                case "2" -> {
-                    this.shoppingCart.seeCart();
-                    System.out.println("Would you like to continue shopping? 1>YES 2>NO(Default)");
-                    choice = scanner.nextLine();
-                    switch (choice) {
-                        case "1":
-                            continueShopping();
-                            break;
-                        default:
-                            break;
-                    }
-                }
-                case "3" -> addressRun();
-                case "8" -> runMenu = false;
-                case "9" -> {
-                    scanner.close();
-                    System.exit(0);
-                }
-                default -> System.out.println("The selected option is invalid.");
-            }
-        }
-        scanner.close();
-    }
-
-    public void addressRun() {
-        Scanner scanner = new Scanner(System.in);
-        while (true) {
-            System.out.println("1. Add Address\n2. View Current Addresses\n3. Back\n4. Exit");
-            String choice = scanner.nextLine();
-            switch (choice) {
-                case "1":
-
-                    break;
-                case "2":
-                    break;
-                case "3":
-                    scanner.close();
-                    return;
-                case "4":
-                    scanner.close();
-                    System.exit(0);
-                    break;
-                default:
-                    System.out.println("The selected option is invalid.");
-                    break;
-            }
-        }
-    }
-
     public void continueShopping() {
         int shippingCost = 10;
         while (true) {
@@ -192,7 +136,7 @@ public class Customer extends Person {
     }
 
     public void crOrder(Address s, int findTotal, int shippingCost) {
-        LocalTime b = this.wallet.getTransactions().getLast().getLocalTime();
+        LocalDateTime b = this.wallet.getTransactions().getLast().getLocalDateTime();
         List<Kala> c = this.shoppingCart.getKalas();
         List<String> sellersNames = new ArrayList<>();
         for (Kala kala : c) {
@@ -200,6 +144,9 @@ public class Customer extends Person {
             kala.setInventory(kala.getInventory() - 1);
         }
         Order a = new Order(c, b, sellersNames, s, findTotal, shippingCost, "", "");
+        for (int i = 0; i < c.size(); i++) {
+            a.getIsVoted().add(false);
+        }
         orders.add(a);
         for (Seller seller : Vendilo.getSellers()) {
             for (Kala kala : c) {
@@ -228,9 +175,15 @@ public class Customer extends Person {
             System.out.println("Enter at least one of the following fields\nProduct Name: ");
             String productName = scanner.nextLine();
             String productType = searchForProductType();
-            System.out.println("Enter price range(Default:ALL)");
-            int min = priceRange("min");
-            int max = priceRange("max");
+            int min = 0, max = 0;
+            while (true) {
+                System.out.println("Enter price range(Default:ALL)");
+                min = priceRange("min");
+                max = priceRange("max");
+                if (max >= min) {
+                    break;
+                }
+            }
             List<Kala> searchingKala = new ArrayList<>();
             for (Kala kala : Seller.getKalas()) {
                 if (kala.getPrice() <= max && kala.getPrice() >= min) {
@@ -410,7 +363,7 @@ public class Customer extends Person {
                     return ran;
                 } else {
                     if (val.equalsIgnoreCase("min")) {
-                        int ran = Integer.MIN_VALUE;
+                        int ran = 0;
                         scanner.close();
                         return ran;
                     }

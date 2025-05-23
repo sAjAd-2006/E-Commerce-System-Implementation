@@ -1,12 +1,14 @@
 package ir.ac.kntu;
 
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class Order {
     private List<Kala> kalas;
-    private LocalTime localTime;
+    private List<Boolean> isVoted;
+    private LocalDateTime localDateTime;
     private List<String> sellersNames;
     private String customerName;
     private String customerEmail;
@@ -51,12 +53,13 @@ public class Order {
         sellersNames = new ArrayList<>();
     }
 
-    public Order(List<Kala> kalas, LocalTime localTime, List<String> sellersNames, Address address, int totalPrice,
+    public Order(List<Kala> kalas, LocalDateTime localDateTime, List<String> sellersNames, Address address,
+            int totalPrice,
             int shippingCost, String customerName, String customerEmail) {
         kalas = new ArrayList<>();
         sellersNames = new ArrayList<>();
         this.kalas = kalas;
-        this.localTime = localTime;
+        this.localDateTime = localDateTime;
         this.sellersNames = sellersNames;
         this.address = address;
         this.totalPrice = totalPrice;
@@ -73,12 +76,12 @@ public class Order {
         this.kalas = kalas;
     }
 
-    public LocalTime getLocalTime() {
-        return localTime;
+    public LocalDateTime getLocalDateTime() {
+        return localDateTime;
     }
 
-    public void setLocalTime(LocalTime localTime) {
-        this.localTime = localTime;
+    public void setLocalDateTime(LocalDateTime localDateTime) {
+        this.localDateTime = localDateTime;
     }
 
     public List<String> getSellersNames() {
@@ -97,15 +100,70 @@ public class Order {
         this.address = address;
     }
 
-    public void showOrder() {
+    public void showOrderCustomer() {
         int i = 0;
         for (Kala kala : kalas) {
             i++;
             System.out.print(i + ") ");
             System.out.println(kala.toString());
+            System.out.println("  ^ " + kala.getSelerName());
         }
-        System.out.println("\nTime:" + getLocalTime());
-        // System.out.println("Customer name:" + );
-        System.out.println("Address:" + getAddress());
+        System.out.println("\nTime: " + getLocalDateTime());
+        System.out.println("Address: " + getAddress());
+        System.out.println("Do you want to raise the goods? 1>YES 2>NO(Default)");
+        Scanner scanner = new Scanner(System.in);
+        String choice = scanner.nextLine();
+        switch (choice) {
+            case "1":
+                outerLoop: while (true) {
+                    System.out.println("Choose");
+                    Paginator<Kala> paginator = new Paginator<>(kalas, 10);
+                    int rat = paginator.paginate(0);
+                    if (rat == -1) {
+                        scanner.close();
+                        return;
+                    }
+                    if (this.isVoted.get(rat) == false) {
+                        while (true) {
+                            System.out.print("\nWhat is your rating? (1 / 2 / 3 / 4 / 5): ");
+                            String cmd = scanner.nextLine().trim().toLowerCase();
+                            if (cmd.matches("1|2|3|4|5")) {
+                                this.kalas.get(rat).calculatingTheAverage(Integer.parseInt(cmd));
+                                this.isVoted.set(rat, true);
+                                continue outerLoop;
+                            } else {
+                                System.out.println("Invalid rat.");
+                            }
+                        }
+                    } else {
+                        System.out.println("You have already voted for this product.");
+                        continue;
+                    }
+                }
+            default:
+                break;
+        }
+    }
+
+    @Override
+    public String toString() {
+        return ("Time: " + getLocalDateTime() + " Address: " + getAddress() + " Total Price: " + getTotalPrice());
+    }
+
+    public List<Boolean> getIsVoted() {
+        return isVoted;
+    }
+
+    public void setIsVoted(List<Boolean> isVoted) {
+        this.isVoted = isVoted;
+    }
+
+    public boolean isInteger(String str) {
+        try {
+            Integer.parseInt(str);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
     }
 }

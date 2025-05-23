@@ -13,7 +13,7 @@ public class Seller extends Person {
     private List<Kala> sellerKala;
     private Wallet wallet;
     private List<Order> orders;
-    private String ReasonForRejection;
+    private String reasonForRejection;
 
     public List<Order> getOrders() {
         return orders;
@@ -24,11 +24,11 @@ public class Seller extends Person {
     }
 
     public String getReasonForRejection() {
-        return ReasonForRejection;
+        return reasonForRejection;
     }
 
     public void setReasonForRejection(String reasonForRejection) {
-        ReasonForRejection = reasonForRejection;
+        this.reasonForRejection = reasonForRejection;
     }
 
     public void setWallet(Wallet wallet) {

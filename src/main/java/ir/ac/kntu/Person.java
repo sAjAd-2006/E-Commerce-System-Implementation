@@ -74,4 +74,11 @@ abstract class Person {
             }
         }
     }
+
+    @Override
+    public String toString() {
+        return "Name: " + firstname + " " + lastname +
+                "\nEmail: " + email +
+                "\nPhone: " + phonenumber;
+    }
 }

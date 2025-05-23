@@ -15,13 +15,17 @@ public class Tedfg {
         // String a = "sajad 12";
         // String b = "sajad 12 rahimy";
         // if (b.contains(a)) {
-        //     System.out.println("Ok");
+        // System.out.println("Ok");
         // } else {
-        //     System.out.println("No");
+        // System.out.println("No");
         // }
         // ShoppingCart a = new ShoppingCart();
         // System.out.println(a.getClass().getSimpleName());
-        Model a = Model.BOOK;
-        System.out.println(a);
+        // Model a = Model.BOOK;
+        // System.out.println(a);
+        System.out.println("\u001B[33mHello World!\u001B[0m (زرد ساده)");
+        System.out.println("\u001B[1;33mHello World!\u001B[0m (زرد پررنگ)");
+        System.out.println("\u001B[4;33mHello World!\u001B[0m (زرد با زیرخط)");
+        System.out.println("\u001B[33;40mHello World!\u001B[0m (زرد روی سیاه)");
     }
 }

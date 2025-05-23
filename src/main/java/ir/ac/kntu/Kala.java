@@ -51,6 +51,15 @@ abstract class Kala {
         this.averageScore = vote / voteNum;
     }
 
+    public void calculatingTheAverage(int vote) {
+        if (vote == 0) {
+            return;
+        }
+        this.vote += vote;
+        this.voteNum += 1;
+        averageScore();
+    }
+
     public int getVoteNum() {
         return voteNum;
     }
@@ -67,16 +76,19 @@ abstract class Kala {
         this.vote = vote;
     }
 
-    public double getAverageScore() {
+    public String getAverageScore() {
         averageScore();
-        return averageScore;
+        if (averageScore == 0) {
+            return "";
+        }
+        return Double.toString(averageScore);
     }
 
     public void setAverageScore(int averageScore) {
         this.averageScore = averageScore;
     }
 
-    public void setAgencyCodeOfSelers(String sellers) {
+    public void setAgencyCodeOfSelers(String agencyCodeOfSelers) {
         this.agencyCodeOfSelers = agencyCodeOfSelers;
     }
 
@@ -129,8 +141,8 @@ abstract class Kala {
 
     @Override
     public String toString() {
-        return ("Product name:" + getName() + " Product type:" + getModel() + " Seler name:"
-                + getSelerName() + " Price:" + getPrice() + " Average score:" + getAverageScore()
-                + " Seller's province:" + getSelerCity());
+        return ("Product name: " + getName() + " Product type: " + getModel() + " Seler name: "
+                + getSelerName() + " Price: " + getPrice() + " Average score: " + getAverageScore()
+                + " Seller's province: " + getSelerCity());
     }
 }
