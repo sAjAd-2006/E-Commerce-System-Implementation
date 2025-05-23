@@ -46,9 +46,11 @@ public class CustomerHelper {
                 case "3" -> addressRun();
                 case "4" -> walletRun();
                 case "5" -> ordersRun();
-                case "6" -> {UserSettings userSettings = new UserSettings();
-                userSettings.settings(customer);}
-                
+                case "6" -> {
+                    UserSettings userSettings = new UserSettings();
+                    userSettings.settings(customer);
+                }
+                case "7" -> supportRun();
                 case "8" -> runMenu = false;
                 case "9" -> {
                     scanner.close();
@@ -57,6 +59,74 @@ public class CustomerHelper {
                 default -> System.out.println("The selected option is invalid.");
             }
         }
+        scanner.close();
+    }
+
+    public void supportRun() {
+        Scanner scanner = new Scanner(System.in);
+        while (true) {
+            System.out.println("1.New Request\n2.View Old Requests\n3.Back\n4.Exit");
+            String choice = scanner.nextLine();
+            switch (choice) {
+                case "1":
+                    newRequest();
+                    break;
+                case "2":
+                    viewOldRequests();
+                    break;
+                case "3":
+                    scanner.close();
+                    return;
+                case "4":
+                    scanner.close();
+                    System.exit(0);
+                default:
+                    System.out.println("The selected option is invalid.");
+                    break;
+            }
+        }
+    }
+
+    public void viewOldRequests() {
+        Paginator<Reportage> paginator = new Paginator<>(customer.getReportages(), 10);
+        int j = 0;
+        while (true) {
+            int i = paginator.paginate(j);
+            if (i == -1) {
+                return;
+            } else {
+                Reportage reportage = customer.getReportages().get(i);
+                System.out.println(reportage + " Request status: " + reportage.getCheck() + " Support response: "
+                        + reportage.getAnswer());
+                j = i / 10;
+            }
+        }
+    }
+
+    public void newRequest() {
+        Scanner scanner = new Scanner(System.in);
+        Report report = Report.Settings;
+        while (true) {
+            System.out.print(
+                    "\nEnter command \n1.Product_qualit\n2.Discrepancy_between_order_and_delivered_product\n3.Settings\n4.Not_receiving_order");
+            String rep = scanner.nextLine().trim().toLowerCase();
+            if (rep.matches("1|2|3|4")) {
+                switch (rep) {
+                    case "1" -> report = Report.Product_qualit;
+                    case "2" -> report = Report.Discrepancy_between_order_and_delivered_product;
+                    case "3" -> report = Report.Settings;
+                    case "4" -> report = Report.Not_receiving_order;
+                    default -> System.out.println("Eror");
+                }
+                break;
+            } else {
+                System.out.println("Invalid command.");
+            }
+        }
+        System.out.println("Enter the request text: ");
+        String text = scanner.nextLine();
+        Reportage reportage = new Reportage(report, text);
+        customer.getReportages().add(reportage);
         scanner.close();
     }
 

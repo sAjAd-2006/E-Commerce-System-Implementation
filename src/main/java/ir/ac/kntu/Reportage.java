@@ -41,10 +41,13 @@ public class Reportage {
     public Reportage(Report reportTopic, String text) {
         this.reportTopic = reportTopic;
         this.text = text;
+        this.check = Check.Registered;
+        this.answer = "No answer";
     }
 
     public Reportage() {
         this.check = Check.Registered;
+        this.answer = "No answer";
     }
 
     @Override
