@@ -7,15 +7,15 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
-public class TransactionFilterHelper {
+public class TimeFilterHelper<T extends Timeable> {
 
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
     private LocalDateTime start, end;
 
-    public TransactionFilterHelper() {
+    public TimeFilterHelper() {
     }
 
-    public List<Transaction> filterTransactionsByUserInput(List<Transaction> transactions) {
+    public List<T> filterTimesByUserInput(List<T> transactions) {
         Scanner scanner = new Scanner(System.in);
 
         while (true) {

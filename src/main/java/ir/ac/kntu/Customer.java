@@ -378,6 +378,11 @@ public class Customer extends Person {
         }
     }
 
+    @Override
+    public String toString() {
+        return ("Name: " + getFirstname() + " " + getLastname() + " Email: " + getEmail());
+    }
+
     public boolean isInteger(String str) {
         try {
             Integer.parseInt(str);

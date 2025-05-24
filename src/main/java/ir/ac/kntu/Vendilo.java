@@ -8,10 +8,18 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Vendilo {
-    // private static Scanner scanner = new Scanner(System.in);
     private static List<Customer> customers = new ArrayList<>();
     private static List<Seller> sellers = new ArrayList<>();
     private static List<Seller> sellersVerification = new ArrayList<>();
+    private static List<Supporter> supporters = new ArrayList<>();
+
+    public static List<Supporter> getSupporters() {
+        return supporters;
+    }
+
+    public static void setSupporters(List<Supporter> supporters) {
+        Vendilo.supporters = supporters;
+    }
 
     public static void setCustomers(List<Customer> customers) {
         Vendilo.customers = customers;
@@ -38,6 +46,8 @@ public class Vendilo {
     }
 
     public static void main(String[] args) {
+        Supporter supporter = new Supporter("sajad", "teymoori", "sajadilo","12345Aa!");
+        supporters.add(supporter);
         Scanner scanner = new Scanner(System.in);
         boolean runVENDILO = true;
         System.out.println("Welcome to the VENDILO.");
@@ -47,19 +57,16 @@ public class Vendilo {
             String choice = scanner.nextLine();
             switch (choice) {
                 case "1":
-                    // System.out.println("| | |\n| | |\n| | |\n| | |");
                     loginMenu();
                     break;
 
                 case "2":
-                    // System.out.println("| | |\n| | |\n| | |\n| | |");
                     registerMenu();
                     break;
 
                 case "3":
                     runVENDILO = false;
                     break;
-
                 default:
                     System.out.println("The selected option is invalid.");
                     break;
@@ -73,7 +80,7 @@ public class Vendilo {
         Scanner scanner = new Scanner(System.in);
         boolean runLogin = true;
         while (runLogin) {
-            System.out.println("1-Customer Login\n2-Seller Login\n3-Back\n4-Exit");
+            System.out.println("1-Customer Login\n2-Seller Login\n3-Supporter Login\n4-Back\n5-Exit");
             System.out.print("Please enter the desired option :");
             String choiceLogin = scanner.nextLine();
             switch (choiceLogin) {
@@ -84,10 +91,12 @@ public class Vendilo {
                     sellerLogin();
                     break;
                 case "3":
+                    supporterLogin();
+                case "4":
                     runLogin = false;
                     scanner.close();
                     break;
-                case "4":
+                case "5":
                     scanner.close();
                     System.exit(0);
                     break;
@@ -96,6 +105,41 @@ public class Vendilo {
                     break;
             }
         }
+    }
+
+    public static void supporterLogin() {
+        Scanner scanner = new Scanner(System.in);
+        while (true) {
+            System.out.println("- - - - SupporterLogin - - - -");
+            if (runBack() == 1) {
+                break;
+            }
+            System.out.print("Enter Agency Name :");
+            String agencyName = scanner.nextLine();
+            System.out.print("Enter password :");
+            String password = scanner.nextLine();
+            boolean em = false, pas = false;
+            for (Supporter supporter : supporters) {
+                if (supporter.getAgencyName().equals(agencyName)) {
+                    em = true;
+                    if (supporter.getPassword().equals(password)) {
+                        pas = true;
+                        System.out.println("Successful login.");
+                        
+                        
+                    }
+                }
+            }
+            if (!em) {
+                System.out.println("No user found with this email or phone number.");
+                continue;
+            }
+            if (!pas) {
+                System.out.println("No user found with this Password.");
+                continue;
+            }
+        }
+        scanner.close();
     }
 
     public static void registerMenu() {
@@ -139,7 +183,6 @@ public class Vendilo {
             System.out.print("Enter password :");
             String password = scanner.nextLine();
             boolean em = false, pas = false;
-            scanner.close();
             for (Customer customer : customers) {
                 if (customer.getEmail().equals(emailOrPhoneNumber)
                         || customer.getPhonenumber().equals(emailOrPhoneNumber)) {
@@ -148,7 +191,6 @@ public class Vendilo {
                         pas = true;
                         System.out.println("Successful login.");
                         scanner.close();
-                        // customer.menu();
                         CustomerHelper a = new CustomerHelper(customer);
                         a.menu();
                     }
@@ -255,7 +297,6 @@ public class Vendilo {
             String agencyCode = scanner.nextLine();
             System.out.println("Enter password :");
             String password = scanner.nextLine();
-            scanner.close();
             boolean co = false, pas = false, conti = false;
             for (Seller seller : sellersVerification) {
                 if (seller.getAgencyCode().equals(agencyCode)) {

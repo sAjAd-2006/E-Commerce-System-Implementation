@@ -1,14 +1,21 @@
 package ir.ac.kntu;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
-import java.util.stream.Collectors;
 
 public class Supporter extends Person {
-    private static List<Seller> sellersVerification = new ArrayList<>();
-    private static List<Customer> customersReport = new ArrayList<>();
+    private static List<Seller> sellersVerification;
+    private static List<Customer> customersReport;
+    private String agencyName;
+
+    public String getAgencyName() {
+        return agencyName;
+    }
+
+    public void setAgencyName(String agencyName) {
+        this.agencyName = agencyName;
+    }
 
     public static List<Seller> getSellersVerification() {
         return sellersVerification;
@@ -26,183 +33,279 @@ public class Supporter extends Person {
         Supporter.customersReport = customersReport;
     }
 
-    public void seeOrders() {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Do you have a specific user in mind? 1) YES 2) NO");
-        String specificEmail;
-        switch (scanner.nextLine()) {
-            case "1":
-                System.out.print("Get user email:");
-                // scanner.nextLine();
-                specificEmail = scanner.nextLine();
-                break;
-
-            default:
-                specificEmail = "ALL";
-                break;
-        }
-        int j = 0, k = 0, s = 0;
-        for (Customer customer : Vendilo.getCustomers()) {
-            j++;
-            System.out.println(j + ") Customer name: " + customer.getFirstname() + " " + customer.getLastname());
-            for (Order order : customer.getOrders()) {
-                k++;
-                System.out
-                        .println(j + "-" + k + ") Order ->\n" + "Total Price: " + order.getTotalPrice()
-                                + " Shipping Cost:" + order.getShippingCost());
-                for (Kala kala : order.getKalas()) {
-                    s++;
-                    System.out.println(j + "-" + k + "-" + s + ") Kala name:" + kala.getName() + " Seler Name:"
-                            + kala.getSelerName());
-                }
-                System.out.println(order.getAddress());
-            }
-        }
-        System.out.print("Enter the buyer, order and product number: ");
-        j = scanner.nextInt();
-        k = scanner.nextInt();
-        s = scanner.nextInt();
-        System.out.println(Vendilo.getCustomers().get(j).getOrders().get(k).getKalas().get(s).toString());
+    public Supporter(String firstname, String lastname, String agencyName, String password) {
+        sellersVerification = Vendilo.getSellersVerification();
+        customersReport = Vendilo.getCustomers();
+        setFirstname(firstname);
+        setLastname(lastname);
+        setAgencyName(agencyName);
+        setPassword(password);
     }
 
-    public String filterOrder() {
-        /*
-         * 
-         * 
-         * 
-         * 
-         * 
-         * 
-         * 
-         * 
-         * 
-         */
-        return null;
+    public void seeOrders() {
+        Scanner scanner = new Scanner(System.in);
+        while (true) {
+            if (runBack() == 1) {
+                break;
+            }
+            System.out.println("Do you have a specific user in mind? 1) YES 2) NO(Default)");
+            String specificEmail = "ALL";
+            List<Order> orders = new ArrayList<>();
+            switch (scanner.nextLine()) {
+                case "1":
+                    System.out.print("Get user email:");
+                    specificEmail = scanner.nextLine();
+                    break;
+                default:
+                    break;
+            }
+            for (Customer customer : Vendilo.getCustomers()) {
+                if (specificEmail.equals("ALL") || specificEmail.equals(customer.getEmail())) {
+                    for (Order order : customer.getOrders()) {
+                        orders.add(order);
+                    }
+                }
+            }
+            System.out.println("Set time filter: y/n (Default:All time)");
+            if (scanner.nextLine().equalsIgnoreCase("y")) {
+                TimeFilterHelper<Order> timeFilterHelper = new TimeFilterHelper<>();
+                orders = timeFilterHelper.filterTimesByUserInput(orders);
+            }
+            seeFilterOrder(orders);
+        }
+        scanner.close();
+    }
+
+    public void seeFilterOrder(List<Order> orders) {
+        Paginator<Order> paginator = new Paginator<>(orders, 10);
+        int i = 0, j = 0;
+        while (true) {
+            int ord = paginator.paginate(i);
+            if (ord == -1) {
+                return;
+            } else {
+                Order order = orders.get(ord);
+                System.out.println(order + " Customer name: " + order.getCustomerName() + "\nSellers name: "
+                        + order.getSellersNames() + "\nshipping Cost: ");
+                Paginator<Kala> paginator2 = new Paginator<>(order.getKalas(), 10);
+                while (true) {
+                    int kal = paginator2.paginate(j);
+                    if (kal == -1) {
+                        break;
+                    } else {
+                        Kala kala = order.getKalas().get(kal);
+                        System.out.println("    => " + kala + " Inventory: " + kala.getInventory());
+                        j = kal/10;
+                    }
+                }
+                i = ord/10;
+            }
+        }
     }
 
     public void sellersVerification() {
         Scanner scanner = new Scanner(System.in);
         int i = 0;
-        for (Seller seller : sellersVerification) {
-            i++;
-            System.out.println(i + ") " + seller.getStoreTitle());
-        }
-        System.out.print("Selected item: ");
-        String choice = scanner.nextLine();
-        i = Integer.parseInt(choice) - 1;
-        System.out.println(getSellersVerification().get(i).toString());
-        System.out.println("Do you approve or not? 1)YES 2)NO");
-        choice = scanner.nextLine();
-        switch (choice) {
-            case "1":
-                Vendilo.getSellersVerification().remove(i);
-                Vendilo.getSellers().add(getSellersVerification().get(i));
-                break;
-
-            default:
-                System.out.print("Write the reason: ");
-                choice = scanner.nextLine();
-                getSellersVerification().get(i).setReasonForRejection(choice);
-                break;
+        while (true) {
+            Paginator<Seller> paginator = new Paginator<>(sellersVerification, 10);
+            int j = paginator.paginate(i);
+            if (j == -1) {
+                scanner.close();
+                return;
+            } else {
+                sellersVerification.get(j).chap();
+                System.out.println("Do you approve or not? 1)YES 2)NO 3)Back");
+                String choice = scanner.nextLine();
+                switch (choice) {
+                    case "1":
+                        Vendilo.getSellers().add(getSellersVerification().get(j));
+                        Vendilo.getSellersVerification().remove(j);
+                        break;
+                    case "2":
+                        System.out.print("Write the reason: ");
+                        choice = scanner.nextLine();
+                        getSellersVerification().get(j).setReasonForRejection(choice);
+                        break;
+                    case "3":
+                        i = j / 10;
+                        continue;
+                    default:
+                        System.out.println("The selected option is invalid.");
+                        break;
+                }
+            }
         }
     }
 
     public void seeCustomersReport() {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("What reports would you like to see?\nTopic: 1)"
-                + Report.Discrepancy_between_order_and_delivered_product + " 2)" + Report.Not_receiving_order + " 3)"
-                + Report.Product_qualit + " 4)" + Report.Settings + " 5) ALL");
-        int i = scanner.nextInt();
-        Report a;
-        switch (i) {
-            case 1:
-                a = Report.Discrepancy_between_order_and_delivered_product;
-                break;
-            case 2:
-                a = Report.Not_receiving_order;
-                break;
-            case 3:
-                a = Report.Product_qualit;
-                break;
-            case 4:
-                a = Report.Settings;
-                break;
-            default:
-                a = null;
-                break;
+        Report a = topic();
+        if (a == null) {
+            scanner.close();
+            return;
         }
-        System.out.println("Enter the desired status: 1)" + Check.Closed + " 2)" + Check.Pending + " 3)"
-                + Check.Registered + " 4) ALL");
-        int j = scanner.nextInt();
-        Check b;
-        switch (i) {
-            case 1:
-                b = Check.Closed;
-                break;
-            case 2:
-                b = Check.Pending;
-                break;
-            case 3:
-                b = Check.Registered;
-                break;
-            default:
-                b = null;
-                break;
+        Check b = status();
+        if (b == null) {
+            scanner.close();
+            return;
         }
-        scanner.nextLine();
         scanner.close();
         customersReport(a, b);
     }
 
-    public void customersReport(Report a, Check b) {
+    public Report topic() {
         Scanner scanner = new Scanner(System.in);
-        int i = 0, j = 0;
-        for (Customer customer : customersReport) {
-            j++;
-            for (Reportage reportage : customer.getReportages()) {
-                i++;
-                if (a == null || reportage.getReportTopic().equals(a)) {
-                    if (b == null || reportage.getCheck().equals(b)) {
-                        System.out.println(j + "-" + i + ") " + "Email:" + customer.getEmail() + " Topic:"
-                                + reportage.getReportTopic() + " Check:" + reportage.getCheck());
-                    }
-                }
+        while (true) {
+            System.out.println("What reports would you like to see?\nTopic: 1)"
+                    + Report.Discrepancy_between_order_and_delivered_product + "\n2)" + Report.Not_receiving_order
+                    + "\n3)" + Report.Product_qualit + "\n4)" + Report.Settings + "\n5) ALL \n6) Back\n7) Exit");
+            String choice = scanner.nextLine();
+            switch (choice) {
+                case "1":
+                    scanner.close();
+                    return Report.Discrepancy_between_order_and_delivered_product;
+                case "2":
+                    scanner.close();
+                    return Report.Not_receiving_order;
+                case "3":
+                    scanner.close();
+                    return Report.Product_qualit;
+                case "4":
+                    scanner.close();
+                    return Report.Settings;
+                case "5":
+                    scanner.close();
+                    return Report.ALL;
+                case "6":
+                    scanner.close();
+                    return null;
+                case "7":
+                    scanner.close();
+                    System.exit(0);
+                default:
+                    System.out.println("The selected option is invalid.");
+                    break;
             }
         }
-        System.out.print("Enter the number and subnumber: ");
-        j = scanner.nextInt();
-        i = scanner.nextInt();
-        scanner.nextLine();
-        System.out.println(customersReport.get(j).getReportages().get(i).toString());
-        System.out.println(
-                "Do you want to proceed?\n1)YES 2)NO\nIf it has already been dealt with, you will be automatically returned");
-        int c = scanner.nextInt();
-        switch (c) {
-            case 1:
-                if (!customersReport.get(j).getReportages().get(i).getCheck().equals(Check.Closed)) {
-                    System.out.println(
-                            "You change the status of the request to Pending or complete it? 1)Change 2)Pending");
-                    c = scanner.nextInt();
-                    switch (c) {
-                        case 1:
-                            customersReport.get(j).getReportages().get(i).setCheck(Check.Closed);
-                            System.out.print("Write the result: ");
-                            scanner.nextLine();
-                            customersReport.get(j).getReportages().get(i).setAnswer(scanner.nextLine());
-                            scanner.close();
-                            break;
+    }
 
-                        default:
-                            customersReport.get(j).getReportages().get(i).setCheck(Check.Pending);
-                            scanner.close();
-                            break;
+    public Check status() {
+        Scanner scanner = new Scanner(System.in);
+        while (true) {
+            System.out.println("Enter the desired status: 1)" + Check.Closed + "\n2)" + Check.Pending + "\n3)"
+                    + Check.Registered + "\n4) ALL \n5) Back \n6) Exit");
+            String choice = scanner.nextLine();
+            switch (choice) {
+                case "1":
+                    scanner.close();
+                    return Check.Closed;
+                case "2":
+                    scanner.close();
+                    return Check.Pending;
+                case "3":
+                    scanner.close();
+                    return Check.Registered;
+                case "4":
+                    scanner.close();
+                    return Check.ALL;
+                case "5":
+                    scanner.close();
+                    return null;
+                case "6":
+                    scanner.close();
+                    System.exit(0);
+                default:
+                    System.out.println("The selected option is invalid.");
+                    break;
+            }
+        }
+    }
+
+    public void customersReport(Report a, Check b) {
+        setCustomersReport(Vendilo.getCustomers());
+        Scanner scanner = new Scanner(System.in);
+        int i = 0, j = 0;
+        Paginator<Customer> paginator = new Paginator<>(customersReport, 10);
+        while (true) {
+            int custom = paginator.paginate(i);
+            if (custom == -1) {
+                scanner.close();
+                return;
+            } else {
+                List<Reportage> reportages = new ArrayList<>();
+                for (Reportage reportage : customersReport.get(custom).getReportages()) {
+                    if (a == Report.ALL || reportage.getReportTopic().equals(a)) {
+                        if (b == Check.ALL || reportage.getCheck().equals(b)) {
+                            reportages.add(reportage);
+                        }
                     }
                 }
-                break;
+                Paginator<Reportage> paginator2 = new Paginator<>(reportages, 10);
+                while (true) {
+                    int repor = paginator2.paginate(j);
+                    if (repor == -1) {
+                        scanner.close();
+                        break;
+                    } else {
+                        Reportage reportage = reportages.get(repor);
+                        System.out.println(reportage.toString() + " Check:" + reportage.getCheck());
+                        proceed(reportage);
+                        j = repor / 10;
+                    }
+                }
+                i = custom / 10;
+            }
+        }
+    }
 
-            default:
-                scanner.close();
-                break;
+    public void proceed(Reportage reportage) {
+        Scanner scanner = new Scanner(System.in);
+        while (true) {
+            System.out.println("Do you want to proceed?\n1)YES 2)NO 3)Exit" +
+                    "\nIf it has already been dealt with, you will be automatically returned");
+            String c = scanner.nextLine();
+            switch (c) {
+                case "1":
+                    if (!reportage.getCheck().equals(Check.Closed)) {
+                        boolean condition = true;
+                        while (condition) {
+                            System.out.println("You change the status of the request to Pending or complete it?" +
+                                    "1)Change 2)Pending 3)Back 4)Exit");
+                            c = scanner.nextLine();
+                            switch (c) {
+                                case "1":
+                                    reportage.setCheck(Check.Closed);
+                                    System.out.print("Write the result: ");
+                                    reportage.setAnswer(scanner.nextLine());
+                                    condition = false;
+                                    break;
+                                case "2":
+                                    reportage.setCheck(Check.Pending);
+                                    condition = false;
+                                    break;
+                                case "3":
+                                    condition = false;
+                                    break;
+                                case "4":
+                                    scanner.close();
+                                    System.exit(0);
+                                default:
+                                    System.out.println("The selected option is invalid.");
+                                    break;
+                            }
+                        }
+                    }
+                    break;
+                case "2":
+                    scanner.close();
+                    return;
+                case "3":
+                    scanner.close();
+                    System.exit(0);
+                default:
+                    System.out.println("The selected option is invalid.");
+                    break;
+            }
         }
     }
 }

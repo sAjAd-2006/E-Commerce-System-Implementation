@@ -88,9 +88,16 @@ public class SellerHelper {
     }
 
     public void viewPreviousTransactions() {
+        Scanner scanner = new Scanner(System.in);
         List<Transaction> tran = new ArrayList<>();
-        TransactionFilterHelper transactionFilterHelper = new TransactionFilterHelper();
-        tran = transactionFilterHelper.filterTransactionsByUserInput(seller.getWallet().getTransactions());
+        System.out.println("Set time filter ALL: y/n");
+        if (scanner.nextLine().equalsIgnoreCase("y")) {
+            tran = seller.getWallet().getTransactions();
+        } else {
+            TimeFilterHelper<Transaction> timeFilterHelper = new TimeFilterHelper<>();
+            tran = timeFilterHelper.filterTimesByUserInput(seller.getWallet().getTransactions());
+        }
+        scanner.close();
         Paginator<Transaction> paginator = new Paginator<>(tran, 10);
         int i = 0;
         while (true) {

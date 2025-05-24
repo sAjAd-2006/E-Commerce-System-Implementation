@@ -1,6 +1,5 @@
 package ir.ac.kntu;
 
-import java.util.List;
 import java.util.Scanner;
 
 abstract class Person {

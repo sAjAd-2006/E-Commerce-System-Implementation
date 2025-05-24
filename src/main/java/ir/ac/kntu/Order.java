@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class Order {
+public class Order extends Timeable{
     private List<Kala> kalas;
     private List<Boolean> isVoted;
     private LocalDateTime localDateTime;
@@ -59,7 +59,7 @@ public class Order {
         kalas = new ArrayList<>();
         sellersNames = new ArrayList<>();
         this.kalas = kalas;
-        this.localDateTime = localDateTime;
+        setLocalDateTime(localDateTime);
         this.sellersNames = sellersNames;
         this.address = address;
         this.totalPrice = totalPrice;
@@ -76,10 +76,12 @@ public class Order {
         this.kalas = kalas;
     }
 
+    @Override
     public LocalDateTime getLocalDateTime() {
-        return localDateTime;
+        return this.localDateTime;
     }
 
+    @Override
     public void setLocalDateTime(LocalDateTime localDateTime) {
         this.localDateTime = localDateTime;
     }

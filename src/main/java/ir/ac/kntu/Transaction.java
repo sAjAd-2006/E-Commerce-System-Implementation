@@ -2,15 +2,17 @@ package ir.ac.kntu;
 
 import java.time.LocalDateTime;
 
-public class Transaction {
+public class Transaction extends Timeable{
     private LocalDateTime localDateTime;
     private int price;
     private String why;
 
+    @Override
     public LocalDateTime getLocalDateTime() {
-        return localDateTime;
+        return this.localDateTime;
     }
 
+    @Override
     public void setLocalDateTime(LocalDateTime localDateTime) {
         this.localDateTime = localDateTime;
     }
@@ -28,7 +30,7 @@ public class Transaction {
 
     public Transaction(int price, String why) {
         this.why = why;
-        this.localDateTime = LocalDateTime.now();
+        setLocalDateTime(LocalDateTime.now());
         this.price = price;
         // System.out.println(this.toString());
     }

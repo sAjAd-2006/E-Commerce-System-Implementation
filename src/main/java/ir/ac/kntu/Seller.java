@@ -382,8 +382,11 @@ public class Seller extends Person {
 
     @Override
     public String toString() {
-        return ("Name: " + getFirstname() + " " + getLastname() + " Store Title:" + getStoreTitle() + " Email:"
-                + getEmail() + " Agency Code:" + getAgencyCode());
+        return (" Store Title:" + getStoreTitle());
+    }
+
+    public String chap() {
+        return "Name: " + getFirstname() + " " + getLastname() + " Email: " + getEmail() + " Agency Code: " + getAgencyCode();
     }
 
     public static boolean isInteger(String str) {

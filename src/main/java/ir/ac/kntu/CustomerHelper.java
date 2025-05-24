@@ -154,7 +154,8 @@ public class CustomerHelper {
                     System.out.print("Enter the amount you want to top up your wallet: ");
                     choice = scanner.nextLine();
                     if (isInteger(choice)) {
-                        customer.getWallet().addToWallet(Integer.parseInt(choice));;
+                        customer.getWallet().addToWallet(Integer.parseInt(choice));
+                        ;
                     } else {
                         System.out.println("Incorrect input. Enter a number.");
                     }
@@ -184,9 +185,16 @@ public class CustomerHelper {
     }
 
     public void viewPreviousTransactions() {
+        Scanner scanner = new Scanner(System.in);
         List<Transaction> tran = new ArrayList<>();
-        TransactionFilterHelper transactionFilterHelper = new TransactionFilterHelper();
-        tran = transactionFilterHelper.filterTransactionsByUserInput(customer.getWallet().getTransactions());
+        System.out.println("Set time filter ALL: y/n");
+        if (scanner.nextLine().equalsIgnoreCase("y")) {
+            tran = customer.getWallet().getTransactions();
+        } else {
+            TimeFilterHelper<Transaction> timeFilterHelper = new TimeFilterHelper<>();
+            tran = timeFilterHelper.filterTimesByUserInput(customer.getWallet().getTransactions());
+        }
+        scanner.close();
         Paginator<Transaction> paginator = new Paginator<>(tran, 10);
         int i = 0;
         while (true) {

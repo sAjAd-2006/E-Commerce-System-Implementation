@@ -72,18 +72,6 @@ public class ShoppingCart {
                                 + kalas.get(i).getPrice());
             }
         }
-        // while (true) {
-        // System.out.println("1) View product information\n2) Back");
-        // String choice = scanner.nextLine();
-        // switch (choice) {
-        // case "1":
-        // viewproduct();
-        // break;
-        // default:
-        // scanner.close();
-        // return;
-        // }
-        // }
     }
 
     private void viewproduct(int i) {
