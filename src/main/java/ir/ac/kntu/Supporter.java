@@ -73,7 +73,7 @@ public class Supporter extends Person {
             }
             seeFilterOrder(orders);
         }
-        scanner.close();
+        // scanner.close();
     }
 
     public void seeFilterOrder(List<Order> orders) {
@@ -110,7 +110,7 @@ public class Supporter extends Person {
             Paginator<Seller> paginator = new Paginator<>(sellersVerification, 10);
             int j = paginator.paginate(i);
             if (j == -1) {
-                scanner.close();
+                // scanner.close();
                 return;
             } else {
                 sellersVerification.get(j).chap();
@@ -141,15 +141,15 @@ public class Supporter extends Person {
         Scanner scanner = new Scanner(System.in);
         Report a = topic();
         if (a == null) {
-            scanner.close();
+            // scanner.close();
             return;
         }
         Check b = status();
         if (b == null) {
-            scanner.close();
+            // scanner.close();
             return;
         }
-        scanner.close();
+        // scanner.close();
         customersReport(a, b);
     }
 
@@ -162,25 +162,25 @@ public class Supporter extends Person {
             String choice = scanner.nextLine();
             switch (choice) {
                 case "1":
-                    scanner.close();
+                    // scanner.close();
                     return Report.Discrepancy_between_order_and_delivered_product;
                 case "2":
-                    scanner.close();
+                    // scanner.close();
                     return Report.Not_receiving_order;
                 case "3":
-                    scanner.close();
+                    // scanner.close();
                     return Report.Product_qualit;
                 case "4":
-                    scanner.close();
+                    // scanner.close();
                     return Report.Settings;
                 case "5":
-                    scanner.close();
+                    // scanner.close();
                     return Report.ALL;
                 case "6":
-                    scanner.close();
+                    // scanner.close();
                     return null;
                 case "7":
-                    scanner.close();
+                    // scanner.close();
                     System.exit(0);
                 default:
                     System.out.println("The selected option is invalid.");
@@ -197,22 +197,22 @@ public class Supporter extends Person {
             String choice = scanner.nextLine();
             switch (choice) {
                 case "1":
-                    scanner.close();
+                    // scanner.close();
                     return Check.Closed;
                 case "2":
-                    scanner.close();
+                    // scanner.close();
                     return Check.Pending;
                 case "3":
-                    scanner.close();
+                    // scanner.close();
                     return Check.Registered;
                 case "4":
-                    scanner.close();
+                    // scanner.close();
                     return Check.ALL;
                 case "5":
-                    scanner.close();
+                    // scanner.close();
                     return null;
                 case "6":
-                    scanner.close();
+                    // scanner.close();
                     System.exit(0);
                 default:
                     System.out.println("The selected option is invalid.");
@@ -229,7 +229,7 @@ public class Supporter extends Person {
         while (true) {
             int custom = paginator.paginate(i);
             if (custom == -1) {
-                scanner.close();
+                // scanner.close();
                 return;
             } else {
                 List<Reportage> reportages = new ArrayList<>();
@@ -244,7 +244,7 @@ public class Supporter extends Person {
                 while (true) {
                     int repor = paginator2.paginate(j);
                     if (repor == -1) {
-                        scanner.close();
+                        // scanner.close();
                         break;
                     } else {
                         Reportage reportage = reportages.get(repor);
@@ -287,7 +287,7 @@ public class Supporter extends Person {
                                     condition = false;
                                     break;
                                 case "4":
-                                    scanner.close();
+                                    // scanner.close();
                                     System.exit(0);
                                 default:
                                     System.out.println("The selected option is invalid.");
@@ -297,10 +297,10 @@ public class Supporter extends Person {
                     }
                     break;
                 case "2":
-                    scanner.close();
+                    // scanner.close();
                     return;
                 case "3":
-                    scanner.close();
+                    // scanner.close();
                     System.exit(0);
                 default:
                     System.out.println("The selected option is invalid.");

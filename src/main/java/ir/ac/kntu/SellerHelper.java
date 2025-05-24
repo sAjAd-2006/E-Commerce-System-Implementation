@@ -26,10 +26,10 @@ public class SellerHelper {
                 ordersRun();
                 break;
             case "4":
-                scanner.close();
+                // scanner.close();
                 return;
             case "5":
-                scanner.close();
+                // scanner.close();
                 System.exit(0);
             default:
                 System.out.println("The selected option is invalid.");
@@ -76,10 +76,10 @@ public class SellerHelper {
                     viewPreviousTransactions();
                     break;
                 case "5":
-                    scanner.close();
+                    // scanner.close();
                     return;
                 case "6":
-                    scanner.close();
+                    // scanner.close();
                     System.exit(0);
                 default:
                     break;
@@ -97,7 +97,7 @@ public class SellerHelper {
             TimeFilterHelper<Transaction> timeFilterHelper = new TimeFilterHelper<>();
             tran = timeFilterHelper.filterTimesByUserInput(seller.getWallet().getTransactions());
         }
-        scanner.close();
+        // scanner.close();
         Paginator<Transaction> paginator = new Paginator<>(tran, 10);
         int i = 0;
         while (true) {

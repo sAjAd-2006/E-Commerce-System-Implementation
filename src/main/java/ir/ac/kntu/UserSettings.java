@@ -59,7 +59,7 @@ public class UserSettings {
             }
         }
         System.out.println("\nUpdated Info:\n" + user);
-        scanner.close();
+        // scanner.close();
     }
 
     public void settingHelp(Person user) {
@@ -76,7 +76,7 @@ public class UserSettings {
             user.setLastname(scanner.nextLine());
         }
 
-        scanner.close();
+        // scanner.close();
     }
 
     public boolean chekEmail(String email) {

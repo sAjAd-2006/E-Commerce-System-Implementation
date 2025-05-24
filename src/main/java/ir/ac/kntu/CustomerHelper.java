@@ -53,13 +53,13 @@ public class CustomerHelper {
                 case "7" -> supportRun();
                 case "8" -> runMenu = false;
                 case "9" -> {
-                    scanner.close();
+                    // scanner.close();
                     System.exit(0);
                 }
                 default -> System.out.println("The selected option is invalid.");
             }
         }
-        scanner.close();
+        // scanner.close();
     }
 
     public void supportRun() {
@@ -75,10 +75,10 @@ public class CustomerHelper {
                     viewOldRequests();
                     break;
                 case "3":
-                    scanner.close();
+                    // scanner.close();
                     return;
                 case "4":
-                    scanner.close();
+                    // scanner.close();
                     System.exit(0);
                 default:
                     System.out.println("The selected option is invalid.");
@@ -127,7 +127,7 @@ public class CustomerHelper {
         String text = scanner.nextLine();
         Reportage reportage = new Reportage(report, text);
         customer.getReportages().add(reportage);
-        scanner.close();
+        // scanner.close();
     }
 
     public void ordersRun() {
@@ -173,10 +173,10 @@ public class CustomerHelper {
                     viewPreviousTransactions();
                     break;
                 case "5":
-                    scanner.close();
+                    // scanner.close();
                     return;
                 case "6":
-                    scanner.close();
+                    // scanner.close();
                     System.exit(0);
                 default:
                     break;
@@ -194,7 +194,7 @@ public class CustomerHelper {
             TimeFilterHelper<Transaction> timeFilterHelper = new TimeFilterHelper<>();
             tran = timeFilterHelper.filterTimesByUserInput(customer.getWallet().getTransactions());
         }
-        scanner.close();
+        // scanner.close();
         Paginator<Transaction> paginator = new Paginator<>(tran, 10);
         int i = 0;
         while (true) {
@@ -222,10 +222,10 @@ public class CustomerHelper {
                     viewCurrentAddresses();
                     break;
                 case "3":
-                    scanner.close();
+                    // scanner.close();
                     return;
                 case "4":
-                    scanner.close();
+                    // scanner.close();
                     System.exit(0);
                     break;
                 default:
@@ -239,7 +239,7 @@ public class CustomerHelper {
         Scanner scanner = new Scanner(System.in);
         while (true) {
             if (customer.runBack() == 1) {
-                scanner.close();
+                // scanner.close();
                 return;
             }
             System.out.print("Enter Title: ");
@@ -268,7 +268,7 @@ public class CustomerHelper {
             }
             Address address = new Address(title, province, city, description);
             customer.getAddresses().add(address);
-            scanner.close();
+            // scanner.close();
         }
     }
 
@@ -279,7 +279,7 @@ public class CustomerHelper {
         outerLoop: while (true) {
             int result = paginator.paginate(i);
             if (result == -1) {
-                scanner.close();
+                // scanner.close();
                 return;
             } else {
                 while (true) {
@@ -296,7 +296,7 @@ public class CustomerHelper {
                             i = result / 10;
                             continue outerLoop;
                         case "4":
-                            scanner.close();
+                            // scanner.close();
                             System.exit(0);
                         default:
                             System.out.println("The selected option is invalid.");
@@ -311,7 +311,7 @@ public class CustomerHelper {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Don't enter any part, it won't change.");
         if (customer.runBack() == 1) {
-            scanner.close();
+            // scanner.close();
             return;
         }
         System.out.print("Enter Title: ");
@@ -334,7 +334,7 @@ public class CustomerHelper {
         if (description.isEmpty()) {
             address.setDescription(description);
         }
-        scanner.close();
+        // scanner.close();
     }
 
     public boolean isInteger(String str) {

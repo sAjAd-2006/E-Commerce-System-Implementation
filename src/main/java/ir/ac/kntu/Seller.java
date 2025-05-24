@@ -123,7 +123,7 @@ public class Seller extends Person {
                                 runDigital = false;
                                 break;
                             case "4":
-                                scanner.close();
+                                // scanner.close();
                                 System.exit(0);
                             default:
                                 System.out.println("The selected option is invalid.");
@@ -138,14 +138,14 @@ public class Seller extends Person {
                     runType = false;
                     break;
                 case "4":
-                    scanner.close();
+                    // scanner.close();
                     System.exit(0);
                 default:
                     System.out.println("The selected option is invalid.");
                     break;
             }
         }
-        scanner.close();
+        // scanner.close();
     }
 
     public void addBook() {
@@ -153,7 +153,7 @@ public class Seller extends Person {
         Scanner scanner = new Scanner(System.in);
         while (true) {
             if (runBack() == 1) {
-                scanner.close();
+                // scanner.close();
                 return;
             }
             System.out.println("Enter name : ");
@@ -182,7 +182,7 @@ public class Seller extends Person {
             book.setSelerInfo((getFirstname() + " " + getLastname()), getAgencyCode(), getProvinceOfSale());
             kalas.add(book);
             sellerKala.add(book);
-            scanner.close();
+            // scanner.close();
             return;
         }
     }
@@ -191,7 +191,7 @@ public class Seller extends Person {
         Scanner scanner = new Scanner(System.in);
         while (true) {
             if (runBack() == 1) {
-                scanner.close();
+                // scanner.close();
                 return;
             }
             System.out.println("Enter age category :\n1)CHILD\n2)ADOLESCENT\n3)ADULT\n");
@@ -199,15 +199,15 @@ public class Seller extends Person {
             switch (choice) {
                 case "1":
                     book.setAgeCategory(Age.CHILD);
-                    scanner.close();
+                    // scanner.close();
                     return;
                 case "2":
                     book.setAgeCategory(Age.ADOLESCENT);
-                    scanner.close();
+                    // scanner.close();
                     return;
                 case "3":
                     book.setAgeCategory(Age.ADULT);
-                    scanner.close();
+                    // scanner.close();
                     return;
                 default:
                     System.out.println("Choose the correct option.");
@@ -221,7 +221,7 @@ public class Seller extends Person {
         Scanner scanner = new Scanner(System.in);
         while (true) {
             if (runBack() == 1) {
-                scanner.close();
+                // scanner.close();
                 return;
             }
             System.out.println("Enter name : ");
@@ -254,7 +254,7 @@ public class Seller extends Person {
             mobile.setSelerInfo((getFirstname() + " " + getLastname()), getAgencyCode(), getProvinceOfSale());
             kalas.add(mobile);
             sellerKala.add(mobile);
-            scanner.close();
+            // scanner.close();
             return;
         }
     }
@@ -263,7 +263,7 @@ public class Seller extends Person {
         Scanner scanner = new Scanner(System.in);
         while (true) {
             if (runBack() == 1) {
-                scanner.close();
+                // scanner.close();
                 return;
             }
             System.out.println("Enter internet network :\n1) 3G\n2) 4G\n3) 5G\n");
@@ -271,15 +271,15 @@ public class Seller extends Person {
             switch (choice) {
                 case "1":
                     mobile.setInternetNetwork("3G");
-                    scanner.close();
+                    // scanner.close();
                     return;
                 case "2":
                     mobile.setInternetNetwork("4G");
-                    scanner.close();
+                    // scanner.close();
                     return;
                 case "3":
                     mobile.setInternetNetwork("5G");
-                    scanner.close();
+                    // scanner.close();
                     return;
                 default:
                     System.out.println("Choose the correct option.");
@@ -293,7 +293,7 @@ public class Seller extends Person {
         Scanner scanner = new Scanner(System.in);
         while (true) {
             if (runBack() == 1) {
-                scanner.close();
+                // scanner.close();
                 return;
             }
             System.out.println("Enter name : ");
@@ -325,7 +325,7 @@ public class Seller extends Person {
             laptop.setSelerInfo((getFirstname() + " " + getLastname()), getAgencyCode(), getProvinceOfSale());
             kalas.add(laptop);
             sellerKala.add(laptop);
-            scanner.close();
+            // scanner.close();
             return;
         }
     }
@@ -334,7 +334,7 @@ public class Seller extends Person {
         Scanner scanner = new Scanner(System.in);
         while (true) {
             if (runBack() == 1) {
-                scanner.close();
+                // scanner.close();
                 return;
             }
             System.out.println("Does the laptop have a bluetooth?\n1) YES\n2) NO\n");
@@ -342,11 +342,11 @@ public class Seller extends Person {
             switch (choice) {
                 case "1":
                     laptop.setBluetooth(true);
-                    scanner.close();
+                    // scanner.close();
                     return;
                 case "2":
                     laptop.setBluetooth(true);
-                    scanner.close();
+                    // scanner.close();
                     return;
                 default:
                     System.out.println("Choose the correct option.");
@@ -359,7 +359,7 @@ public class Seller extends Person {
         Scanner scanner = new Scanner(System.in);
         while (true) {
             if (runBack() == 1) {
-                scanner.close();
+                // scanner.close();
                 return;
             }
             System.out.println("Does the laptop have a webcam?\n1) YES\n2) NO\n");
@@ -367,11 +367,11 @@ public class Seller extends Person {
             switch (choice) {
                 case "1":
                     laptop.setWebcam(true);
-                    scanner.close();
+                    // scanner.close();
                     return;
                 case "2":
                     laptop.setWebcam(false);
-                    scanner.close();
+                    // scanner.close();
                     return;
                 default:
                     System.out.println("Choose the correct option.");

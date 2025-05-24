@@ -38,13 +38,13 @@ public class ShoppingCart {
         while (true) {
             if (kalas.isEmpty()) {
                 System.out.println("Your shopping cart is empty.");
-                scanner.close();
+                // scanner.close();
                 return;
             }
             for (int i = 0; i < kalas.size(); i++) {
                 if (i % 10 == 0 && i != 0) {
                     if (runBack() == 1) {
-                        scanner.close();
+                        // scanner.close();
                         return;
                     }
                     viewproduct(i);
@@ -79,7 +79,7 @@ public class ShoppingCart {
         while (true) {
             System.out.println("Enter the desired product number.");
             if (runBack() == 1) {
-                scanner.close();
+                // scanner.close();
                 return;
             }
             String choice = scanner.nextLine();
@@ -116,13 +116,13 @@ public class ShoppingCart {
             String choice = scanner.nextLine();
             switch (choice) {
                 case "1":
-                    scanner.close();
+                    // scanner.close();
                     return 1;
                 case "2":
-                    scanner.close();
+                    // scanner.close();
                     System.exit(0);
                 case "3":
-                    scanner.close();
+                    // scanner.close();
                     return 3;
                 default:
                     System.out.println("The selected option is invalid.");

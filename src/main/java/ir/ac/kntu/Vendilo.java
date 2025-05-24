@@ -13,6 +13,10 @@ public class Vendilo {
     private static List<Seller> sellersVerification = new ArrayList<>();
     private static List<Supporter> supporters = new ArrayList<>();
 
+    public Vendilo() {
+
+    }
+
     public static List<Supporter> getSupporters() {
         return supporters;
     }
@@ -45,8 +49,8 @@ public class Vendilo {
         return sellers;
     }
 
-    public static void main(String[] args) {
-        Supporter supporter = new Supporter("sajad", "teymoori", "sajadilo","12345Aa!");
+    public void menu() {
+        Supporter supporter = new Supporter("sajad", "teymoori", "sajadilo", "12345Aa!");
         supporters.add(supporter);
         Scanner scanner = new Scanner(System.in);
         boolean runVENDILO = true;
@@ -56,20 +60,10 @@ public class Vendilo {
             System.out.print("Please enter the desired option :");
             String choice = scanner.nextLine();
             switch (choice) {
-                case "1":
-                    loginMenu();
-                    break;
-
-                case "2":
-                    registerMenu();
-                    break;
-
-                case "3":
-                    runVENDILO = false;
-                    break;
-                default:
-                    System.out.println("The selected option is invalid.");
-                    break;
+                case "1" -> loginMenu();
+                case "2" -> registerMenu();
+                case "3" -> runVENDILO = false;
+                default -> System.out.println("The selected option is invalid.");
             }
         }
         scanner.close();
@@ -84,25 +78,12 @@ public class Vendilo {
             System.out.print("Please enter the desired option :");
             String choiceLogin = scanner.nextLine();
             switch (choiceLogin) {
-                case "1":
-                    customerLogin();
-                    break;
-                case "2":
-                    sellerLogin();
-                    break;
-                case "3":
-                    supporterLogin();
-                case "4":
-                    runLogin = false;
-                    scanner.close();
-                    break;
-                case "5":
-                    scanner.close();
-                    System.exit(0);
-                    break;
-                default:
-                    System.out.println("The selected option is invalid.");
-                    break;
+                case "1" -> customerLogin();
+                case "2" -> sellerLogin();
+                case "3" -> supporterLogin();
+                case "4" -> runLogin = false;
+                case "5" -> System.exit(0);
+                default -> System.out.println("The selected option is invalid.");
             }
         }
     }
@@ -139,7 +120,7 @@ public class Vendilo {
                 continue;
             }
         }
-        scanner.close();
+        // scanner.close();
     }
 
     public static void registerMenu() {
@@ -150,23 +131,11 @@ public class Vendilo {
             System.out.print("Please enter the desired option :");
             String choiceLogin = scanner.nextLine();
             switch (choiceLogin) {
-                case "1":
-                    customerRegister();
-                    break;
-                case "2":
-                    sellerRegister();
-                    break;
-                case "3":
-                    runRegister = false;
-                    scanner.close();
-                    break;
-                case "4":
-                    scanner.close();
-                    System.exit(0);
-                    break;
-                default:
-                    System.out.println("The selected option is invalid.");
-                    break;
+                case "1" -> customerRegister();
+                case "2" -> sellerRegister();
+                case "3" -> runRegister = false;
+                case "4" -> System.exit(0);
+                default -> System.out.println("The selected option is invalid.");
             }
         }
     }
@@ -190,7 +159,7 @@ public class Vendilo {
                     if (customer.getPassword().equals(password)) {
                         pas = true;
                         System.out.println("Successful login.");
-                        scanner.close();
+                        // scanner.close();
                         CustomerHelper a = new CustomerHelper(customer);
                         a.menu();
                     }
@@ -205,7 +174,7 @@ public class Vendilo {
                 continue;
             }
         }
-        scanner.close();
+        // scanner.close();
     }
 
     public static void customerRegister() {
@@ -234,13 +203,13 @@ public class Vendilo {
             if (!chekPassword(password)) {
                 continue;
             }
-            scanner.close();
+            // scanner.close();
             Customer a = new Customer(firstname, lastname, email, phonenumber, password);
             customers.add(a);
             System.out.println("Registration was successful.");
             break;
         }
-        scanner.close();
+        // scanner.close();
     }
 
     public static void sellerRegister() {
@@ -283,7 +252,7 @@ public class Vendilo {
             sellersVerification.add(a);
             break;
         }
-        scanner.close();
+        // scanner.close();
     }
 
     private static void sellerLogin() {
@@ -316,7 +285,7 @@ public class Vendilo {
                     if (seller.getPassword().equals(password)) {
                         pas = true;
                         System.out.println("Successful login.");
-                        scanner.close();
+                        // scanner.close();
                         SellerHelper sellerHelper = new SellerHelper(seller);
                         sellerHelper.menu();
                     }
@@ -331,7 +300,7 @@ public class Vendilo {
                 continue;
             }
         }
-        scanner.close();
+        // scanner.close();
     }
 
     public static int runBack() {
@@ -341,13 +310,13 @@ public class Vendilo {
             String choice = scanner.nextLine();
             switch (choice) {
                 case "1":
-                    scanner.close();
+                    // scanner.close();
                     return 1;
                 case "2":
-                    scanner.close();
+                    // scanner.close();
                     System.exit(0);
                 case "3":
-                    scanner.close();
+                    // scanner.close();
                     return 3;
                 default:
                     System.out.println("The selected option is invalid.");

@@ -117,7 +117,7 @@ public class Customer extends Person {
         Scanner scanner = new Scanner(System.in);
         System.out.println("1) Complete Purchase\n2) Back\n3) Exit");
         String choice = scanner.nextLine();
-        scanner.close();
+        // scanner.close();
         switch (choice) {
             case "1":
                 if (this.wallet.WithdrawFromWallet((this.shoppingCart.findTotal() + shippingCost), "Shopping")) {
@@ -210,7 +210,7 @@ public class Customer extends Person {
             }
             showList(searchingKala, productType);
         }
-        scanner.close();
+        // scanner.close();
     }
 
     public void showList(List<Kala> searchingKala, String productType) {
@@ -230,7 +230,7 @@ public class Customer extends Person {
             for (int i = 0; i < searchingKala.size(); i++) {
                 if (i % 10 == 0 && i != 0) {
                     if (runBack() == 1) {
-                        scanner.close();
+                        // scanner.close();
                         return;
                     }
                     productSelection(searchingKala, productType, i);
@@ -258,7 +258,7 @@ public class Customer extends Person {
                         + searchingKala.get(i).getPrice() + " Average score:" + searchingKala.get(i).getAverageScore());
             }
         }
-        scanner.close();
+        // scanner.close();
     }
 
     public void productSelection(List<Kala> searchingKala, String productType, int i) {
@@ -269,10 +269,10 @@ public class Customer extends Person {
             String choice = scanner.nextLine();
             switch (choice) {
                 case "1":
-                    scanner.close();
+                    // scanner.close();
                     return;
                 case "0":
-                    scanner.close();
+                    // scanner.close();
                     System.exit(0);
                 default:
                     if (isInteger(choice)) {
@@ -298,12 +298,12 @@ public class Customer extends Person {
     public void addToCart(Kala kala) {
         Scanner scanner = new Scanner(System.in);
         if (runBack() == 1) {
-            scanner.close();
+            // scanner.close();
             return;
         }
         System.out.println("Do you want to add this item to your cart?\n1>YES\n2>NO(Default)");
         String choice = scanner.nextLine();
-        scanner.close();
+        // scanner.close();
         switch (choice) {
             case "1":
                 this.shoppingCart.getKalas().add(kala);
@@ -329,7 +329,7 @@ public class Customer extends Person {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Product Type:\n1)Book\n2)Digital Goods\n3)ALL(Default)");
         String choice = scanner.nextLine();
-        scanner.close();
+        // scanner.close();
         switch (choice) {
             case "1":
                 return "Book";
@@ -357,19 +357,19 @@ public class Customer extends Person {
             if (range == null) {
                 if (val.equalsIgnoreCase("max")) {
                     int ran = Integer.MAX_VALUE;
-                    scanner.close();
+                    // scanner.close();
                     return ran;
                 } else {
                     if (val.equalsIgnoreCase("min")) {
                         int ran = 0;
-                        scanner.close();
+                        // scanner.close();
                         return ran;
                     }
                 }
             } else {
                 if (isInteger(range)) {
                     int ran = Integer.parseInt(range);
-                    scanner.close();
+                    // scanner.close();
                     return ran;
                 } else {
                     System.out.println("Incorrect input. Enter a number.");
