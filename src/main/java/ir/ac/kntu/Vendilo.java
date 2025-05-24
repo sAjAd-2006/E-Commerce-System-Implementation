@@ -125,8 +125,8 @@ public class Vendilo {
                     if (supporter.getPassword().equals(password)) {
                         pas = true;
                         System.out.println("Successful login.");
-                        
-                        
+                        SupporterHelper supporterHelper = new SupporterHelper(supporter);
+                        supporterHelper.menu();
                     }
                 }
             }
