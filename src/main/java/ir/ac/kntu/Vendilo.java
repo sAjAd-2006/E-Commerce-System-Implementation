@@ -2,20 +2,13 @@ package ir.ac.kntu;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.util.Scanner;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class Vendilo {
     private static List<Customer> customers = new ArrayList<>();
     private static List<Seller> sellers = new ArrayList<>();
-    private static List<Seller> sellersVerification = new ArrayList<>();
+    private static List<Seller> verification = new ArrayList<>();
     private static List<Supporter> supporters = new ArrayList<>();
-
-    public Vendilo() {
-
-    }
 
     public static List<Supporter> getSupporters() {
         return supporters;
@@ -34,11 +27,11 @@ public class Vendilo {
     }
 
     public static List<Seller> getSellersVerification() {
-        return sellersVerification;
+        return verification;
     }
 
-    public static void setSellersVerification(List<Seller> sellersVerification) {
-        Vendilo.sellersVerification = sellersVerification;
+    public static void setSellersVerification(List<Seller> verification) {
+        Vendilo.verification = verification;
     }
 
     public static List<Customer> getCustomers() {
@@ -53,224 +46,247 @@ public class Vendilo {
         Supporter supporter = new Supporter("sajad", "teymoori", "sajadilo", "12345Aa!");
         supporters.add(supporter);
         Scanner scanner = new Scanner(System.in);
-        boolean runVENDILO = true;
-        System.out.println("Welcome to the VENDILO.");
-        while (runVENDILO) {
-            System.out.println("1-Login\n2-Register\n3-Exit");
-            System.out.print("Please enter the desired option :");
+        ChekFild chekFild = new ChekFild(sellers, customers);
+        Color.printCyanBold("Welcome to the VENDILO.");
+        while (true) {
+            Color.printWhiteBold("\nMain Menu:");
+            Color.printGreen("1-Login");
+            Color.printGreen("2-Register");
+            Color.printGreen("3-Exit");
+            Color.printYellowInline("Please enter the desired option: ");
             String choice = scanner.nextLine();
             switch (choice) {
-                case "1" -> loginMenu();
-                case "2" -> registerMenu();
-                case "3" -> runVENDILO = false;
-                default -> System.out.println("The selected option is invalid.");
+                case "1" -> loginMenu(scanner);
+                case "2" -> registerMenu(scanner, chekFild);
+                case "3" -> ExitVendilo.exit(scanner);
+                default -> {
+                    Color.printRedBgWhite("The selected option is invalid!");
+                    Color.printRed("Please try again.");
+                }
             }
         }
-        scanner.close();
-        System.out.println("We look forward to seeing you again.");
     }
 
-    public static void loginMenu() {
-        Scanner scanner = new Scanner(System.in);
+    public void loginMenu(Scanner scanner) {
         boolean runLogin = true;
         while (runLogin) {
-            System.out.println("1-Customer Login\n2-Seller Login\n3-Supporter Login\n4-Back\n5-Exit");
-            System.out.print("Please enter the desired option :");
+            Color.printWhiteBold("\nLogin Menu:");
+            Color.printCyan("1-Customer Login");
+            Color.printCyan("2-Seller Login");
+            Color.printCyan("3-Supporter Login");
+            Color.printYellow("4-Back");
+            Color.printRed("5-Exit");
+            Color.printYellowInline("Please enter the desired option: ");
             String choiceLogin = scanner.nextLine();
             switch (choiceLogin) {
-                case "1" -> customerLogin();
-                case "2" -> sellerLogin();
-                case "3" -> supporterLogin();
+                case "1" -> customerLogin(scanner);
+                case "2" -> sellerLogin(scanner);
+                case "3" -> supporterLogin(scanner);
                 case "4" -> runLogin = false;
-                case "5" -> System.exit(0);
-                default -> System.out.println("The selected option is invalid.");
-            }
-        }
-    }
-
-    public static void supporterLogin() {
-        Scanner scanner = new Scanner(System.in);
-        while (true) {
-            System.out.println("- - - - SupporterLogin - - - -");
-            if (runBack() == 1) {
-                break;
-            }
-            System.out.print("Enter Agency Name :");
-            String agencyName = scanner.nextLine();
-            System.out.print("Enter password :");
-            String password = scanner.nextLine();
-            boolean em = false, pas = false;
-            for (Supporter supporter : supporters) {
-                if (supporter.getAgencyName().equals(agencyName)) {
-                    em = true;
-                    if (supporter.getPassword().equals(password)) {
-                        pas = true;
-                        System.out.println("Successful login.");
-                        SupporterHelper supporterHelper = new SupporterHelper(supporter);
-                        supporterHelper.menu();
-                    }
+                case "5" -> {
+                    Color.printBlue("Exiting application...");
+                    ExitVendilo.exit(scanner);
+                }
+                default -> {
+                    Color.printRedBgWhite("The selected option is invalid!");
+                    Color.printRed("Please enter a number between 1-5.");
                 }
             }
-            if (!em) {
-                System.out.println("No user found with this email or phone number.");
-                continue;
-            }
-            if (!pas) {
-                System.out.println("No user found with this Password.");
-                continue;
-            }
         }
-        // scanner.close();
     }
 
-    public static void registerMenu() {
-        Scanner scanner = new Scanner(System.in);
+    public void supporterLogin(Scanner scanner) {
+        while (true) {
+            Color.printWhiteBold("- - - - Supporter Login - - - -");
+            if (runBack(scanner) == 1) {
+                break;
+            }
+            Color.printYellowInline("Enter Agency Name: ");
+            String agencyName = scanner.nextLine();
+            Color.printYellowInline("Enter password: ");
+            String password = scanner.nextLine();
+            supporterLogin2(agencyName, password, scanner);
+        }
+    }
+
+    public void supporterLogin2(String agencyName, String password, Scanner scanner) {
+        boolean email = false, pas = false;
+        for (Supporter supporter : supporters) {
+            if (supporter.getAgencyName().equals(agencyName)) {
+                email = true;
+                if (supporter.getPassword().equals(password)) {
+                    pas = true;
+                    Color.printGreen("Successful login.");
+                    SupporterHelper supporterHelper = new SupporterHelper(supporter);
+                    supporterHelper.menu(scanner);
+                }
+            }
+        }
+        if (!email) {
+            Color.printRed("No user found with this email or phone number.");
+            return;
+        }
+        if (!pas) {
+            Color.printRed("No user found with this Password.");
+            return;
+        }
+    }
+
+    public void registerMenu(Scanner scanner, ChekFild chekFild) {
         boolean runRegister = true;
         while (runRegister) {
-            System.out.println("1-Customer Register\n2-Seller Register\n3-Back\n4-Exit");
-            System.out.print("Please enter the desired option :");
+            Color.printWhiteBold("\nRegistration Menu:");
+            Color.printCyan("1-Customer Register");
+            Color.printCyan("2-Seller Register");
+            Color.printYellow("3-Back");
+            Color.printRed("4-Exit");
+
+            Color.printYellowInline("Please enter the desired option: ");
+
             String choiceLogin = scanner.nextLine();
             switch (choiceLogin) {
-                case "1" -> customerRegister();
-                case "2" -> sellerRegister();
+                case "1" -> customerRegister(scanner, chekFild);
+                case "2" -> sellerRegister(scanner, chekFild);
                 case "3" -> runRegister = false;
-                case "4" -> System.exit(0);
-                default -> System.out.println("The selected option is invalid.");
-            }
-        }
-    }
-
-    public static void customerLogin() {
-        Scanner scanner = new Scanner(System.in);
-        while (true) {
-            System.out.println("- - - - customerLogin - - - -");
-            if (runBack() == 1) {
-                break;
-            }
-            System.out.print("Enter email or phone number :");
-            String emailOrPhoneNumber = scanner.nextLine();
-            System.out.print("Enter password :");
-            String password = scanner.nextLine();
-            boolean em = false, pas = false;
-            for (Customer customer : customers) {
-                if (customer.getEmail().equals(emailOrPhoneNumber)
-                        || customer.getPhonenumber().equals(emailOrPhoneNumber)) {
-                    em = true;
-                    if (customer.getPassword().equals(password)) {
-                        pas = true;
-                        System.out.println("Successful login.");
-                        // scanner.close();
-                        CustomerHelper a = new CustomerHelper(customer);
-                        a.menu();
-                    }
+                case "4" -> {
+                    ExitVendilo.exit(scanner);
+                }
+                default -> {
+                    Color.printRedBgWhite("The selected option is invalid!");
+                    Color.printRed("Please enter a number between 1-4.");
                 }
             }
-            if (!em) {
-                System.out.println("No user found with this email or phone number.");
-                continue;
-            }
-            if (!pas) {
-                System.out.println("No user found with this Password.");
-                continue;
-            }
         }
-        // scanner.close();
     }
 
-    public static void customerRegister() {
-        Scanner scanner = new Scanner(System.in);
+    public void customerLogin(Scanner scanner) {
         while (true) {
-            System.out.println("- - - - customerRegister - - - -");
-            if (runBack() == 1) {
+            Color.printWhiteBold("- - - - Customer Login - - - -");
+            if (runBack(scanner) == 1) {
                 break;
             }
-            System.out.print("Enter firstname :");
+            Color.printYellowInline("Enter email or phone number: ");
+            String emailOrPhone = scanner.nextLine();
+            Color.printYellowInline("Enter password: ");
+            String password = scanner.nextLine();
+            customerLogin2(emailOrPhone, password, scanner);
+        }
+    }
+
+    public void customerLogin2(String emailOrPhone, String password, Scanner scanner) {
+        boolean emailEror = false, passwordEror = false;
+        for (Customer customer : customers) {
+            if (customer.getEmail().equals(emailOrPhone)
+                    || customer.getPhonenumber().equals(emailOrPhone)) {
+                emailEror = true;
+                if (customer.getPassword().equals(password)) {
+                    passwordEror = true;
+                    Color.printGreen("Successful login.");
+                    CustomerHelper customerHelper = new CustomerHelper(customer);
+                    customerHelper.menu(scanner);
+                }
+            }
+        }
+        if (!emailEror) {
+            Color.printRed("No user found with this email or phone number.");
+            return;
+        }
+        if (!passwordEror) {
+            Color.printRed("No user found with this Password.");
+            return;
+        }
+    }
+
+    public void customerRegister(Scanner scanner, ChekFild chekFild) {
+        while (true) {
+            if (runBack(scanner) == 1) {
+                break;
+            }
+            Color.printWhiteBold("- - - - Customer Register - - - -");
+            Color.printYellowInline("Enter firstname: ");
             String firstname = scanner.nextLine();
-            System.out.print("\nEnter lastname :");
+            Color.printYellowInline("Enter lastname: ");
             String lastname = scanner.nextLine();
-            System.out.print("\nEnter email :");
+            Color.printYellowInline("Enter email: ");
             String email = scanner.nextLine();
-            if (!chekEmail(email)) {
+            if (!chekFild.chekEmail(email)) {
                 continue;
             }
-            System.out.print("\nEnter phone number :");
+            Color.printYellowInline("Enter phone number: ");
             String phonenumber = scanner.nextLine();
-            if (!chekPhonenumber(phonenumber)) {
+            if (!chekFild.chekPhonenumber(phonenumber)) {
                 continue;
             }
-            System.out.print("\nEnter password :");
+            Color.printYellowInline("Enter password: ");
             String password = scanner.nextLine();
-            if (!chekPassword(password)) {
+            if (!chekFild.chekPassword(password)) {
                 continue;
             }
-            // scanner.close();
-            Customer a = new Customer(firstname, lastname, email, phonenumber, password);
-            customers.add(a);
-            System.out.println("Registration was successful.");
+            Customer customer = new Customer(firstname, lastname, email, phonenumber, password);
+            customers.add(customer);
+            Color.printGreen("Registration was successful.");
             break;
         }
-        // scanner.close();
     }
 
-    public static void sellerRegister() {
-        Scanner scanner = new Scanner(System.in);
+    public void sellerRegister(Scanner scanner, ChekFild chekFild) {
         while (true) {
-            System.out.println("- - - - seller Register - - - -");
-            if (runBack() == 1) {
+            Color.printWhiteBold("- - - - Seller Register - - - -");
+            if (runBack(scanner) == 1) {
                 break;
             }
-            System.out.print("Enter firstname :");
+            Color.printYellowInline("Enter firstname: ");
             String firstname = scanner.nextLine();
-            System.out.print("Enter lastname :");
+            Color.printYellowInline("Enter lastname: ");
             String lastname = scanner.nextLine();
-            System.out.print("Enter Store Title :");
+            Color.printYellowInline("Enter Store Title: ");
             String storeTitle = scanner.nextLine();
-            if (!chekStoreTitle(storeTitle)) {
+            if (!chekFild.chekStoreTitle(storeTitle)) {
                 continue;
             }
-            System.out.print("Enter Code Mely :");
+            Color.printYellowInline("Enter Code Mely: ");
             String codeMely = scanner.nextLine();
-            if (!chekCodeMely(codeMely)) {
+            if (!chekFild.chekCodeMely(codeMely)) {
                 continue;
             }
-            System.out.print("Enter phone number :");
+            Color.printYellowInline("Enter phone number: ");
             String phonenumber = scanner.nextLine();
-            if (!chekPhonenumber(phonenumber)) {
+            if (!chekFild.chekPhonenumber(phonenumber)) {
                 continue;
             }
-            System.out.print("Enter password :");
+            Color.printYellowInline("Enter password: ");
             String password = scanner.nextLine();
-            if (!chekPassword(password)) {
+            if (!chekFild.chekPassword(password)) {
                 continue;
             }
-            System.out.print("Enter Province Of Sale :");
+            Color.printYellowInline("Enter Province Of Sale: ");
             String provinceOfSale = scanner.nextLine();
-            Seller a = new Seller(firstname, lastname, storeTitle, codeMely, phonenumber, password, provinceOfSale);
-            a.setAgencyCode(generateAgencyCode());
-            a.setReasonForRejection("Your authentication has not been confirmed yet.");
-            Supporter.getSellersVerification().add(a);
-            sellersVerification.add(a);
+            Seller seller = new Seller(firstname, lastname, storeTitle, codeMely, phonenumber, password,
+                    provinceOfSale);
+            seller.setAgencyCode(chekFild.generateAgencyCode());
+            seller.setReasonForRejection("Your authentication has not been confirmed yet.");
+            Supporter.getSellersVerification().add(seller);
+            verification.add(seller);
+            Color.printGreen("Seller registration completed. Waiting for verification.");
             break;
         }
-        // scanner.close();
     }
 
-    private static void sellerLogin() {
-        Scanner scanner = new Scanner(System.in);
+    private void sellerLogin(Scanner scanner) {
         while (true) {
-            System.out.println("- - - - seller Login - - - -");
-            if (runBack() == 1) {
+            Color.printWhiteBold("- - - - Seller Login - - - -");
+            if (runBack(scanner) == 1) {
                 break;
             }
-            System.out.println("Enter Agency code :");
+            Color.printYellowInline("Enter Agency code: ");
             String agencyCode = scanner.nextLine();
-            System.out.println("Enter password :");
+            Color.printYellowInline("Enter password: ");
             String password = scanner.nextLine();
-            boolean co = false, pas = false, conti = false;
-            for (Seller seller : sellersVerification) {
+            boolean conti = false;
+            for (Seller seller : verification) {
                 if (seller.getAgencyCode().equals(agencyCode)) {
                     if (seller.getPassword().equals(password)) {
-                        System.out.println(seller.getReasonForRejection());
+                        Color.printYellow(seller.getReasonForRejection());
                         conti = true;
                         break;
                     }
@@ -279,147 +295,52 @@ public class Vendilo {
             if (conti) {
                 continue;
             }
-            for (Seller seller : sellers) {
-                if (seller.getAgencyCode().equals(agencyCode)) {
-                    co = true;
-                    if (seller.getPassword().equals(password)) {
-                        pas = true;
-                        System.out.println("Successful login.");
-                        // scanner.close();
-                        SellerHelper sellerHelper = new SellerHelper(seller);
-                        sellerHelper.menu();
-                    }
-                }
-            }
-            if (!co) {
-                System.out.println("No user found with this Agency code.");
-                continue;
-            }
-            if (!pas) {
-                System.out.println("No user found with this Password.");
-                continue;
-            }
+            sellerLogin2(agencyCode, password, scanner);
         }
-        // scanner.close();
     }
 
-    public static int runBack() {
-        Scanner scanner = new Scanner(System.in);
+    public void sellerLogin2(String agencyCode, String password, Scanner scanner) {
+        boolean code = false, pas = false;
+        for (Seller seller : sellers) {
+            if (seller.getAgencyCode().equals(agencyCode)) {
+                code = true;
+                if (seller.getPassword().equals(password)) {
+                    pas = true;
+                    Color.printGreen("Successful login.");
+                    SellerHelper sellerHelper = new SellerHelper(seller);
+                    sellerHelper.menu(scanner);
+                }
+            }
+        }
+        if (!code) {
+            Color.printRed("No user found with this Agency code.");
+            return;
+        }
+        if (!pas) {
+            Color.printRed("No user found with this Password.");
+            return;
+        }
+    }
+
+    public int runBack(Scanner scanner) {
         while (true) {
-            System.out.println("Please enter the desired option : 1)Back 2)Exit 3)Continue");
+            Color.printWhiteBold("\nOptions:");
+            Color.printCyan("1) Back");
+            Color.printCyan("2) Exit");
+            Color.printGreen("3) Continue");
+            Color.printYellowInline("Please enter your choice: ");
             String choice = scanner.nextLine();
             switch (choice) {
                 case "1":
-                    // scanner.close();
                     return 1;
                 case "2":
-                    // scanner.close();
-                    System.exit(0);
+                    ExitVendilo.exit(scanner);
                 case "3":
-                    // scanner.close();
                     return 3;
                 default:
-                    System.out.println("The selected option is invalid.");
+                    Color.printRed("The selected option is invalid.");
                     break;
             }
         }
     }
-
-    public static boolean chekEmail(String email) {
-        String regex = "^((?!\\.)[\\w\\-_.]*[^.])(@\\w+)(\\.\\w+(\\.\\w+)?[^.\\W])$";
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(email);
-        if (!matcher.find()) {
-            System.out.println("The email format is incorrect.\nTry again.");
-            return false;
-        } else {
-            for (Customer customer : customers) {
-                if (customer.getEmail().equals(email)) {
-                    System.out.println("The email is duplicate.\nTry again.");
-                    return false;
-                }
-            }
-            return true;
-        }
-    }
-
-    public static boolean chekPhonenumber(String phonenumber) {
-        String regex = "^(\\+98|0)?9\\d{9}$";
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(phonenumber);
-        if (!matcher.find()) {
-            System.out.println("The phone number format is incorrect.\nTry again.");
-            return false;
-        } else {
-            for (Customer customer : customers) {
-                if (customer.getPhonenumber().equals(phonenumber)) {
-                    System.out.println("The phone number is duplicate.\nTry again.");
-                    return false;
-                }
-            }
-            return true;
-        }
-    }
-
-    public static boolean chekPassword(String password) {
-        String regex = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$";
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(password);
-        if (!matcher.find()) {
-            System.out.println("The password format is incorrect.\nTry again.");
-            return false;
-        } else {
-            return true;
-        }
-    }
-
-    public static boolean chekStoreTitle(String storeTitle) {
-        for (Seller seller : sellers) {
-            if (seller.getStoreTitle().equals(storeTitle)) {
-                System.out.println("The Store Title is duplicate.\nTry again.");
-                return false;
-            }
-        }
-        return true;
-    }
-
-    public static boolean chekCodeMely(String codeMely) {
-        for (Seller seller : sellers) {
-            if (seller.getCodeMely().equals(codeMely)) {
-                System.out.println("The Code Mely is duplicate.\nTry again.");
-                return false;
-            }
-        }
-        return true;
-    }
-
-    public static String generateAgencyCode() {
-        String alpha = "QWE0RT789YUIOPAS156DFGHJKLZXC234VBNM";
-        Random random = new Random();
-        String ramz = new String();
-        boolean duplicate = true;
-        while (duplicate) {
-            for (int i = 0; i < 6; i++) {
-                int randInt = random.nextInt(36);
-                ramz.concat(alpha.substring(randInt, randInt + 1));
-            }
-            duplicate = false;
-            for (Seller seller : sellers) {
-                if (seller.getAgencyCode().equals(ramz)) {
-                    duplicate = true;
-                }
-            }
-        }
-        System.out.println("This is your Agency code : " + ramz);
-        return ramz;
-    }
-
-    // public static boolean isInteger(String str) {
-    // try {
-    // Integer.parseInt(str);
-    // return true;
-    // } catch (NumberFormatException e) {
-    // return false;
-    // }
-    // }
 }

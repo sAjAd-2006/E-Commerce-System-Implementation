@@ -2,7 +2,7 @@ package ir.ac.kntu;
 
 abstract class DigitalGoods extends Kala {
     private String Brand;
-    private String internalMemorySize;
+    private String interMemoSize;
     private String amountOfRAM;
 
     public String getBrand() {
@@ -10,7 +10,7 @@ abstract class DigitalGoods extends Kala {
     }
 
     public String getInternalMemorySize() {
-        return internalMemorySize;
+        return interMemoSize;
     }
 
     public String getAmountOfRAM() {
@@ -21,8 +21,8 @@ abstract class DigitalGoods extends Kala {
         Brand = brand;
     }
 
-    public void setInternalMemorySize(String internalMemorySize) {
-        this.internalMemorySize = internalMemorySize;
+    public void setInternalMemorySize(String interMemoSize) {
+        this.interMemoSize = interMemoSize;
     }
 
     public void setAmountOfRAM(String amountOfRAM) {

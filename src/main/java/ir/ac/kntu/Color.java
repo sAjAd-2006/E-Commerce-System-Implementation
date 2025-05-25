@@ -24,8 +24,24 @@ public class Color {
     public static final String BG_WHITE = "\u001B[47m";
 
     // Bold
-    public static final String BOLD = "\u001B[1m";
-    public static final String UNDERLINE = "\u001B[4m";
+    public static final String BLACK_BOLD = "\u001B[1;30m";
+    public static final String RED_BOLD = "\u001B[1;31m";
+    public static final String GREEN_BOLD = "\u001B[1;32m";
+    public static final String YELLOW_BOLD = "\u001B[1;33m";
+    public static final String BLUE_BOLD = "\u001B[1;34m";
+    public static final String PURPLE_BOLD = "\u001B[1;35m";
+    public static final String CYAN_BOLD = "\u001B[1;36m";
+    public static final String WHITE_BOLD = "\u001B[1;37m";
+
+    // Background
+    public static final String BLACK_BACKGROUND = "\u001B[40m";
+    public static final String RED_BACKGROUND = "\u001B[41m";
+    public static final String GREEN_BACKGROUND = "\u001B[42m";
+    public static final String YELLOW_BACKGROUND = "\u001B[43m";
+    public static final String BLUE_BACKGROUND = "\u001B[44m";
+    public static final String PURPLE_BACKGROUND = "\u001B[45m";
+    public static final String CYAN_BACKGROUND = "\u001B[46m";
+    public static final String WHITE_BACKGROUND = "\u001B[47m";
 
     public static void printBlue(String message) {
         System.out.println(BLUE + message + RESET);
@@ -43,19 +59,27 @@ public class Color {
         System.out.println(RED + message + RESET);
     }
 
+    public static void printCyan(String massage) {
+        System.out.println(CYAN + massage + RESET);
+    }
+
     public static void printCyanBold(String message) {
-        System.out.println(CYAN + BOLD + message + RESET);
+        System.out.println(CYAN_BOLD + message + RESET);
     }
 
     public static void printWhiteBold(String message) {
-        System.out.println(WHITE + BOLD + message + RESET);
+        System.out.println(WHITE_BOLD + message + RESET);
     }
 
     public static void printRedBgWhite(String message) {
         System.out.println(RED + BG_WHITE + message + RESET);
     }
 
-    // public static void main(String[] args) {
-    //     printGreen("Sajad");
-    // }
+    public static void printYellowInline(String message) {
+        System.out.println(WHITE_BOLD + message + RESET);
+    }
+
+    public static void main(String[] args) {
+        printRed("Sajad");
+    }
 }

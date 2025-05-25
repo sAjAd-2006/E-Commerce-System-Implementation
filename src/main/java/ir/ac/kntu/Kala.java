@@ -10,7 +10,7 @@ abstract class Kala {
     private int vote;
     private boolean voted;
     private double averageScore = 0;
-    private String agencyCodeOfSelers;
+    private String agencyCoSeler;
     private String selerCity;
     private String selerName;
 
@@ -88,12 +88,12 @@ abstract class Kala {
         this.averageScore = averageScore;
     }
 
-    public void setAgencyCodeOfSelers(String agencyCodeOfSelers) {
-        this.agencyCodeOfSelers = agencyCodeOfSelers;
+    public void setAgencyCodeOfSelers(String agencyCoOfSeler) {
+        this.agencyCoSeler = agencyCoOfSeler;
     }
 
     public String getAgencyCodeOfSelers() {
-        return agencyCodeOfSelers;
+        return agencyCoSeler;
     }
 
     public String getName() {

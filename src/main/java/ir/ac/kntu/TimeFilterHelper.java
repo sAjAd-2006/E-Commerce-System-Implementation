@@ -10,13 +10,10 @@ import java.util.stream.Collectors;
 public class TimeFilterHelper<T extends Timeable> {
 
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-    private LocalDateTime start, end;
-
-    public TimeFilterHelper() {
-    }
-
-    public List<T> filterTimesByUserInput(List<T> transactions) {
-        Scanner scanner = new Scanner(System.in);
+    
+    public List<T> filterTimesByUserInput(List<T> transactions, Scanner scanner) {
+        LocalDateTime start, end;
+        // Scanner scanner = new Scanner(System.in);
 
         while (true) {
             start = readDateTime(scanner, "Enter start time (yyyy-MM-dd HH:mm): ");

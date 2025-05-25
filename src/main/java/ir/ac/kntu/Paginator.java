@@ -14,46 +14,61 @@ public class Paginator<T> {
     }
 
     public int paginate(int page) {
-        int currentPage = page;
-        int totalPages = (int) Math.ceil(list.size() / (double) pageSize);
-
+        int currentPage = page, totalPages = (int) Math.ceil(list.size() / (double) pageSize);
         while (true) {
             showPage(currentPage);
             String command = getValidCommand();
-
             switch (command) {
                 case "next" -> {
-                    if (currentPage < totalPages - 1)
+                    if (currentPage < totalPages - 1) {
                         currentPage++;
-                    else
+                    } else {
                         System.out.println("You are already on the last page.");
+                    }
                 }
                 case "prev" -> {
-                    if (currentPage > 0)
-                        currentPage--;
-                    else
-                        System.out.println("You are already on the first page.");
+                    currentPage = casePrev(currentPage);
                 }
                 case "select" -> {
-                    int start = currentPage * pageSize;
-                    int end = Math.min(start + pageSize, list.size());
-                    System.out.print("Enter item number between " + (start + 1) + " and " + end + ": ");
-                    try {
-                        int index = Integer.parseInt(scanner.nextLine().trim()) - 1;
-                        if (index >= start && index < end)
-                            return index;//list.get(index);
-                        else
-                            System.out.println("Selection out of range.");
-                    } catch (NumberFormatException e) {
-                        System.out.println("Invalid number format.");
+                    int select = caseySelect(currentPage, scanner);
+                    if (select != -1) {
+                        return select;
                     }
                 }
                 case "back" -> {
                     System.out.println("Back without selection.");
                     return -1;
                 }
-                case "exit" -> System.exit(0);
+                case "exit" -> ExitVendilo.exit(scanner);
+                default -> System.out.println("errrrror");
             }
+        }
+    }
+
+    public int casePrev(int currentPage) {
+        if (currentPage > 0) {
+            currentPage--;
+        } else {
+            System.out.println("You are already on the first page.");
+        }
+        return currentPage;
+    }
+
+    public int caseySelect(int currentPage, Scanner scanner) {
+        int start = currentPage * pageSize;
+        int end = Math.min(start + pageSize, list.size());
+        System.out.print("Enter item number between " + (start + 1) + " and " + end + ": ");
+        try {
+            int index = Integer.parseInt(scanner.nextLine().trim()) - 1;
+            if (index >= start && index < end) {
+                return index;// list.get(index);
+            } else {
+                System.out.println("Selection out of range.");
+                return -1;
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid number format.");
+            return -1;
         }
     }
 
@@ -70,8 +85,9 @@ public class Paginator<T> {
         while (true) {
             System.out.print("\nEnter command (next / prev / select / back / exit): ");
             String cmd = scanner.nextLine().trim().toLowerCase();
-            if (cmd.matches("next|prev|select|back|exit"))
+            if (cmd.matches("next|prev|select|back|exit")) {
                 return cmd;
+            }
             System.out.println("Invalid command.");
         }
     }

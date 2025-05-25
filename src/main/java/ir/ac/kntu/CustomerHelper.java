@@ -22,54 +22,51 @@ public class CustomerHelper {
         this.customer = customer;
     }
 
-    public void menu() {
-        Scanner scanner = new Scanner(System.in);
+    public void menu(Scanner scanner) {
         boolean runMenu = true;
         while (runMenu) {
             System.out.println("- - - - Customer Menu - - - -\n1-Product Search\n2-Shopping Cart\n3-Addresses");
             System.out.println("4-Wallet\n5-Orders\n6-Settings\n7-Support\n8-Log out\n9-Exit");
             String choice = scanner.nextLine();
             switch (choice) {
-                case "1" -> customer.searchKala();
-                case "2" -> {
-                    customer.getShoppingCart().seeCart();
-                    System.out.println("Would you like to continue shopping? 1>YES 2>NO(Default)");
-                    choice = scanner.nextLine();
-                    switch (choice) {
-                        case "1":
-                            customer.continueShopping();
-                            break;
-                        default:
-                            break;
-                    }
-                }
-                case "3" -> addressRun();
-                case "4" -> walletRun();
-                case "5" -> ordersRun();
+                case "1" -> customer.searchKala(scanner);
+                case "2" -> menuCase2(scanner);
+                case "3" -> addressRun(scanner);
+                case "4" -> walletRun(scanner);
+                case "5" -> ordersRun(scanner);
                 case "6" -> {
                     UserSettings userSettings = new UserSettings();
-                    userSettings.settings(customer);
+                    userSettings.settings(customer, scanner);
                 }
-                case "7" -> supportRun();
+                case "7" -> supportRun(scanner);
                 case "8" -> runMenu = false;
-                case "9" -> {
-                    // scanner.close();
-                    System.exit(0);
-                }
+                case "9" -> ExitVendilo.exit(scanner);
                 default -> System.out.println("The selected option is invalid.");
             }
         }
-        // scanner.close();
     }
 
-    public void supportRun() {
-        Scanner scanner = new Scanner(System.in);
+    public void menuCase2(Scanner scanner) {
+        customer.getShoppingCart().seeCart(scanner);
+        System.out.println("Would you like to continue shopping? 1>YES 2>NO(Default)");
+        String choice = scanner.nextLine();
+        switch (choice) {
+            case "1":
+                customer.continueShopping(scanner);
+                break;
+            default:
+                break;
+        }
+    }
+
+    public void supportRun(Scanner scanner) {
+        // Scanner scanner = new Scanner(System.in);
         while (true) {
             System.out.println("1.New Request\n2.View Old Requests\n3.Back\n4.Exit\n => ");
             String choice = scanner.nextLine();
             switch (choice) {
                 case "1":
-                    newRequest();
+                    newRequest(scanner);
                     break;
                 case "2":
                     viewOldRequests();
@@ -79,7 +76,8 @@ public class CustomerHelper {
                     return;
                 case "4":
                     // scanner.close();
-                    System.exit(0);
+                    // System.exit(0);
+                    ExitVendilo.exit(scanner);
                 default:
                     System.out.println("The selected option is invalid.");
                     break;
@@ -89,22 +87,22 @@ public class CustomerHelper {
 
     public void viewOldRequests() {
         Paginator<Reportage> paginator = new Paginator<>(customer.getReportages(), 10);
-        int j = 0;
+        int jjjj = 0;
         while (true) {
-            int i = paginator.paginate(j);
-            if (i == -1) {
+            int iiii = paginator.paginate(jjjj);
+            if (iiii == -1) {
                 return;
             } else {
-                Reportage reportage = customer.getReportages().get(i);
+                Reportage reportage = customer.getReportages().get(iiii);
                 System.out.println(reportage + " Request status: " + reportage.getCheck() + " Support response: "
                         + reportage.getAnswer());
-                j = i / 10;
+                jjjj = iiii / 10;
             }
         }
     }
 
-    public void newRequest() {
-        Scanner scanner = new Scanner(System.in);
+    public void newRequest(Scanner scanner) {
+        // Scanner scanner = new Scanner(System.in);
         Report report = Report.Settings;
         while (true) {
             System.out.print(
@@ -130,18 +128,17 @@ public class CustomerHelper {
         // scanner.close();
     }
 
-    public void ordersRun() {
+    public void ordersRun(Scanner scanner) {
         Paginator<Order> paginator = new Paginator<>(customer.getOrders(), 10);
         int ord = paginator.paginate(0);
         if (ord == -1) {
             return;
         } else {
-            customer.getOrders().get(ord).showOrderCustomer();
+            customer.getOrders().get(ord).showOrderCustomer(scanner);
         }
     }
 
-    public void walletRun() {
-        Scanner scanner = new Scanner(System.in);
+    public void walletRun(Scanner scanner) {
         while (true) {
             System.out.println(
                     "1> View balance\n2> Top up wallet\n3> Withdraw from wallet\n4> View previous transactions\n5> Back\n6> Exit");
@@ -151,82 +148,86 @@ public class CustomerHelper {
                     System.out.println("balance: " + customer.getWallet().getCash());
                     break;
                 case "2":
-                    System.out.print("Enter the amount you want to top up your wallet: ");
-                    choice = scanner.nextLine();
-                    if (isInteger(choice)) {
-                        customer.getWallet().addToWallet(Integer.parseInt(choice));
-                        ;
-                    } else {
-                        System.out.println("Incorrect input. Enter a number.");
-                    }
+                    walletRunCase23(2, scanner);
                     break;
                 case "3":
-                    System.out.print("Enter the amount you want to Withdraw from wallet: ");
-                    choice = scanner.nextLine();
-                    if (isInteger(choice)) {
-                        customer.getWallet().WithdrawFromWallet(Integer.parseInt(choice), "Withdraw money");
-                    } else {
-                        System.out.println("Incorrect input. Enter a number.");
-                    }
+                    walletRunCase23(3, scanner);
                     break;
                 case "4":
-                    viewPreviousTransactions();
+                    viewPreviousTransactions(scanner);
                     break;
                 case "5":
-                    // scanner.close();
                     return;
                 case "6":
-                    // scanner.close();
-                    System.exit(0);
+                    ExitVendilo.exit(scanner);
                 default:
                     break;
             }
         }
     }
 
-    public void viewPreviousTransactions() {
-        Scanner scanner = new Scanner(System.in);
+    public void walletRunCase23(int casey, Scanner scanner) {
+        if (casey == 2) {
+            System.out.print("Enter the amount you want to top up your wallet: ");
+            String choice = scanner.nextLine();
+            if (isInteger(choice)) {
+                customer.getWallet().addToWallet(Integer.parseInt(choice));
+
+            } else {
+                System.out.println("Incorrect input. Enter a number.");
+            }
+        } else {
+            System.out.print("Enter the amount you want to Withdraw from wallet: ");
+            String choice = scanner.nextLine();
+            if (isInteger(choice)) {
+                customer.getWallet().withdrawFromWallet(Integer.parseInt(choice), "Withdraw money");
+            } else {
+                System.out.println("Incorrect input. Enter a number.");
+            }
+        }
+    }
+
+    public void viewPreviousTransactions(Scanner scanner) {
+        // Scanner scanner = new Scanner(System.in);
         List<Transaction> tran = new ArrayList<>();
         System.out.println("Set time filter ALL: y/n");
-        if (scanner.nextLine().equalsIgnoreCase("y")) {
+        if ("y".equalsIgnoreCase(scanner.nextLine())) {
             tran = customer.getWallet().getTransactions();
         } else {
             TimeFilterHelper<Transaction> timeFilterHelper = new TimeFilterHelper<>();
-            tran = timeFilterHelper.filterTimesByUserInput(customer.getWallet().getTransactions());
+            tran = timeFilterHelper.filterTimesByUserInput(customer.getWallet().getTransactions(), scanner);
         }
         // scanner.close();
         Paginator<Transaction> paginator = new Paginator<>(tran, 10);
-        int i = 0;
+        int iiii = 0;
         while (true) {
-            int result = paginator.paginate(i);
+            int result = paginator.paginate(iiii);
             if (result != -1) {
                 System.out.println(customer.getWallet().getTransactions().get(result) + " ---- Price: "
                         + customer.getWallet().getTransactions().get(result).getPrice());
-                i = result / 10;
+                iiii = result / 10;
             } else {
                 return;
             }
         }
     }
 
-    public void addressRun() {
-        Scanner scanner = new Scanner(System.in);
+    public void addressRun(Scanner scanner) {
+        // Scanner scanner = new Scanner(System.in);
         while (true) {
             System.out.println("1. Add Address\n2. View Current Addresses\n3. Back\n4. Exit");
             String choice = scanner.nextLine();
             switch (choice) {
                 case "1":
-                    addAddress();
+                    addAddress(scanner);
                     break;
                 case "2":
-                    viewCurrentAddresses();
+                    viewCurrentAddresses(scanner);
                     break;
                 case "3":
-                    // scanner.close();
                     return;
                 case "4":
-                    // scanner.close();
-                    System.exit(0);
+                    ExitVendilo.exit(scanner);
                     break;
                 default:
                     System.out.println("The selected option is invalid.");
@@ -235,25 +236,13 @@ public class CustomerHelper {
         }
     }
 
-    public void addAddress() {
-        Scanner scanner = new Scanner(System.in);
+    public void addAddress(Scanner scanner) {
         while (true) {
-            if (customer.runBack() == 1) {
-                // scanner.close();
+            if (customer.runBack(scanner) == 1) {
                 return;
             }
-            System.out.print("Enter Title: ");
-            String title = scanner.nextLine();
-            if (title.isEmpty()) {
-                System.out.println("Title is empty.");
-                continue;
-            }
-            System.out.print("Enter Province: ");
-            String province = scanner.nextLine();
-            if (province.isEmpty()) {
-                System.out.println("province is empty.");
-                continue;
-            }
+            String title = addAddressIf1(scanner);
+            String province = addAddressIf2(scanner);
             System.out.print("Enter City: ");
             String city = scanner.nextLine();
             if (city.isEmpty()) {
@@ -268,49 +257,63 @@ public class CustomerHelper {
             }
             Address address = new Address(title, province, city, description);
             customer.getAddresses().add(address);
-            // scanner.close();
         }
     }
 
-    public void viewCurrentAddresses() {
-        Scanner scanner = new Scanner(System.in);
+    public String addAddressIf1(Scanner scanner) {
+        while (true) {
+            System.out.print("Enter Title: ");
+            String title = scanner.nextLine();
+            if (title.isEmpty()) {
+                System.out.println("Title is empty.");
+                continue;
+            }
+            return title;
+        }
+    }
+
+    public String addAddressIf2(Scanner scanner) {
+        while (true) {
+            System.out.print("Enter Province: ");
+            String province = scanner.nextLine();
+            if (province.isEmpty()) {
+                System.out.println("province is empty.");
+                continue;
+            }
+            return province;
+        }
+    }
+
+    public void viewCurrentAddresses(Scanner scanner) {
         Paginator<Address> paginator = new Paginator<>(customer.getAddresses(), 10);
-        int i = 0;
+        int iiii = 0;
         outerLoop: while (true) {
-            int result = paginator.paginate(i);
+            int result = paginator.paginate(iiii);
             if (result == -1) {
-                // scanner.close();
                 return;
             } else {
                 while (true) {
                     System.out.println("Options: 1>Edit 2>Delete 3>Back 4>Exit");
                     String choice = scanner.nextLine();
                     switch (choice) {
-                        case "1":
-                            editAddress(customer.getAddresses().get(result));
-                            break;
-                        case "2":
-                            customer.getAddresses().remove(result);
-                            break;
-                        case "3":
-                            i = result / 10;
+                        case "1" -> editAddress(customer.getAddresses().get(result), scanner);
+                        case "2" -> customer.getAddresses().remove(result);
+                        case "3" -> {
+                            iiii = result / 10;
                             continue outerLoop;
-                        case "4":
-                            // scanner.close();
-                            System.exit(0);
-                        default:
-                            System.out.println("The selected option is invalid.");
-                            break;
+                        }
+                        case "4" -> ExitVendilo.exit(scanner);
+                        default -> System.out.println("The selected option is invalid.");
                     }
                 }
             }
         }
     }
 
-    public void editAddress(Address address) {
-        Scanner scanner = new Scanner(System.in);
+    public void editAddress(Address address, Scanner scanner) {
+        // Scanner scanner = new Scanner(System.in);
         System.out.println("Don't enter any part, it won't change.");
-        if (customer.runBack() == 1) {
+        if (customer.runBack(scanner) == 1) {
             // scanner.close();
             return;
         }

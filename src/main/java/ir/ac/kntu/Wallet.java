@@ -29,11 +29,11 @@ public class Wallet {
         this.cash = cash;
     }
 
-    public boolean WithdrawFromWallet(int draw, String why) {
+    public boolean withdrawFromWallet(int draw, String why) {
         if (this.cash - draw >= 0) {
             this.cash -= draw;
-            Transaction a = new Transaction(draw, why);
-            transactions.add(a);
+            Transaction transaction = new Transaction(draw, why);
+            transactions.add(transaction);
             return true;
         } else {
             System.out.println("The amount requested is greater than your account balance.");
@@ -43,7 +43,7 @@ public class Wallet {
 
     public void addToWallet(int add) {
         this.cash += add;
-        Transaction a = new Transaction(add, "Add");
-        transactions.add(a);
+        Transaction transaction = new Transaction(add, "Add");
+        transactions.add(transaction);
     }
 }

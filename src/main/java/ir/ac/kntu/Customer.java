@@ -73,7 +73,7 @@ public class Customer extends Person {
         this.shoppingCart = shoppingCart;
     }
 
-    public void continueShopping() {
+    public void continueShopping(Scanner scanner) {
         int shippingCost = 10;
         while (true) {
             if (this.shoppingCart.findTotal() == 0) {
@@ -81,31 +81,30 @@ public class Customer extends Person {
                 return;
             }
             if (!addresses.isEmpty()) {
-                Paginator<Address> a = new Paginator<>(addresses, 10);
-                Address address = addresses.get(a.paginate(0));
+                Paginator<Address> paginator = new Paginator<>(addresses, 10);
+                Address address = addresses.get(paginator.paginate(0));
                 if (address == null) {
                     System.out.println("You did not select an address.");
                     continue;
                 }
-                boolean discount = true;
-                for (Kala kala : this.shoppingCart.getKalas()) {
-                    kala.toString();
-                    if (kala.getInventory() >= 1) {
-                        if (!address.getCity().equalsIgnoreCase(kala.getSelerCity())) {
-                            discount = false;
-                        }
-                    } else {
-                        System.out.print(" ^ This item is out of stock and");
-                        System.out.println(" will be automatically removed from your shopping list.");
-                        this.shoppingCart.getKalas().remove(kala);
-                    }
-                }
-                if (discount) {
+                // boolean discount = true;
+                // for (Kala kala : this.shoppingCart.getKalas()) {
+                //     kala.toString();
+                //     if (kala.getInventory() >= 1) {
+                //         if (!address.getCity().equalsIgnoreCase(kala.getSelerCity())) {
+                //             discount = false;
+                //         }
+                //     } else {
+                //         System.out.print(" ^ This item is out of stock and");
+                //         System.out.println(" will be automatically removed from your shopping list.");
+                //         this.shoppingCart.getKalas().remove(kala);
+                //     }
+                // }
+                if (discount(address) == 1) {
                     shippingCost = shippingCost * 7 / 10;
                 }
                 System.out.println("Price: " + shoppingCart.findTotal() + "\nShipping Cost: " + shippingCost);
-                continueShoppingNow(shippingCost, address);
-
+                continueShoppingNow(shippingCost, address, scanner);
             } else {
                 System.out.println("Please register your address first.");
                 return;
@@ -113,17 +112,37 @@ public class Customer extends Person {
         }
     }
 
-    public void continueShoppingNow(int shippingCost, Address s) {
-        Scanner scanner = new Scanner(System.in);
+    public int discount(Address address) {
+        boolean discount = true;
+        for (Kala kala : this.shoppingCart.getKalas()) {
+            kala.toString();
+            if (kala.getInventory() >= 1) {
+                if (!address.getCity().equalsIgnoreCase(kala.getSelerCity())) {
+                    discount = false;
+                }
+            } else {
+                System.out.print(" ^ This item is out of stock and");
+                System.out.println(" will be automatically removed from your shopping list.");
+                this.shoppingCart.getKalas().remove(kala);
+            }
+        }
+        if (discount) {
+            return 1;
+        }
+        return -1;
+    }
+
+    public void continueShoppingNow(int shippingCost, Address address, Scanner scanner) {
+        // Scanner scanner = new Scanner(System.in);
         System.out.println("1) Complete Purchase\n2) Back\n3) Exit");
         String choice = scanner.nextLine();
         // scanner.close();
         switch (choice) {
             case "1":
-                if (this.wallet.WithdrawFromWallet((this.shoppingCart.findTotal() + shippingCost), "Shopping")) {
-                    crOrder(s, this.shoppingCart.findTotal(), shippingCost);
-                    List<Kala> c = new ArrayList<>();
-                    shoppingCart.setKalas(c);
+                if (this.wallet.withdrawFromWallet((this.shoppingCart.findTotal() + shippingCost), "Shopping")) {
+                    crOrder(address, this.shoppingCart.findTotal(), shippingCost);
+                    List<Kala> kalas = new ArrayList<>();
+                    shoppingCart.setKalas(kalas);
                     shoppingCart.setTotalPrice(0);
                 }
                 break;
@@ -133,29 +152,29 @@ public class Customer extends Person {
         }
     }
 
-    public void crOrder(Address s, int findTotal, int shippingCost) {
-        LocalDateTime b = this.wallet.getTransactions().getLast().getLocalDateTime();
-        List<Kala> c = this.shoppingCart.getKalas();
+    public void crOrder(Address address, int findTotal, int shippingCost) {
+        LocalDateTime localDateTime = this.wallet.getTransactions().getLast().getLocalDateTime();
+        List<Kala> kalass = this.shoppingCart.getKalas();
         List<String> sellersNames = new ArrayList<>();
-        for (Kala kala : c) {
+        for (Kala kala : kalass) {
             sellersNames.add(kala.getSelerName());
             kala.setInventory(kala.getInventory() - 1);
         }
-        Order a = new Order(c, b, sellersNames, s, findTotal, shippingCost, "", "");
-        for (int i = 0; i < c.size(); i++) {
-            a.getIsVoted().add(false);
+        Order newOrder = new Order(kalass, localDateTime, sellersNames, address, findTotal, shippingCost, "", "");
+        for (int i = 0; i < kalass.size(); i++) {
+            newOrder.getIsVoted().add(false);
         }
-        orders.add(a);
+        orders.add(newOrder);
         for (Seller seller : Vendilo.getSellers()) {
-            for (Kala kala : c) {
+            for (Kala kala : kalass) {
                 if (seller.getAgencyCode().equals(kala.getAgencyCodeOfSelers())) {
                     List<Kala> kalas = new ArrayList<>();
                     kalas.add(kala);
-                    Transaction transaction = new Transaction(b, (kala.getPrice() * 9 / 10), "Sale");
+                    Transaction transaction = new Transaction(localDateTime, (kala.getPrice() * 9 / 10), "Sale");
                     seller.getWallet().getTransactions().add(transaction);
                     seller.getWallet().setCash(seller.getWallet().getCash() + (kala.getPrice() * 9 / 10));
-                    ;
-                    Order order = new Order(kalas, b, null, s, (kala.getPrice() * 9 / 10), shippingCost,
+                    Order order = new Order(kalas, localDateTime, null, address, (kala.getPrice() * 9 / 10),
+                            shippingCost,
                             (getFirstname() + " " + getLastname()), getEmail());
                     seller.getOrders().add(order);
                 }
@@ -163,21 +182,21 @@ public class Customer extends Person {
         }
     }
 
-    public void searchKala() {
-        Scanner scanner = new Scanner(System.in);
+    public void searchKala(Scanner scanner) {
+        // Scanner scanner = new Scanner(System.in);
         while (true) {
             System.out.println("- - - - Search Kala - - - -\n");
-            if (runBack() == 1) {
+            if (runBack(scanner) == 1) {
                 break;
             }
             System.out.println("Enter at least one of the following fields\nProduct Name: ");
             String productName = scanner.nextLine();
-            String productType = searchForProductType();
+            String productType = searchForProductType(scanner);
             int min = 0, max = 0;
             while (true) {
                 System.out.println("Enter price range(Default:ALL)");
-                min = priceRange("min");
-                max = priceRange("max");
+                min = priceRange("min", scanner);
+                max = priceRange("max", scanner);
                 if (max >= min) {
                     break;
                 }
@@ -186,17 +205,17 @@ public class Customer extends Person {
             for (Kala kala : Seller.getKalas()) {
                 if (kala.getPrice() <= max && kala.getPrice() >= min) {
                     if (kala.getName().contains(productName)) {
-                        if (!productType.equalsIgnoreCase("all")) {
-                            if (kala instanceof Book && productType.equalsIgnoreCase("book")) {
+                        if (!"all".equalsIgnoreCase(productType)) {
+                            if (kala instanceof Book && "book".equalsIgnoreCase(productType)) {
                                 searchingKala.add(kala);
                             } else {
-                                if (kala instanceof DigitalGoods && productType.equalsIgnoreCase("Digital Goods")) {
+                                if (kala instanceof DigitalGoods && "Digital Goods".equalsIgnoreCase(productType)) {
                                     searchingKala.add(kala);
                                 } else {
-                                    if (kala instanceof Mobile && productType.equalsIgnoreCase("mobile")) {
+                                    if (kala instanceof Mobile && "mobile".equalsIgnoreCase(productType)) {
                                         searchingKala.add(kala);
                                     } else {
-                                        if (kala instanceof Laptop && productName.equalsIgnoreCase("laptop")) {
+                                        if (kala instanceof Laptop && "laptop".equalsIgnoreCase(productName)) {
                                             searchingKala.add(kala);
                                         }
                                     }
@@ -208,13 +227,13 @@ public class Customer extends Person {
                     }
                 }
             }
-            showList(searchingKala, productType);
+            showList(searchingKala, productType, scanner);
         }
         // scanner.close();
     }
 
-    public void showList(List<Kala> searchingKala, String productType) {
-        Scanner scanner = new Scanner(System.in);
+    public void showList(List<Kala> searchingKala, String productType, Scanner scanner) {
+        // Scanner scanner = new Scanner(System.in);
         while (true) {
             System.out.println("How would you like the products to be displayed?\n");
             System.out.println("1)From the highest price\n2)From the lowest price\n3)Normal(Default)");
@@ -224,16 +243,16 @@ public class Customer extends Person {
                 case "2" -> downSortList(searchingKala);
                 default -> System.out.print("");
             }
-            if (runBack() == 1) {
+            if (runBack(scanner) == 1) {
                 break;
             }
             for (int i = 0; i < searchingKala.size(); i++) {
                 if (i % 10 == 0 && i != 0) {
-                    if (runBack() == 1) {
+                    if (runBack(scanner) == 1) {
                         // scanner.close();
                         return;
                     }
-                    productSelection(searchingKala, productType, i);
+                    productSelection(searchingKala, productType, i, scanner);
                     System.out.println("-------------------------\n<- Previous page | Next page ->");
                     String choicePage = scanner.nextLine();
                     boolean runPag = true;
@@ -261,9 +280,9 @@ public class Customer extends Person {
         // scanner.close();
     }
 
-    public void productSelection(List<Kala> searchingKala, String productType, int i) {
+    public void productSelection(List<Kala> searchingKala, String productType, int iiii, Scanner scanner) {
         while (true) {
-            Scanner scanner = new Scanner(System.in);
+            // Scanner scanner = new Scanner(System.in);
             System.out.println("Select the product you want: ");
             System.out.println("Press 1 to go back, 0 to exit.");
             String choice = scanner.nextLine();
@@ -273,12 +292,13 @@ public class Customer extends Person {
                     return;
                 case "0":
                     // scanner.close();
-                    System.exit(0);
+                    // System.exit(0);
+                    ExitVendilo.exit(scanner);
                 default:
                     if (isInteger(choice)) {
                         int ran = Integer.parseInt(choice) - 1;
-                        if (ran >= (i - 10) && ran < i) {
-                            displayInformationAboutTheSelectedProduct(searchingKala.get(ran), productType);
+                        if (ran >= (iiii - 10) && ran < iiii) {
+                            displayInformationAboutTheSelectedProduct(searchingKala.get(ran), productType, scanner);
                         } else {
                             System.out.println("Out of range input.");
                         }
@@ -290,14 +310,14 @@ public class Customer extends Person {
         }
     }
 
-    public void displayInformationAboutTheSelectedProduct(Kala kala, String productType) {
+    public void displayInformationAboutTheSelectedProduct(Kala kala, String productType, Scanner scanner) {
         System.out.println(kala.toString());
-        addToCart(kala);
+        addToCart(kala, scanner);
     }
 
-    public void addToCart(Kala kala) {
-        Scanner scanner = new Scanner(System.in);
-        if (runBack() == 1) {
+    public void addToCart(Kala kala, Scanner scanner) {
+        // Scanner scanner = new Scanner(System.in);
+        if (runBack(scanner) == 1) {
             // scanner.close();
             return;
         }
@@ -325,8 +345,8 @@ public class Customer extends Person {
                 .collect(Collectors.toList());
     }
 
-    public String searchForProductType() {
-        Scanner scanner = new Scanner(System.in);
+    public String searchForProductType(Scanner scanner) {
+        // Scanner scanner = new Scanner(System.in);
         System.out.println("Product Type:\n1)Book\n2)Digital Goods\n3)ALL(Default)");
         String choice = scanner.nextLine();
         // scanner.close();
@@ -349,28 +369,28 @@ public class Customer extends Person {
         }
     }
 
-    public int priceRange(String val) {
-        Scanner scanner = new Scanner(System.in);
+    public int priceRange(String val, Scanner scanner) {
+        // Scanner scanner = new Scanner(System.in);
         while (true) {
             System.out.println(val + ": ");
             String range = scanner.nextLine();
             if (range == null) {
-                if (val.equalsIgnoreCase("max")) {
-                    int ran = Integer.MAX_VALUE;
+                if ("max".equalsIgnoreCase(val)) {
+                    // int ran = Integer.MAX_VALUE;
                     // scanner.close();
-                    return ran;
+                    return Integer.MAX_VALUE;
                 } else {
-                    if (val.equalsIgnoreCase("min")) {
-                        int ran = 0;
+                    if ("min".equalsIgnoreCase(val)) {
+                        // int ran = 0;
                         // scanner.close();
-                        return ran;
+                        return 0;
                     }
                 }
             } else {
                 if (isInteger(range)) {
-                    int ran = Integer.parseInt(range);
+                    // int ran = Integer.parseInt(range);
                     // scanner.close();
-                    return ran;
+                    return Integer.parseInt(range);
                 } else {
                     System.out.println("Incorrect input. Enter a number.");
                 }

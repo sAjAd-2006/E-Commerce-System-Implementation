@@ -17,17 +17,17 @@ public class SupporterHelper {
         this.supporter = supporter;
     }
 
-    public void menu() {
-        Scanner scanner = new Scanner(System.in);
+    public void menu(Scanner scanner) {
+        // Scanner scanner = new Scanner(System.in);
         boolean runMenu = true;
         while (runMenu) {
             System.out.println("- - - - Supporter Menu - - - -\n1-Verification\n2-Customers Report\n3-Orders");
             System.out.println("4-Log out\n5-Exit");
             String choice = scanner.nextLine();
             switch (choice) {
-                case "1" -> supporter.sellersVerification();
-                case "2" -> supporter.seeCustomersReport();
-                case "3" -> supporter.seeOrders();
+                case "1" -> supporter.sellersVerification(scanner);
+                case "2" -> supporter.seeCustomersReport(scanner);
+                case "3" -> supporter.seeOrders(scanner);
                 case "4" -> runMenu = false;
                 case "5" -> {
                     // scanner.close();

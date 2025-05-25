@@ -1,28 +1,28 @@
 package ir.ac.kntu;
 
 public class Mobile extends DigitalGoods {
-    private String rearCameraResolution;
-    private String frontCameraResolution;
+    private String rearCamReso;
+    private String frontCamReso;
     private String internetNetwork;
 
     public String getRearCameraResolution() {
-        return rearCameraResolution;
+        return rearCamReso;
     }
 
     public String getFrontCameraResolution() {
-        return frontCameraResolution;
+        return frontCamReso;
     }
 
     public String getInternetNetwork() {
         return internetNetwork;
     }
 
-    public void setRearCameraResolution(String rearCameraResolution) {
-        this.rearCameraResolution = rearCameraResolution;
+    public void setRearCameraResolution(String rearCamReso) {
+        this.rearCamReso = rearCamReso;
     }
 
-    public void setFrontCameraResolution(String frontCameraResolution) {
-        this.frontCameraResolution = frontCameraResolution;
+    public void setFrontCameraResolution(String frontCamReso) {
+        this.frontCamReso = frontCamReso;
     }
 
     public void setInternetNetwork(String internetNetwork) {

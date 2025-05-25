@@ -52,20 +52,20 @@ abstract class Person {
     public Person() {
     }
 
-    public int runBack() {
-        Scanner scanner = new Scanner(System.in);
+    public int runBack(Scanner scanner) {
+        // Scanner scanner = new Scanner(System.in);
         while (true) {
             System.out.println("Please enter the desired option : 1)Back 2)Exit 3)Continue");
             String choice = scanner.nextLine();
             switch (choice) {
                 case "1":
-                    scanner.close();
+                    // scanner.close();
                     return 1;
                 case "2":
-                    scanner.close();
+                    // scanner.close();
                     System.exit(0);
                 case "3":
-                    scanner.close();
+                    // scanner.close();
                     return 3;
                 default:
                     System.out.println("The selected option is invalid.");

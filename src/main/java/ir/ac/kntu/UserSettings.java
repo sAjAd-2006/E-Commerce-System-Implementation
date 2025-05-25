@@ -14,26 +14,10 @@ public class UserSettings {
         this.customers = Vendilo.getCustomers();
     }
 
-    public void settings(Person user) {
-        Scanner scanner = new Scanner(System.in);
-
-        settingHelp(user);
-
-        System.out.print("Change email? (y/n): ");
-        if (scanner.nextLine().equalsIgnoreCase("y")) {
-            while (true) {
-                System.out.print("Enter new email: ");
-                String email = scanner.nextLine();
-                if (!chekEmail(email)) {
-                    continue;
-                } else {
-                    user.setEmail(email);
-                    break;
-                }
-            }
-        }
+    public void settings(Person user, Scanner scanner) {
+        settingHelp(user, scanner);
         System.out.print("Change phone number? (y/n): ");
-        if (scanner.nextLine().equalsIgnoreCase("y")) {
+        if ("y".equalsIgnoreCase(scanner.nextLine())) {
             while (true) {
                 System.out.print("Enter new phone number: ");
                 String phonenumber = scanner.nextLine();
@@ -46,7 +30,7 @@ public class UserSettings {
             }
         }
         System.out.print("Change password? (y/n): ");
-        if (scanner.nextLine().equalsIgnoreCase("y")) {
+        if ("y".equalsIgnoreCase(scanner.nextLine())) {
             while (true) {
                 System.out.print("Enter new password: ");
                 String password = scanner.nextLine();
@@ -59,24 +43,32 @@ public class UserSettings {
             }
         }
         System.out.println("\nUpdated Info:\n" + user);
-        // scanner.close();
     }
 
-    public void settingHelp(Person user) {
-        Scanner scanner = new Scanner(System.in);
-
+    public void settingHelp(Person user, Scanner scanner) {
         System.out.print("Change first name? (y/n): ");
-        if (scanner.nextLine().equalsIgnoreCase("y")) {
+        if ("y".equalsIgnoreCase(scanner.nextLine())) {
             System.out.print("Enter new first name: ");
             user.setFirstname(scanner.nextLine());
         }
         System.out.print("Change last name? (y/n): ");
-        if (scanner.nextLine().equalsIgnoreCase("y")) {
+        if ("y".equalsIgnoreCase(scanner.nextLine())) {
             System.out.print("Enter new last name: ");
             user.setLastname(scanner.nextLine());
         }
-
-        // scanner.close();
+        System.out.print("Change email? (y/n): ");
+        if ("y".equalsIgnoreCase(scanner.nextLine())) {
+            while (true) {
+                System.out.print("Enter new email: ");
+                String email = scanner.nextLine();
+                if (!chekEmail(email)) {
+                    continue;
+                } else {
+                    user.setEmail(email);
+                    break;
+                }
+            }
+        }
     }
 
     public boolean chekEmail(String email) {

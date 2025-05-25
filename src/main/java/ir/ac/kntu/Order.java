@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class Order extends Timeable{
+public class Order extends Timeable {
     private List<Kala> kalas;
     private List<Boolean> isVoted;
     private LocalDateTime localDateTime;
@@ -102,41 +102,24 @@ public class Order extends Timeable{
         this.address = address;
     }
 
-    public void showOrderCustomer() {
-        int i = 0;
-        for (Kala kala : kalas) {
-            i++;
-            System.out.print(i + ") ");
-            System.out.println(kala.toString());
-            System.out.println("  ^ " + kala.getSelerName());
+    public void showOrderCustomer(Scanner scanner) {
+        for (int i = 0; i < kalas.size(); i++) {
+            System.out.println(i + ") " + kalas.get(i) + "\n  ^ " + kalas.get(i).getSelerName());
         }
-        System.out.println("\nTime: " + getLocalDateTime());
-        System.out.println("Address: " + getAddress());
+        System.out.println("\nTime: " + getLocalDateTime() + "\nAddress: " + getAddress());
         System.out.println("Do you want to raise the goods? 1>YES 2>NO(Default)");
-        Scanner scanner = new Scanner(System.in);
         String choice = scanner.nextLine();
         switch (choice) {
             case "1":
-                outerLoop: while (true) {
+                while (true) {
                     System.out.println("Choose");
                     Paginator<Kala> paginator = new Paginator<>(kalas, 10);
                     int rat = paginator.paginate(0);
                     if (rat == -1) {
-                        scanner.close();
                         return;
                     }
-                    if (this.isVoted.get(rat) == false) {
-                        while (true) {
-                            System.out.print("\nWhat is your rating? (1 / 2 / 3 / 4 / 5): ");
-                            String cmd = scanner.nextLine().trim().toLowerCase();
-                            if (cmd.matches("1|2|3|4|5")) {
-                                this.kalas.get(rat).calculatingTheAverage(Integer.parseInt(cmd));
-                                this.isVoted.set(rat, true);
-                                continue outerLoop;
-                            } else {
-                                System.out.println("Invalid rat.");
-                            }
-                        }
+                    if (!this.isVoted.get(rat) && (showOrderCustomerLope2(rat, scanner) == 1)) {
+                        continue;
                     } else {
                         System.out.println("You have already voted for this product.");
                         continue;
@@ -145,7 +128,20 @@ public class Order extends Timeable{
             default:
                 break;
         }
-        scanner.close();
+    }
+
+    public int showOrderCustomerLope2(int rat, Scanner scanner) {
+        while (true) {
+            System.out.print("\nWhat is your rating? (1 / 2 / 3 / 4 / 5): ");
+            String cmd = scanner.nextLine().trim().toLowerCase();
+            if (cmd.matches("1|2|3|4|5")) {
+                this.kalas.get(rat).calculatingTheAverage(Integer.parseInt(cmd));
+                this.isVoted.set(rat, true);
+                return 1;
+            } else {
+                System.out.println("Invalid rat.");
+            }
+        }
     }
 
     @Override
