@@ -12,29 +12,27 @@ public class SellerHelper {
     }
 
     public void menu(Scanner scanner) {
-        // Scanner scanner = new Scanner(System.in);
-        System.out.println("1.Add New Item\n2.Wallet\n3.Orders\n4.Back\n5.Exit\n =>");
-        String choice = scanner.nextLine();
-        switch (choice) {
-            case "1":
-                seller.addKala(scanner);
-                break;
-            case "2":
-                walletRun(scanner);
-                break;
-            case "3":
-                ordersRun();
-                break;
-            case "4":
-                // scanner.close();
-                return;
-            case "5":
-                // scanner.close();
-                // System.exit(0);
-                ExitVendilo.exit(scanner);
-            default:
-                System.out.println("The selected option is invalid.");
-                break;
+        while (true) {
+            System.out.print("1.Add New Item\n2.Wallet\n3.Orders\n4.Back\n5.Exit\n =>");
+            String choice = scanner.nextLine();
+            switch (choice) {
+                case "1":
+                    seller.addKala(scanner);
+                    break;
+                case "2":
+                    walletRun(scanner);
+                    break;
+                case "3":
+                    ordersRun();
+                    break;
+                case "4":
+                    return;
+                case "5":
+                    ExitVendilo.exit(scanner);
+                default:
+                    System.out.println("The selected option is invalid.");
+                    break;
+            }
         }
     }
 
@@ -57,11 +55,11 @@ public class SellerHelper {
     public void walletRun(Scanner scanner) {
         while (true) {
             System.out.println(
-                    "1> View balance\n3> Withdraw from wallet\n4> View previous transactions\n5> Back\n6> Exit");
+                    "1> View balance\n2> Withdraw from wallet\n3> View previous transactions\n4> Back\n5> Exit");
             String choice = scanner.nextLine();
             switch (choice) {
                 case "1" -> System.out.println("balance: " + seller.getWallet().getCash());
-                case "3" -> {
+                case "2" -> {
                     System.out.print("Enter the amount you want to Withdraw from wallet: ");
                     choice = scanner.nextLine();
                     if (isInteger(choice)) {
@@ -70,18 +68,17 @@ public class SellerHelper {
                         System.out.println("Incorrect input. Enter a number.");
                     }
                 }
-                case "4" -> viewPreviousTransactions(scanner);
-                case "5" -> {
+                case "3" -> viewPreviousTransactions(scanner);
+                case "4" -> {
                     return;
                 }
-                case "6" -> ExitVendilo.exit(scanner);
-                default -> System.out.println("seler eror");
+                case "5" -> ExitVendilo.exit(scanner);
+                default -> System.out.println("Incorrect input.");
             }
         }
     }
 
     public void viewPreviousTransactions(Scanner scanner) {
-        // Scanner scanner = new Scanner(System.in);
         List<Transaction> tran = new ArrayList<>();
         System.out.println("Set time filter ALL: y/n");
         if ("y".equalsIgnoreCase(scanner.nextLine())) {
@@ -90,7 +87,6 @@ public class SellerHelper {
             TimeFilterHelper<Transaction> timeFilterHelper = new TimeFilterHelper<>();
             tran = timeFilterHelper.filterTimesByUserInput(seller.getWallet().getTransactions(), scanner);
         }
-        // scanner.close();
         Paginator<Transaction> paginator = new Paginator<>(tran, 10);
         int iiii = 0;
         while (true) {

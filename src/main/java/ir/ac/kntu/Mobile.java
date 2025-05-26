@@ -36,7 +36,7 @@ public class Mobile extends DigitalGoods {
 
     @Override
     public String toString() {
-        return (super.toString() + "\nAdditional information Mobile ->" + " Rear Camera Resolution:"
+        return (super.toString() + "\n      Additional information Mobile ->" + " Rear Camera Resolution:"
                 + getRearCameraResolution() + " Front Camera Resolution:" + getFrontCameraResolution()
                 + " Internet Network:" + getInternetNetwork());
     }

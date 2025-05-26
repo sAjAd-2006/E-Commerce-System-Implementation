@@ -1,5 +1,6 @@
 package ir.ac.kntu;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Wallet {
@@ -23,10 +24,12 @@ public class Wallet {
     }
 
     public Wallet() {
+        transactions = new ArrayList<>();
     }
 
     public Wallet(int cash) {
         this.cash = cash;
+        transactions = new ArrayList<>();
     }
 
     public boolean withdrawFromWallet(int draw, String why) {

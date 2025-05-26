@@ -36,7 +36,7 @@ public class Laptop extends DigitalGoods {
 
     @Override
     public String toString() {
-        return (super.toString() + "\nAdditional information Laptop ->" + " Graphics Processor:"
+        return (super.toString() + "\n      Additional information Laptop ->" + " Graphics Processor:"
                 + getGraphicsProcessor() + " Have Bluetooth:" + isBluetooth() + " Have Webcam:" + isWebcam());
     }
 }

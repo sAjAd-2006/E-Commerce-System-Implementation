@@ -66,7 +66,7 @@ public class Supporter extends Person {
                 System.out.print("Get user email:");
                 specificEmail = scanner.nextLine();
             }
-            default -> System.out.println("eror");
+            default -> System.out.println("");
         }
         for (Customer customer : Vendilo.getCustomers()) {
             if (specificEmail.equals(customer.getEmail()) || "ALL".equals(specificEmail)) {
@@ -144,12 +144,10 @@ public class Supporter extends Person {
         // Scanner scanner = new Scanner(System.in);
         Report report = topic(scanner);
         if (report == null) {
-
             return;
         }
         Check check = status(scanner);
         if (check == null) {
-
             return;
         }
 
@@ -159,7 +157,7 @@ public class Supporter extends Person {
     public Report topic(Scanner scanner) {
         // Scanner scanner = new Scanner(System.in);
         while (true) {
-            System.out.println("What reports would you like to see?\nTopic: 1)"
+            System.out.println("What reports would you like to see?\n1)"
                     + Report.Discrepancy_between_order_and_delivered_product + "\n2)" + Report.Not_receiving_order
                     + "\n3)" + Report.Product_qualit + "\n4)" + Report.Settings + "\n5) ALL \n6) Back\n7) Exit");
             String choice = scanner.nextLine();
@@ -188,7 +186,7 @@ public class Supporter extends Person {
     public Check status(Scanner scanner) {
         // Scanner scanner = new Scanner(System.in);
         while (true) {
-            System.out.println("Enter the desired status: 1)" + Check.Closed + "\n2)" + Check.Pending + "\n3)"
+            System.out.println("Enter the desired status:\n1)" + Check.Closed + "\n2)" + Check.Pending + "\n3)"
                     + Check.Registered + "\n4) ALL \n5) Back \n6) Exit");
             String choice = scanner.nextLine();
             switch (choice) {

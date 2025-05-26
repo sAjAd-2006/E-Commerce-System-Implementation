@@ -60,9 +60,8 @@ public class CustomerHelper {
     }
 
     public void supportRun(Scanner scanner) {
-        // Scanner scanner = new Scanner(System.in);
         while (true) {
-            System.out.println("1.New Request\n2.View Old Requests\n3.Back\n4.Exit\n => ");
+            System.out.print("1.New Request\n2.View Old Requests\n3.Back\n4.Exit\n => ");
             String choice = scanner.nextLine();
             switch (choice) {
                 case "1":
@@ -72,11 +71,8 @@ public class CustomerHelper {
                     viewOldRequests();
                     break;
                 case "3":
-                    // scanner.close();
                     return;
                 case "4":
-                    // scanner.close();
-                    // System.exit(0);
                     ExitVendilo.exit(scanner);
                 default:
                     System.out.println("The selected option is invalid.");
@@ -86,6 +82,10 @@ public class CustomerHelper {
     }
 
     public void viewOldRequests() {
+        if (customer.getReportages() == null) {
+            System.out.println("\nNo report\n");
+            return;
+        }
         Paginator<Reportage> paginator = new Paginator<>(customer.getReportages(), 10);
         int jjjj = 0;
         while (true) {
@@ -94,7 +94,7 @@ public class CustomerHelper {
                 return;
             } else {
                 Reportage reportage = customer.getReportages().get(iiii);
-                System.out.println(reportage + " Request status: " + reportage.getCheck() + " Support response: "
+                System.out.println("\n" + reportage + " Request status>" + reportage.getCheck() + " Support response>"
                         + reportage.getAnswer());
                 jjjj = iiii / 10;
             }
@@ -102,10 +102,9 @@ public class CustomerHelper {
     }
 
     public void newRequest(Scanner scanner) {
-        // Scanner scanner = new Scanner(System.in);
         Report report = Report.Settings;
         while (true) {
-            System.out.print(
+            System.out.println(
                     "\nEnter command \n1.Product_qualit\n2.Discrepancy_between_order_and_delivered_product\n3.Settings\n4.Not_receiving_order");
             String rep = scanner.nextLine().trim().toLowerCase();
             if (rep.matches("1|2|3|4")) {
@@ -125,7 +124,6 @@ public class CustomerHelper {
         String text = scanner.nextLine();
         Reportage reportage = new Reportage(report, text);
         customer.getReportages().add(reportage);
-        // scanner.close();
     }
 
     public void ordersRun(Scanner scanner) {
@@ -238,6 +236,7 @@ public class CustomerHelper {
 
     public void addAddress(Scanner scanner) {
         while (true) {
+            System.out.println("Adding address>>");
             if (customer.runBack(scanner) == 1) {
                 return;
             }

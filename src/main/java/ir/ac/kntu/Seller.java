@@ -85,6 +85,8 @@ public class Seller extends Person {
 
     public Seller() {
         sellerKala = new ArrayList<>();
+        wallet = new Wallet();
+        orders = new ArrayList<>();
     }
 
     public Seller(String firstname, String lastname, String storeTitle, String codeMely, String phonenumber,
@@ -97,18 +99,20 @@ public class Seller extends Person {
         setPassword(password);
         setProvinceOfSale(provinceOfSale);
         sellerKala = new ArrayList<>();
+        wallet = new Wallet();
+        orders = new ArrayList<>();
     }
 
     public void addKala(Scanner scanner) {
         boolean runType = true, runDigital = true;
         while (runType) {
-            System.out.println(
+            System.out.print("Adding kala\n>>" +
                     "What type of product are you interested in?\n1) Digital Goods\n2) Book\n3)Back\n4)Exit\n => ");
             String choice = scanner.nextLine();
             switch (choice) {
                 case "1" -> {
                     while (runDigital) {
-                        System.out.println(
+                        System.out.print("Adding model>>\n" +
                                 "What type of Digital Goods are you interested in?\n1) Laptop\n2) Mobile\n3) Back\n4) Exit\n => ");
                         choice = scanner.nextLine();
                         switch (choice) {
@@ -131,6 +135,7 @@ public class Seller extends Person {
     public void addBook(Scanner scanner) {
         Book book = new Book();
         while (true) {
+            System.out.println("adding Book:");
             if (runBack(scanner) == 1) {
                 return;
             }
@@ -170,10 +175,11 @@ public class Seller extends Person {
 
     public void addAge(Book book, Scanner scanner) {
         while (true) {
+            System.out.println("adding Age:");
             if (runBack(scanner) == 1) {
                 return;
             }
-            System.out.println("Enter age category :\n1)CHILD\n2)ADOLESCENT\n3)ADULT\n");
+            System.out.println("Enter age category :\n1)CHILD\n2)ADOLESCENT\n3)ADULT");
             String choice = scanner.nextLine();
             switch (choice) {
                 case "1":
@@ -195,6 +201,7 @@ public class Seller extends Person {
     public void addMobile(Scanner scanner) {
         Mobile mobile = new Mobile();
         while (true) {
+            System.out.println("adding Mobile:");
             if (runBack(scanner) == 1) {
                 return;
             }
@@ -238,10 +245,11 @@ public class Seller extends Person {
 
     private void addNetwork(Mobile mobile, Scanner scanner) {
         while (true) {
+            System.out.println("adding Network:");
             if (runBack(scanner) == 1) {
                 return;
             }
-            System.out.println("Enter internet network :\n1) 3G\n2) 4G\n3) 5G\n");
+            System.out.println("Enter internet network :\n1) 3G\n2) 4G\n3) 5G");
             String choice = scanner.nextLine();
             switch (choice) {
                 case "1":
@@ -263,6 +271,7 @@ public class Seller extends Person {
     public void addLaptop(Scanner scanner) {
         Laptop laptop = new Laptop();
         while (true) {
+            System.out.println("adding laptop:");
             if (runBack(scanner) == 1) {
                 return;
             }
@@ -306,11 +315,12 @@ public class Seller extends Person {
     private void addBlu(Laptop laptop, Scanner scanner) {
         // Scanner scanner = new Scanner(System.in);
         while (true) {
+            System.out.println("adding bluetooth:");
             if (runBack(scanner) == 1) {
                 // scanner.close();
                 return;
             }
-            System.out.println("Does the laptop have a bluetooth?\n1) YES\n2) NO\n");
+            System.out.println("Does the laptop have a bluetooth?\n1) YES\n2) NO");
             String choice = scanner.nextLine();
             switch (choice) {
                 case "1":
@@ -331,11 +341,12 @@ public class Seller extends Person {
     private void addWebcam(Laptop laptop, Scanner scanner) {
         // Scanner scanner = new Scanner(System.in);
         while (true) {
+            System.out.println("adding Webcam:");
             if (runBack(scanner) == 1) {
                 // scanner.close();
                 return;
             }
-            System.out.println("Does the laptop have a webcam?\n1) YES\n2) NO\n");
+            System.out.println("Does the laptop have a webcam?\n1) YES\n2) NO");
             String choice = scanner.nextLine();
             switch (choice) {
                 case "1":
@@ -355,7 +366,7 @@ public class Seller extends Person {
 
     @Override
     public String toString() {
-        return (" Store Title:" + getStoreTitle());
+        return (" Store Title:" + getStoreTitle() + " CodeMely=>" + getCodeMely());
     }
 
     public String chap() {

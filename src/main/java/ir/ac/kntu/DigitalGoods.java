@@ -34,7 +34,7 @@ abstract class DigitalGoods extends Kala {
 
     @Override
     public String toString() {
-        return (super.toString() + "\nAdditional information Digital good ->" + " Brand:" + getBrand()
-                + " Internal memory size:" + getInternalMemorySize() + " Amount of RAM:" + getAmountOfRAM());
+        return (super.toString() + "\n      Additional information Digital good ->" + " Brand:" + getBrand()
+                + " Internal memory size:" + getInternalMemorySize() + "T Amount of RAM:" + getAmountOfRAM() + "G");
     }
 }

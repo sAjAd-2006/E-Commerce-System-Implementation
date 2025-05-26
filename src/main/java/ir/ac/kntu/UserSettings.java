@@ -14,7 +14,7 @@ public class UserSettings {
         this.customers = Vendilo.getCustomers();
     }
 
-    public void settings(Person user, Scanner scanner) {
+    public void settings(Customer user, Scanner scanner) {
         settingHelp(user, scanner);
         System.out.print("Change phone number? (y/n): ");
         if ("y".equalsIgnoreCase(scanner.nextLine())) {
@@ -42,7 +42,8 @@ public class UserSettings {
                 }
             }
         }
-        System.out.println("\nUpdated Info:\n" + user);
+        System.out.println("\nUpdated Info:\n" + user + " phone number: " + user.getPhonenumber()
+                + " password: " + user.getPassword());
     }
 
     public void settingHelp(Person user, Scanner scanner) {

@@ -48,23 +48,32 @@ public class Vendilo {
         Scanner scanner = new Scanner(System.in);
         ChekFild chekFild = new ChekFild(sellers, customers);
         Color.printCyanBold("Welcome to the VENDILO.");
-        while (true) {
-            Color.printWhiteBold("\nMain Menu:");
-            Color.printGreen("1-Login");
-            Color.printGreen("2-Register");
-            Color.printGreen("3-Exit");
-            Color.printYellowInline("Please enter the desired option: ");
+        boolean option = true;
+        while (option) {
+            menuPrint();
             String choice = scanner.nextLine();
             switch (choice) {
                 case "1" -> loginMenu(scanner);
                 case "2" -> registerMenu(scanner, chekFild);
-                case "3" -> ExitVendilo.exit(scanner);
+                case "3" -> {
+                    ExitVendilo.exit(scanner);
+                    option = false;
+                }
                 default -> {
                     Color.printRedBgWhite("The selected option is invalid!");
                     Color.printRed("Please try again.");
                 }
             }
         }
+        scanner.close();
+    }
+
+    public void menuPrint() {
+        Color.printWhiteBold("\nMain Menu:");
+        Color.printGreen("1-Login");
+        Color.printGreen("2-Register");
+        Color.printGreen("3-Exit");
+        Color.printYellowInline("Please enter the desired option: ");
     }
 
     public void loginMenu(Scanner scanner) {
@@ -207,6 +216,21 @@ public class Vendilo {
             String firstname = scanner.nextLine();
             Color.printYellowInline("Enter lastname: ");
             String lastname = scanner.nextLine();
+            Customer customer = customerRegister2(scanner, chekFild, firstname, lastname);
+            if (customer == null) {
+                continue;
+            }
+            customers.add(customer);
+            Color.printGreen("Registration was successful.");
+            break;
+        }
+    }
+
+    public Customer customerRegister2(Scanner scanner, ChekFild chekFild, String firstname, String lastname) {
+        while (true) {
+            if (runBack(scanner) == 1) {
+                return null;
+            }
             Color.printYellowInline("Enter email: ");
             String email = scanner.nextLine();
             if (!chekFild.chekEmail(email)) {
@@ -222,10 +246,7 @@ public class Vendilo {
             if (!chekFild.chekPassword(password)) {
                 continue;
             }
-            Customer customer = new Customer(firstname, lastname, email, phonenumber, password);
-            customers.add(customer);
-            Color.printGreen("Registration was successful.");
-            break;
+            return new Customer(firstname, lastname, email, phonenumber, password);
         }
     }
 
@@ -243,6 +264,24 @@ public class Vendilo {
             String storeTitle = scanner.nextLine();
             if (!chekFild.chekStoreTitle(storeTitle)) {
                 continue;
+            }
+            Seller seller = sellerRegister2(scanner, chekFild, firstname, lastname, storeTitle);
+            if (seller == null) {
+                continue;
+            }
+            Supporter.getSellersVerification().add(seller);
+            verification.add(seller);
+            Color.printGreen("Seller registration completed. Waiting for verification.");
+            // System.out.println(seller.chap());
+            break;
+        }
+    }
+
+    public Seller sellerRegister2(Scanner scanner, ChekFild chekFild, String firstname, String lastname,
+            String storeTitle) {
+        while (true) {
+            if (runBack(scanner) == 1) {
+                return null;
             }
             Color.printYellowInline("Enter Code Mely: ");
             String codeMely = scanner.nextLine();
@@ -265,10 +304,7 @@ public class Vendilo {
                     provinceOfSale);
             seller.setAgencyCode(chekFild.generateAgencyCode());
             seller.setReasonForRejection("Your authentication has not been confirmed yet.");
-            Supporter.getSellersVerification().add(seller);
-            verification.add(seller);
-            Color.printGreen("Seller registration completed. Waiting for verification.");
-            break;
+            return seller;
         }
     }
 
