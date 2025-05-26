@@ -87,8 +87,12 @@ public class Supporter extends Person {
                 return;
             } else {
                 Order order = orders.get(ord);
-                System.out.println(order + " Customer name: " + order.getCustomerName() + "\nSellers name: "
-                        + order.getSellersNames() + "\nshipping Cost: ");
+                System.out.println(order + " Customer name: " + order.getCustomerName() + "\nshipping Cost: "
+                        + order.getShippingCost());
+                System.out.println("Seler names:");
+                for (String name : order.getSellersNames()) {
+                    System.out.println(">" + name);
+                }
                 Paginator<Kala> paginator2 = new Paginator<>(order.getKalas(), 10);
                 while (true) {
                     int kal = paginator2.paginate(jits);

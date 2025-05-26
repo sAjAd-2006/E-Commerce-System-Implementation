@@ -13,7 +13,7 @@ public class SellerHelper {
 
     public void menu(Scanner scanner) {
         while (true) {
-            System.out.print("1.Add New Item\n2.Wallet\n3.Orders\n4.Back\n5.Exit\n =>");
+            System.out.print("- - - - Seller menu - - - -\n1.Add New Item\n2.Wallet\n3.Orders\n4.Log out\n5.Exit\n =>");
             String choice = scanner.nextLine();
             switch (choice) {
                 case "1":

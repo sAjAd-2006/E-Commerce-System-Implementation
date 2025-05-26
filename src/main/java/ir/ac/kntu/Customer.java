@@ -81,14 +81,18 @@ public class Customer extends Person {
 
     public void continueShopping(Scanner scanner) {
         int shippingCost = 10;
+        Paginator<Address> paginator = new Paginator<>(addresses, 10);
         while (true) {
             if (this.shoppingCart.findTotal() == 0) {
                 System.out.println("Your shopping cart is empty.");
                 return;
             }
             if (!addresses.isEmpty()) {
-                Paginator<Address> paginator = new Paginator<>(addresses, 10);
-                Address address = addresses.get(paginator.paginate(0));
+                int select = paginator.paginate(0);
+                if (select == -1) {
+                    return;
+                }
+                Address address = addresses.get(select);
                 if (address == null) {
                     System.out.println("You did not select an address.");
                     continue;
@@ -167,23 +171,13 @@ public class Customer extends Person {
             kala.setInventory(kala.getInventory() - 1);
             vot.add(false);
         }
-        Order newOrder = new Order(kalass, localDateTime, sellersNames, address, findTotal, shippingCost, "", "");
+        Order newOrder = new Order(kalass, localDateTime, sellersNames, address, findTotal, shippingCost,
+                (getFirstname() + " " + getLastname()), getEmail());
         newOrder.setIsVoted(vot);
         orders.add(newOrder);
         for (Seller seller : Vendilo.getSellers()) {
             for (Kala kala : kalass) {
                 if (seller.getAgencyCode().equals(kala.getAgencyCodeOfSelers())) {
-                    // List<Kala> kalas = new ArrayList<>();
-                    // kalas.add(kala);
-                    // Transaction transaction = new Transaction(localDateTime, (kala.getPrice() * 9
-                    // / 10), "Sale");
-                    // seller.getWallet().getTransactions().add(transaction);
-                    // seller.getWallet().setCash(seller.getWallet().getCash() + (kala.getPrice() *
-                    // 9 / 10));
-                    // Order order = new Order(kalas, localDateTime, null, address, (kala.getPrice()
-                    // * 9 / 10),
-                    // shippingCost, (getFirstname() + " " + getLastname()), getEmail());
-                    // seller.getOrders().add(order);
                     crOrder2(kala, localDateTime, seller, address, shippingCost);
                 }
             }
@@ -229,7 +223,7 @@ public class Customer extends Person {
             int max) {
         for (Kala kala : Seller.getKalas()) {
             if (kala.getPrice() <= max && kala.getPrice() >= min) {
-                if (kala.getName().contains(productName)) {
+                if (kala.getName().contains(productName) || productName == "") {
                     if (!"all".equalsIgnoreCase(productType)) {
                         if (kala instanceof Book && "book".equalsIgnoreCase(productType)) {
                             searchingKala.add(kala);
@@ -276,39 +270,6 @@ public class Customer extends Person {
                 }
                 displayInformationAboutTheSelectedProduct(searchingKala.get(kal), productType, scanner);
             }
-            // for (int i = 0; i < searchingKala.size(); i++) {
-            // if (i % 10 == 0 && i != 0) {
-            // if (runBack(scanner) == 1) {
-            // return;
-            // }
-            // productSelection(searchingKala, productType, i, scanner);
-            // System.out.println("-------------------------\n<- Previous page | Next page
-            // ->");
-            // String choicePage = scanner.nextLine();
-            // boolean runPag = true;
-            // while (runPag) {
-            // switch (choicePage) {
-            // case "<-":
-            // i -= 10;
-            // runPag = false;
-            // break;
-            // case "->":
-            // runPag = false;
-            // break;
-            // default:
-            // System.out.println("The selected option is invalid.");
-            // break;
-            // }
-            // }
-            // }
-            // System.out.println("Page <" + (i + 1) + ">");
-            // System.out.println((i + 1) + ") Product name:" +
-            // searchingKala.get(i).getName() + " Product type:"
-            // + productType + " Seler name:" + searchingKala.get(i).getSelerName() + "
-            // Price:"
-            // + searchingKala.get(i).getPrice() + " Average score:" +
-            // searchingKala.get(i).getAverageScore());
-            // }
         }
     }
 
@@ -404,11 +365,10 @@ public class Customer extends Person {
     }
 
     public int priceRange(String val, Scanner scanner, int min) {
-        // Scanner scanner = new Scanner(System.in);
         while (true) {
             System.out.print(val + ": ");
             String range = scanner.nextLine();
-            if (!isInteger(range)) {
+            if (range == "") {
                 if ("max".equalsIgnoreCase(val)) {
                     return Integer.MAX_VALUE;
                 } else {
@@ -417,11 +377,15 @@ public class Customer extends Person {
                     }
                 }
             } else {
-                if (Integer.parseInt(range) < min) {
-                    System.out.println("The maximum must not be less than the minimum.");
-                    continue;
+                if (!isInteger(range)) {
+                    if (Integer.parseInt(range) < min) {
+                        System.out.println("The maximum must not be less than the minimum.");
+                        continue;
+                    }
+                    return Integer.parseInt(range);
+                } else {
+                    System.out.println("invild input. enter a number");
                 }
-                return Integer.parseInt(range);
             }
         }
     }

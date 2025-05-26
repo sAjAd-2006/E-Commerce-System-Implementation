@@ -106,7 +106,7 @@ public class Seller extends Person {
     public void addKala(Scanner scanner) {
         boolean runType = true, runDigital = true;
         while (runType) {
-            System.out.print("Adding kala\n>>" +
+            System.out.print("Adding kala>>\n" +
                     "What type of product are you interested in?\n1) Digital Goods\n2) Book\n3)Back\n4)Exit\n => ");
             String choice = scanner.nextLine();
             switch (choice) {
