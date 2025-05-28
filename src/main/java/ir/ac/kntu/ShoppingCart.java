@@ -55,73 +55,8 @@ public class ShoppingCart {
                 default:
                     break;
             }
-            // for (int i = 0; i < kalas.size(); i++) {
-            // if (i % 10 == 0 && i != 0) {
-            // if (runBack(scanner) == 1) {
-            // return;
-            // }
-            // viewproduct(i, scanner);
-            // System.out.println("-------------------------\n<- Previous page | Next page
-            // ->");
-            // String choicePage = scanner.nextLine();
-            // boolean runPag = true;
-            // while (runPag) {
-            // switch (choicePage) {
-            // case "<-":
-            // i -= 10;
-            // runPag = false;
-            // break;
-            // case "->":
-            // runPag = false;
-            // break;
-            // default:
-            // System.out.println("The selected option is invalid.");
-            // break;
-            // }
-            // }
-            // }
-            // System.out.println(
-            // (i + 1) + ")" + " Name:" + kalas.get(i).getName() + " Product Type:"
-            // + this.getClass().getSimpleName() + " Price:"
-            // + kalas.get(i).getPrice());
-            // }
         }
     }
-
-    // private void viewproduct(int iiii, Scanner scanner) {
-    //     // Scanner scanner = new Scanner(System.in);
-    //     while (true) {
-    //         System.out.println("Enter the desired product number.");
-    //         if (runBack(scanner) == 1) {
-    //             // scanner.close();
-    //             return;
-    //         }
-    //         String choice = scanner.nextLine();
-    //         if (isInteger(choice)) {
-    //         int ran = Integer.parseInt(choice) - 1;
-    //         if (ran >= (iiii - 10) && ran < iiii) {
-    //         System.out.println("Name:" + kalas.get(iiii).getName() + " Product Type:" +
-    //         this.getClass().getSimpleName() + " Price:" + kalas.get(iiii).getPrice());
-    //         System.out.println("Remove product?\n1> YES 2> NO(Default)");
-    //         choice = scanner.nextLine();
-    //         switch (choice) {
-    //             case "1":
-    //                 kalas.remove(iiii);
-    //                 break;
-
-    //             default:
-    //                 break;
-    //         }
-    //         } else {
-    //         System.out.println("Out of range input.");
-    //         continue;
-    //         }
-    //         } else {
-    //         System.out.println("Incorrect input. Enter a number.");
-    //         continue;
-    //         }
-    //     }
-    // }
 
     public int runBack(Scanner scanner) {
         // Scanner scanner = new Scanner(System.in);

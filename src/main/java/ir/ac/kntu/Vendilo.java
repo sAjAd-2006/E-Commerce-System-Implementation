@@ -1,6 +1,7 @@
 package ir.ac.kntu;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
@@ -268,20 +269,20 @@ public class Vendilo {
             if (!chekFild.chekStoreTitle(storeTitle)) {
                 continue;
             }
-            Seller seller = sellerRegister2(scanner, chekFild, firstname, lastname, storeTitle);
+            List<String> name = Arrays.asList(firstname, lastname);
+            Seller seller = sellerRegister2(scanner, chekFild, name, storeTitle);
             if (seller == null) {
                 continue;
             }
             Supporter.getSellersVerification().add(seller);
             verification.add(seller);
             Color.printGreen("Seller registration completed. Waiting for verification.");
-            // System.out.println(seller.chap());
             break;
         }
     }
 
-    public Seller sellerRegister2(Scanner scanner, ChekFild chekFild, String firstname, String lastname,
-            String storeTitle) {
+    public Seller sellerRegister2(Scanner scanner, ChekFild chekFild, List<String> name, String storeTitle) {
+        String firstname = name.get(0), lastname = name.get(1);
         while (true) {
             if (runBack(scanner) == 1) {
                 return null;

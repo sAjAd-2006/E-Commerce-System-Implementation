@@ -2,6 +2,7 @@ package ir.ac.kntu;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
@@ -178,13 +179,15 @@ public class Customer extends Person {
         for (Seller seller : Vendilo.getSellers()) {
             for (Kala kala : kalass) {
                 if (seller.getAgencyCode().equals(kala.getAgencyCodeOfSelers())) {
-                    crOrder2(kala, localDateTime, seller, address, shippingCost);
+                    crOrder2(kala, localDateTime, seller, newOrder);
                 }
             }
         }
     }
 
-    public void crOrder2(Kala kala, LocalDateTime localDateTime, Seller seller, Address address, int shippingCost) {
+    public void crOrder2(Kala kala, LocalDateTime localDateTime, Seller seller, Order orderCustomer) {
+        Address address = orderCustomer.getAddress();
+        int shippingCost = orderCustomer.getShippingCost();
         List<Kala> kalas = new ArrayList<>();
         kalas.add(kala);
         Transaction transaction = new Transaction(localDateTime, (kala.getPrice() * 9 / 10), "Sale");
@@ -204,6 +207,7 @@ public class Customer extends Person {
             System.out.print("Enter at least one of the following fields\nProduct Name: ");
             String productName = scanner.nextLine();
             String productType = searchForProductType(scanner);
+            List<String> sList = Arrays.asList(productName, productType);
             int min = 0, max = 0;
             while (true) {
                 System.out.println("\nEnter price range(Default:ALL)");
@@ -214,13 +218,13 @@ public class Customer extends Person {
                 }
             }
             List<Kala> searchingKala = new ArrayList<>();
-            searchingKala = searchingKala2(searchingKala, productName, productType, min, max);
+            searchingKala = searchingKala2(searchingKala, sList, min, max);
             showList(searchingKala, productType, scanner);
         }
     }
 
-    public List<Kala> searchingKala2(List<Kala> searchingKala, String productName, String productType, int min,
-            int max) {
+    public List<Kala> searchingKala2(List<Kala> searchingKala, List<String> sList, int min, int max) {
+        String productName = sList.get(0), productType = sList.get(1);
         for (Kala kala : Seller.getKalas()) {
             if (kala.getPrice() <= max && kala.getPrice() >= min) {
                 if (kala.getName().contains(productName) || "".equals(productName)) {
