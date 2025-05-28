@@ -14,6 +14,11 @@ public class Customer extends Person {
     private List<Address> addresses;
     private List<Order> orders;
     private List<Reportage> reportages;
+    private List<Seller> sellers;
+
+    public void setSellers(List<Seller> sellers) {
+        this.sellers = sellers;
+    }
 
     public List<Order> getOrders() {
         return orders;
@@ -37,6 +42,7 @@ public class Customer extends Person {
         addresses = new ArrayList<>();
         orders = new ArrayList<>();
         reportages = new ArrayList<>();
+        sellers = new ArrayList<>();
     }
 
     public Customer(String firstname, String lastname, String email, String phonenumber, String password) {
@@ -50,6 +56,7 @@ public class Customer extends Person {
         orders = new ArrayList<>();
         reportages = new ArrayList<>();
         shoppingCart = new ShoppingCart();
+        sellers = new ArrayList<>();
     }
 
     public Wallet getWallet() {
@@ -176,7 +183,7 @@ public class Customer extends Person {
                 (getFirstname() + " " + getLastname()), getEmail());
         newOrder.setIsVoted(vot);
         orders.add(newOrder);
-        for (Seller seller : Vendilo.getSellers()) {
+        for (Seller seller : this.sellers) {
             for (Kala kala : kalass) {
                 if (seller.getAgencyCode().equals(kala.getAgencyCodeOfSelers())) {
                     crOrder2(kala, localDateTime, seller, newOrder);
@@ -407,4 +414,5 @@ public class Customer extends Person {
             return false;
         }
     }
+
 }

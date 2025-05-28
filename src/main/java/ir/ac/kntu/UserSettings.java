@@ -9,9 +9,9 @@ import java.util.regex.Pattern;
 public class UserSettings {
     private List<Customer> customers;
 
-    public UserSettings() {
+    public UserSettings(List<Customer> customers) {
         this.customers = new ArrayList<>();
-        this.customers = Vendilo.getCustomers();
+        this.customers = customers;
     }
 
     public void settings(Customer user, Scanner scanner) {

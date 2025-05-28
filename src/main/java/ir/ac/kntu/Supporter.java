@@ -34,21 +34,22 @@ public class Supporter extends Person {
     }
 
     public Supporter(String firstname, String lastname, String agencyName, String password) {
-        verification = Vendilo.getSellersVerification();
-        customersReport = Vendilo.getCustomers();
+        verification = new ArrayList<>();
+        customersReport = new ArrayList<>();
         setFirstname(firstname);
         setLastname(lastname);
         setAgencyName(agencyName);
         setPassword(password);
     }
+    
 
-    public void seeOrders(Scanner scanner) {
+    public void seeOrders(Scanner scanner, List<Customer> customers) {
         while (true) {
             if (runBack(scanner) == 1) {
                 break;
             }
             List<Order> orders = new ArrayList<>();
-            orders = seeOrders2(orders, scanner);
+            orders = seeOrders2(orders, scanner, customers);
             System.out.println("Set time filter: y/n (Default:All time)");
             if ("y".equalsIgnoreCase(scanner.nextLine())) {
                 TimeFilterHelper<Order> timeFilterHelper = new TimeFilterHelper<>();
@@ -58,7 +59,7 @@ public class Supporter extends Person {
         }
     }
 
-    public List<Order> seeOrders2(List<Order> orders, Scanner scanner) {
+    public List<Order> seeOrders2(List<Order> orders, Scanner scanner, List<Customer> customers) {
         System.out.println("Do you have a specific user in mind? 1) YES 2) NO(Default)");
         String specificEmail = "ALL";
         switch (scanner.nextLine()) {
@@ -68,7 +69,7 @@ public class Supporter extends Person {
             }
             default -> System.out.println("");
         }
-        for (Customer customer : Vendilo.getCustomers()) {
+        for (Customer customer : customers) {
             if (specificEmail.equals(customer.getEmail()) || "ALL".equals(specificEmail)) {
                 for (Order order : customer.getOrders()) {
                     orders.add(order);
@@ -109,7 +110,7 @@ public class Supporter extends Person {
         }
     }
 
-    public void sellersVerification(Scanner scanner) {
+    public void sellersVerification(Scanner scanner, Vendilo vendilo) {
         int iiii = 0;
         while (true) {
             Paginator<Seller> paginator = new Paginator<>(verification, 10);
@@ -121,8 +122,8 @@ public class Supporter extends Person {
                 System.out.println("Do you approve or not? 1)YES 2)NO 3)Back");
                 String choice = scanner.nextLine();
                 switch (choice) {
-                    case "1" -> case12(1, jjjj, scanner);
-                    case "2" -> case12(2, jjjj, scanner);
+                    case "1" -> case12(1, jjjj, scanner, vendilo);
+                    case "2" -> case12(2, jjjj, scanner, vendilo);
                     case "3" -> {
                         iiii = jjjj / 10;
                         continue;
@@ -133,10 +134,10 @@ public class Supporter extends Person {
         }
     }
 
-    public void case12(int casey, int jjjj, Scanner scanner) {
+    public void case12(int casey, int jjjj, Scanner scanner, Vendilo vendilo) {
         if (casey == 1) {
-            Vendilo.getSellers().add(getSellersVerification().get(jjjj));
-            Vendilo.getSellersVerification().remove(jjjj);
+            vendilo.getSellers().add(getSellersVerification().get(jjjj));
+            vendilo.getSellersVerification().remove(jjjj);
         } else {
             System.out.print("Write the reason: ");
             String choice = scanner.nextLine();
@@ -144,8 +145,7 @@ public class Supporter extends Person {
         }
     }
 
-    public void seeCustomersReport(Scanner scanner) {
-        // Scanner scanner = new Scanner(System.in);
+    public void seeCustomersReport(Scanner scanner, List<Customer> customers) {
         Report report = topic(scanner);
         if (report == null) {
             return;
@@ -154,7 +154,7 @@ public class Supporter extends Person {
         if (check == null) {
             return;
         }
-
+        setCustomersReport(customers);
         customersReport(report, check, scanner);
     }
 
@@ -214,7 +214,6 @@ public class Supporter extends Person {
     }
 
     public void customersReport(Report report, Check check, Scanner scanner) {
-        setCustomersReport(Vendilo.getCustomers());
         int iiii = 0, jjjj = 0;
         Paginator<Customer> paginator = new Paginator<>(customersReport, 10);
         while (true) {

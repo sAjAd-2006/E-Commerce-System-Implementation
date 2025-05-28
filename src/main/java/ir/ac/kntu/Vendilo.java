@@ -6,12 +6,12 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Vendilo {
-    private static List<Customer> customers = new ArrayList<>();
-    private static List<Seller> sellers = new ArrayList<>();
-    private static List<Seller> verification = new ArrayList<>();
-    private static List<Supporter> supporters = new ArrayList<>();
+    private List<Customer> customers = new ArrayList<>();
+    private List<Seller> sellers = new ArrayList<>();
+    private List<Seller> verification = new ArrayList<>();
+    private List<Supporter> supporters = new ArrayList<>();
 
-    public static List<Supporter> getSupporters() {
+    public List<Supporter> getSupporters() {
         return supporters;
     }
 
@@ -27,7 +27,7 @@ public class Vendilo {
     //     sellers = sellers;
     // }
 
-    public static List<Seller> getSellersVerification() {
+    public List<Seller> getSellersVerification() {
         return verification;
     }
 
@@ -35,11 +35,11 @@ public class Vendilo {
     //     verification = verification;
     // }
 
-    public static List<Customer> getCustomers() {
+    public List<Customer> getCustomers() {
         return customers;
     }
 
-    public static List<Seller> getSellers() {
+    public List<Seller> getSellers() {
         return sellers;
     }
 
@@ -130,7 +130,7 @@ public class Vendilo {
                 if (supporter.getPassword().equals(password)) {
                     pas = true;
                     Color.printGreen("Successful login.");
-                    SupporterHelper supporterHelper = new SupporterHelper(supporter);
+                    SupporterHelper supporterHelper = new SupporterHelper(supporter, this);
                     supporterHelper.menu(scanner);
                 }
             }
@@ -195,7 +195,7 @@ public class Vendilo {
                 if (customer.getPassword().equals(password)) {
                     passwordEror = true;
                     Color.printGreen("Successful login.");
-                    CustomerHelper customerHelper = new CustomerHelper(customer);
+                    CustomerHelper customerHelper = new CustomerHelper(customer, this);
                     customerHelper.menu(scanner);
                 }
             }

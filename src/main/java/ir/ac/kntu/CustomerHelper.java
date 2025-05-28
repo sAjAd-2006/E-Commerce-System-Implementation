@@ -6,6 +6,7 @@ import java.util.Scanner;
 
 public class CustomerHelper {
     private Customer customer;
+    private Vendilo vendilo;
 
     public Customer getCustomer() {
         return customer;
@@ -18,8 +19,9 @@ public class CustomerHelper {
     public CustomerHelper() {
     }
 
-    public CustomerHelper(Customer customer) {
+    public CustomerHelper(Customer customer, Vendilo vendilo) {
         this.customer = customer;
+        this.vendilo = vendilo;
     }
 
     public void menu(Scanner scanner) {
@@ -35,7 +37,7 @@ public class CustomerHelper {
                 case "4" -> walletRun(scanner);
                 case "5" -> ordersRun(scanner);
                 case "6" -> {
-                    UserSettings userSettings = new UserSettings();
+                    UserSettings userSettings = new UserSettings(vendilo.getCustomers());
                     userSettings.settings(customer, scanner);
                 }
                 case "7" -> supportRun(scanner);
@@ -52,6 +54,7 @@ public class CustomerHelper {
         String choice = scanner.nextLine();
         switch (choice) {
             case "1":
+                customer.setSellers(vendilo.getSellers());
                 customer.continueShopping(scanner);
                 break;
             default:
