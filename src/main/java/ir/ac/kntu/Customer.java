@@ -223,7 +223,7 @@ public class Customer extends Person {
             int max) {
         for (Kala kala : Seller.getKalas()) {
             if (kala.getPrice() <= max && kala.getPrice() >= min) {
-                if (kala.getName().contains(productName) || productName == "") {
+                if (kala.getName().contains(productName) || "".equals(productName)) {
                     if (!"all".equalsIgnoreCase(productType)) {
                         if (kala instanceof Book && "book".equalsIgnoreCase(productType)) {
                             searchingKala.add(kala);
@@ -368,7 +368,7 @@ public class Customer extends Person {
         while (true) {
             System.out.print(val + ": ");
             String range = scanner.nextLine();
-            if (range == "") {
+            if ("".equals(range)) {
                 if ("max".equalsIgnoreCase(val)) {
                     return Integer.MAX_VALUE;
                 } else {

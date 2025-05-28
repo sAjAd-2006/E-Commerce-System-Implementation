@@ -14,25 +14,25 @@ public class Vendilo {
         return supporters;
     }
 
-    public static void setSupporters(List<Supporter> supporters) {
-        Vendilo.supporters = supporters;
-    }
+    // public static void setSupporters(List<Supporter> supporters) {
+    //     supporters = supporters;
+    // }
 
-    public static void setCustomers(List<Customer> customers) {
-        Vendilo.customers = customers;
-    }
+    // public static void setCustomers(List<Customer> customers) {
+    //     customers = customers;
+    // }
 
-    public static void setSellers(List<Seller> sellers) {
-        Vendilo.sellers = sellers;
-    }
+    // public static void setSellers(List<Seller> sellers) {
+    //     sellers = sellers;
+    // }
 
     public static List<Seller> getSellersVerification() {
         return verification;
     }
 
-    public static void setSellersVerification(List<Seller> verification) {
-        Vendilo.verification = verification;
-    }
+    // public static void setSellersVerification(List<Seller> verification) {
+    //     verification = verification;
+    // }
 
     public static List<Customer> getCustomers() {
         return customers;
@@ -45,27 +45,30 @@ public class Vendilo {
     public void menu() {
         Supporter supporter = new Supporter("sajad", "teymoori", "sajadilo", "12345Aa!");
         supporters.add(supporter);
-        Scanner scanner = new Scanner(System.in);
         ChekFild chekFild = new ChekFild(sellers, customers);
         Color.printCyanBold("Welcome to the VENDILO.");
         boolean option = true;
-        while (option) {
-            menuPrint();
-            String choice = scanner.nextLine();
-            switch (choice) {
-                case "1" -> loginMenu(scanner);
-                case "2" -> registerMenu(scanner, chekFild);
-                case "3" -> {
-                    ExitVendilo.exit(scanner);
-                    option = false;
-                }
-                default -> {
-                    Color.printRedBgWhite("The selected option is invalid!");
-                    Color.printRed("Please try again.");
+        try (Scanner scanner = new Scanner(System.in)) {
+            while (option) {
+                menuPrint();
+                String choice = scanner.nextLine();
+                switch (choice) {
+                    case "1" -> loginMenu(scanner);
+                    case "2" -> registerMenu(scanner, chekFild);
+                    case "3" -> {
+                        ExitVendilo.exit(scanner);
+                        option = false;
+                    }
+                    default -> {
+                        Color.printRedBgWhite("The selected option is invalid!");
+                        Color.printRed("Please try again.");
+                    }
                 }
             }
+        } catch (Exception e) {
+            // TODO: handle exception
+            System.out.println("Vendilo error");
         }
-        scanner.close();
     }
 
     public void menuPrint() {

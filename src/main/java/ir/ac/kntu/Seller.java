@@ -214,15 +214,7 @@ public class Seller extends Person {
             } else {
                 continue;
             }
-            System.out.println("Enter price : ");
-            String price = scanner.nextLine();
-            if (isInteger(price)) {
-                mobile.setPrice(Integer.parseInt(price));
-            } else {
-                continue;
-            }
-            System.out.println("Enter brand : ");
-            mobile.setBrand(scanner.nextLine());
+
             kalas.add(addMobile2(mobile, scanner));
             sellerKala.add(mobile);
             return;
@@ -230,6 +222,16 @@ public class Seller extends Person {
     }
 
     public Mobile addMobile2(Mobile mobile, Scanner scanner) {
+        while (true) {
+            System.out.println("Enter price : ");
+            String price = scanner.nextLine();
+            if (isInteger(price)) {
+                mobile.setPrice(Integer.parseInt(price));
+                break;
+            }
+        }
+        System.out.println("Enter brand : ");
+        mobile.setBrand(scanner.nextLine());
         System.out.println("Enter internal memory size : ");
         mobile.setInternalMemorySize(scanner.nextLine());
         System.out.println("Enter amount of RAM : ");
