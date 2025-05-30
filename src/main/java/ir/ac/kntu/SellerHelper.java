@@ -55,9 +55,9 @@ public class SellerHelper {
         try {
             Path path = Paths.get("seller_full_report.html");
             Files.write(path, htmlReport.getBytes(StandardCharsets.UTF_8));
-            System.out.println("گزارش با موفقیت در " + path.toAbsolutePath() + " ذخیره شد");
+            System.out.println("Report saved successfully: " + path.toAbsolutePath());
         } catch (IOException e) {
-            System.err.println("خطا در ذخیره گزارش: " + e.getMessage());
+            System.err.println("Error saving report: " + e.getMessage());
         }
         // // حتی اگر seller null باشد کار می‌کند
         // FinancialReportGenerator generator = new FinancialReportGenerator(seller);

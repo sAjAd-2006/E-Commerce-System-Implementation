@@ -1,6 +1,5 @@
 package ir.ac.kntu;
 
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.time.Year;
@@ -9,7 +8,6 @@ import java.util.stream.Collectors;
 
 public class EnhancedFinancialReportGenerator {
     private final Seller seller;
-    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
     private final int currentYear = Year.now().getValue();
     private final Month currentMonth = LocalDateTime.now().getMonth();
 
@@ -19,7 +17,6 @@ public class EnhancedFinancialReportGenerator {
 
     public String generateEnhancedReport() {
         try {
-            // بررسی‌های اولیه
             if (seller == null) {
                 return generateErrorHtml("فروشنده معتبر نیست (null)");
             }
@@ -28,13 +25,11 @@ public class EnhancedFinancialReportGenerator {
                 return generateErrorHtml("اطلاعات مالی فروشنده ناقص است");
             }
 
-            // محاسبات آماری
             Map<Month, Integer> monthlySales = calculateMonthlySales();
             int currentMonthSales = monthlySales.getOrDefault(currentMonth, 0);
             int yearlySales = monthlySales.values().stream().mapToInt(Integer::intValue).sum();
             double monthlyAverage = monthlySales.isEmpty() ? 0 : yearlySales / (double) monthlySales.size();
 
-            // تولید گزارش
             StringBuilder html = new StringBuilder();
             buildHeader(html);
             buildSellerIdentitySection(html);
@@ -146,8 +141,18 @@ public class EnhancedFinancialReportGenerator {
         }
 
         seller.getOrders().stream()
-                .filter(order -> order != null && order.getLocalDateTime() != null)
-                .filter(order -> order.getLocalDateTime().getYear() == currentYear)
+                .filter(order -> {
+                    if (order == null || order.getLocalDateTime() == null) {
+                        return false;
+                    }
+                    return true;
+                })
+                .filter(order -> {
+                    if (order.getLocalDateTime().getYear() == currentYear) {
+                        return true;
+                    }
+                    return false;
+                })
                 .forEach(order -> {
                     Month month = order.getLocalDateTime().getMonth();
                     int orderValue = order.getTotalPrice();
@@ -164,34 +169,21 @@ public class EnhancedFinancialReportGenerator {
     }
 
     private String getPersianMonthName(Month month) {
-        switch (month) {
-            case JANUARY:
-                return "فروردین";
-            case FEBRUARY:
-                return "اردیبهشت";
-            case MARCH:
-                return "خرداد";
-            case APRIL:
-                return "تیر";
-            case MAY:
-                return "مرداد";
-            case JUNE:
-                return "شهریور";
-            case JULY:
-                return "مهر";
-            case AUGUST:
-                return "آبان";
-            case SEPTEMBER:
-                return "آذر";
-            case OCTOBER:
-                return "دی";
-            case NOVEMBER:
-                return "بهمن";
-            case DECEMBER:
-                return "اسفند";
-            default:
-                return month.toString();
-        }
+        Map<Month, String> persianMonths = new EnumMap<>(Month.class);
+        persianMonths.put(Month.JANUARY, "فروردین");
+        persianMonths.put(Month.FEBRUARY, "اردیبهشت");
+        persianMonths.put(Month.MARCH, "خرداد");
+        persianMonths.put(Month.APRIL, "تیر");
+        persianMonths.put(Month.MAY, "مرداد");
+        persianMonths.put(Month.JUNE, "شهریور");
+        persianMonths.put(Month.JULY, "مهر");
+        persianMonths.put(Month.AUGUST, "آبان");
+        persianMonths.put(Month.SEPTEMBER, "آذر");
+        persianMonths.put(Month.OCTOBER, "دی");
+        persianMonths.put(Month.NOVEMBER, "بهمن");
+        persianMonths.put(Month.DECEMBER, "اسفند");
+
+        return persianMonths.getOrDefault(month, month.toString());
     }
 
     private String getMonthlySalesData(Map<Month, Integer> monthlySales) {
@@ -205,8 +197,9 @@ public class EnhancedFinancialReportGenerator {
     }
 
     private String escapeHtml(String input) {
-        if (input == null)
+        if (input == null) {
             return "";
+        }
         return input.replace("&", "&amp;")
                 .replace("<", "&lt;")
                 .replace(">", "&gt;")
