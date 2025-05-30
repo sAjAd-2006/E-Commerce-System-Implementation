@@ -23,7 +23,7 @@ public class Paginator<T> {
                     if (currentPage < totalPages - 1) {
                         currentPage++;
                     } else {
-                        System.out.println("You are already on the last page.");
+                        Color.printCyanBold("You are already on the last page.\n");
                     }
                 }
                 case "prev" -> {
@@ -36,7 +36,7 @@ public class Paginator<T> {
                     }
                 }
                 case "back" -> {
-                    System.out.println("Back without selection.\n");
+                    Color.printBlue("Back without selection.\n");
                     return -1;
                 }
                 case "exit" -> ExitVendilo.exit(scanner);
@@ -49,7 +49,7 @@ public class Paginator<T> {
         if (currentPage > 0) {
             currentPage--;
         } else {
-            System.out.println("You are already on the first page.");
+            Color.printCyanBold("You are already on the first page.\n");
         }
         return currentPage;
     }
@@ -63,11 +63,11 @@ public class Paginator<T> {
             if (index >= start && index < end) {
                 return index;// list.get(index);
             } else {
-                System.out.println("Selection out of range.");
+                Color.printRed("Selection out of range.\n");
                 return -1;
             }
         } catch (NumberFormatException e) {
-            System.out.println("Invalid number format.");
+            Color.printRed("Invalid number format.\n");
             return -1;
         }
     }
@@ -75,7 +75,7 @@ public class Paginator<T> {
     public void showPage(int page) {
         int start = page * pageSize;
         int end = Math.min(start + pageSize, list.size());
-        System.out.println("\nShowing items " + (start + 1) + " to " + end + ":");
+        Color.printGreen("\nShowing items " + (start + 1) + " to " + end + ":");
         for (int i = start; i < end; i++) {
             System.out.println((i + 1) + ". " + list.get(i));
         }
@@ -88,7 +88,7 @@ public class Paginator<T> {
             if (cmd.matches("next|prev|select|back|exit")) {
                 return cmd;
             }
-            System.out.println("Invalid command.");
+            Color.printRed("Invalid command.\n");
         }
     }
 }

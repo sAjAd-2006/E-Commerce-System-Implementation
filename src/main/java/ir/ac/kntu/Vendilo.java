@@ -274,7 +274,9 @@ public class Vendilo {
             if (seller == null) {
                 continue;
             }
-            Supporter.getSellersVerification().add(seller);
+            for (Supporter supporter : supporters) {
+                supporter.getSellersVerification().add(seller);
+            }
             verification.add(seller);
             Color.printGreen("Seller registration completed. Waiting for verification.");
             break;

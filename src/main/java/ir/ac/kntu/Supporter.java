@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Supporter extends Person {
-    private static List<Seller> verification;
-    private static List<Customer> customersReport;
+    private List<Seller> verification;
+    private List<Customer> customersReport;
     private String agencyName;
 
     public String getAgencyName() {
@@ -17,20 +17,20 @@ public class Supporter extends Person {
         this.agencyName = agencyName;
     }
 
-    public static List<Seller> getSellersVerification() {
+    public List<Seller> getSellersVerification() {
         return verification;
     }
 
-    public static void setSellersVerification(List<Seller> verification) {
-        Supporter.verification = verification;
+    public void setSellersVerification(List<Seller> verification) {
+        this.verification = verification;
     }
 
-    public static List<Customer> getCustomersReport() {
+    public List<Customer> getCustomersReport() {
         return customersReport;
     }
 
-    public static void setCustomersReport(List<Customer> customersReport) {
-        Supporter.customersReport = customersReport;
+    public void setCustomersReport(List<Customer> customersReport) {
+        this.customersReport = customersReport;
     }
 
     public Supporter(String firstname, String lastname, String agencyName, String password) {

@@ -46,12 +46,9 @@ public class SellerHelper {
     }
 
     private void reportRun() {
-        // ایجاد گزارش
-        // Seller seller = getSeller(); // دریافت فروشنده از سیستم
         EnhancedFinancialReportGenerator generator = new EnhancedFinancialReportGenerator(seller);
         String htmlReport = generator.generateEnhancedReport();
 
-        // ذخیره گزارش در فایل
         try {
             Path path = Paths.get("seller_full_report.html");
             Files.write(path, htmlReport.getBytes(StandardCharsets.UTF_8));
@@ -59,18 +56,6 @@ public class SellerHelper {
         } catch (IOException e) {
             System.err.println("Error saving report: " + e.getMessage());
         }
-        // // حتی اگر seller null باشد کار می‌کند
-        // FinancialReportGenerator generator = new FinancialReportGenerator(seller);
-        // String report = generator.generateFinancialReport();
-
-        // // ذخیره گزارش در فایل با مدیریت خطا
-        // try {
-        // Path path = Paths.get("financial_report.html");
-        // Files.write(path, report.getBytes(StandardCharsets.UTF_8));
-        // System.out.println("Report saved successfully: " + path.toAbsolutePath());
-        // } catch (IOException e) {
-        // System.err.println("Error saving report: " + e.getMessage());
-        // }
     }
 
     public void ordersRun() {
