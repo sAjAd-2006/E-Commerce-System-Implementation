@@ -36,7 +36,7 @@ public class Paginator<T> {
                     }
                 }
                 case "back" -> {
-                    System.out.println("Back without selection.");
+                    System.out.println("Back without selection.\n");
                     return -1;
                 }
                 case "exit" -> ExitVendilo.exit(scanner);

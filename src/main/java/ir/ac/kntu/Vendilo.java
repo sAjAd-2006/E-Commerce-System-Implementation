@@ -16,15 +16,15 @@ public class Vendilo {
     }
 
     // public static void setSupporters(List<Supporter> supporters) {
-    //     supporters = supporters;
+    // supporters = supporters;
     // }
 
     // public static void setCustomers(List<Customer> customers) {
-    //     customers = customers;
+    // customers = customers;
     // }
 
     // public static void setSellers(List<Seller> sellers) {
-    //     sellers = sellers;
+    // sellers = sellers;
     // }
 
     public List<Seller> getSellersVerification() {
@@ -32,7 +32,7 @@ public class Vendilo {
     }
 
     // public static void setSellersVerification(List<Seller> verification) {
-    //     verification = verification;
+    // verification = verification;
     // }
 
     public List<Customer> getCustomers() {
@@ -46,7 +46,7 @@ public class Vendilo {
     public void menu() {
         Supporter supporter = new Supporter("sajad", "teymoori", "sajadilo", "12345Aa!");
         supporters.add(supporter);
-        ChekFild chekFild = new ChekFild(sellers, customers);
+        ChekFild chekFild = new ChekFild(sellers, customers, verification);
         Color.printCyanBold("Welcome to the VENDILO.");
         boolean option = true;
         try (Scanner scanner = new Scanner(System.in)) {

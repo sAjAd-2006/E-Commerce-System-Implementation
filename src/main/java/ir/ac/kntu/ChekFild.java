@@ -8,10 +8,12 @@ import java.util.regex.Pattern;
 public class ChekFild {
     private List<Seller> sellers;
     private List<Customer> customers;
+    private List<Seller> verification;
 
-    public ChekFild(List<Seller> sellers, List<Customer> customers) {
+    public ChekFild(List<Seller> sellers, List<Customer> customers, List<Seller> verification) {
         this.sellers = sellers;
         this.customers = customers;
+        this.verification = verification;
     }
 
     public boolean chekPassword(String password) {
@@ -95,6 +97,12 @@ public class ChekFild {
             }
             duplicate = false;
             for (Seller seller : sellers) {
+                if (seller.getAgencyCode().equals(ramz)) {
+                    duplicate = true;
+                    break;
+                }
+            }
+            for (Seller seller : verification) {
                 if (seller.getAgencyCode().equals(ramz)) {
                     duplicate = true;
                     break;

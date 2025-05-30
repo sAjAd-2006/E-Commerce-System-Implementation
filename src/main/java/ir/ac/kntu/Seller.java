@@ -157,6 +157,7 @@ public class Seller extends Person {
             }
             kalas.add(addBook2(book, scanner));
             sellerKala.add(book);
+            System.out.println("The product was added successfully.\n");
             return;
         }
     }
@@ -217,6 +218,7 @@ public class Seller extends Person {
 
             kalas.add(addMobile2(mobile, scanner));
             sellerKala.add(mobile);
+            System.out.println("The product was added successfully.\n");
             return;
         }
     }
@@ -295,6 +297,7 @@ public class Seller extends Person {
             }
             kalas.add(addLaptop2(laptop, scanner));
             sellerKala.add(laptop);
+            System.out.println("The product was added successfully.\n");
             return;
         }
     }

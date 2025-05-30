@@ -28,7 +28,7 @@ public class CustomerHelper {
         boolean runMenu = true;
         while (runMenu) {
             System.out.println("- - - - Customer Menu - - - -\n1-Product Search\n2-Shopping Cart\n3-Addresses");
-            System.out.println("4-Wallet\n5-Orders\n6-Settings\n7-Support\n8-Log out\n9-Exit");
+            System.out.println("4-Wallet\n5-Orders\n6-Settings\n7-Support\n8-Log out\n9-Exit\n=> ");
             String choice = scanner.nextLine();
             switch (choice) {
                 case "1" -> customer.searchKala(scanner);
@@ -50,7 +50,7 @@ public class CustomerHelper {
 
     public void menuCase2(Scanner scanner) {
         customer.getShoppingCart().seeCart(scanner);
-        System.out.println("Would you like to continue shopping? 1>YES 2>NO(Default)");
+        System.out.println("\nWould you like to continue shopping? 1>YES 2>NO(Default)");
         String choice = scanner.nextLine();
         switch (choice) {
             case "1":

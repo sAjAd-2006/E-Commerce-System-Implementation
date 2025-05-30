@@ -1,5 +1,10 @@
 package ir.ac.kntu;
 
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -13,7 +18,8 @@ public class SellerHelper {
 
     public void menu(Scanner scanner) {
         while (true) {
-            System.out.print("- - - - Seller menu - - - -\n1.Add New Item\n2.Wallet\n3.Orders\n4.Log out\n5.Exit\n =>");
+            System.out.print(
+                    "- - - - Seller menu - - - -\n1.Add New Item\n2.Wallet\n3.Orders\n4.Financial report\n5.Log out\n6.Exit\n =>");
             String choice = scanner.nextLine();
             switch (choice) {
                 case "1":
@@ -26,14 +32,45 @@ public class SellerHelper {
                     ordersRun();
                     break;
                 case "4":
-                    return;
+                    reportRun();
+                    break;
                 case "5":
+                    return;
+                case "6":
                     ExitVendilo.exit(scanner);
                 default:
                     System.out.println("The selected option is invalid.");
                     break;
             }
         }
+    }
+
+    private void reportRun() {
+        // ایجاد گزارش
+        // Seller seller = getSeller(); // دریافت فروشنده از سیستم
+        EnhancedFinancialReportGenerator generator = new EnhancedFinancialReportGenerator(seller);
+        String htmlReport = generator.generateEnhancedReport();
+
+        // ذخیره گزارش در فایل
+        try {
+            Path path = Paths.get("seller_full_report.html");
+            Files.write(path, htmlReport.getBytes(StandardCharsets.UTF_8));
+            System.out.println("گزارش با موفقیت در " + path.toAbsolutePath() + " ذخیره شد");
+        } catch (IOException e) {
+            System.err.println("خطا در ذخیره گزارش: " + e.getMessage());
+        }
+        // // حتی اگر seller null باشد کار می‌کند
+        // FinancialReportGenerator generator = new FinancialReportGenerator(seller);
+        // String report = generator.generateFinancialReport();
+
+        // // ذخیره گزارش در فایل با مدیریت خطا
+        // try {
+        // Path path = Paths.get("financial_report.html");
+        // Files.write(path, report.getBytes(StandardCharsets.UTF_8));
+        // System.out.println("Report saved successfully: " + path.toAbsolutePath());
+        // } catch (IOException e) {
+        // System.err.println("Error saving report: " + e.getMessage());
+        // }
     }
 
     public void ordersRun() {

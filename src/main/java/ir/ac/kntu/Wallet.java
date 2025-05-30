@@ -7,6 +7,10 @@ public class Wallet {
     private int cash;
     private List<Transaction> transactions;
 
+    public int getBalance() {
+        return this.cash;
+    }
+
     public int getCash() {
         return cash;
     }
