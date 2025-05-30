@@ -6,12 +6,12 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class UserSettings {
+public class SellerSettings {
     private List<Customer> customers;
     private List<Seller> sellers;
     private List<Seller> verification;
 
-    public UserSettings(List<Customer> customers, List<Seller> sellers, List<Seller> verification) {
+    public SellerSettings(List<Customer> customers, List<Seller> sellers, List<Seller> verification) {
         this.customers = new ArrayList<>();
         this.sellers = new ArrayList<>();
         this.verification = new ArrayList<>();
@@ -20,7 +20,7 @@ public class UserSettings {
         this.verification = verification;
     }
 
-    public void settings(Customer user, Scanner scanner) {
+    public void settings(Seller user, Scanner scanner) {
         settingHelp(user, scanner);
         System.out.print("Change phone number? (y/n): ");
         if ("y".equalsIgnoreCase(scanner.nextLine())) {
@@ -48,11 +48,11 @@ public class UserSettings {
                 }
             }
         }
-        System.out.println("\nUpdated Info:\n" + user + " phone number: " + user.getPhonenumber()
-                + " password: " + user.getPassword());
+        user.setReasonForRejection("Your authentication has not been confirmed yet.");
+        System.out.println("\nUpdated Info:\n" + user + user.chap());
     }
 
-    public void settingHelp(Person user, Scanner scanner) {
+    public void settingHelp(Seller user, Scanner scanner) {
         System.out.print("Change first name? (y/n): ");
         if ("y".equalsIgnoreCase(scanner.nextLine())) {
             System.out.print("Enter new first name: ");
@@ -63,38 +63,23 @@ public class UserSettings {
             System.out.print("Enter new last name: ");
             user.setLastname(scanner.nextLine());
         }
-        System.out.print("Change email? (y/n): ");
+        System.out.print("Change Store Title? (y/n): ");
         if ("y".equalsIgnoreCase(scanner.nextLine())) {
             while (true) {
-                System.out.print("Enter new email: ");
-                String email = scanner.nextLine();
-                if (!chekEmail(email)) {
+                System.out.print("Enter new Store Title: ");
+                String storeTitle = scanner.nextLine();
+                if (!chekStoreTitle(storeTitle)) {
                     continue;
                 } else {
-                    user.setEmail(email);
+                    user.setStoreTitle(storeTitle);
                     break;
                 }
             }
         }
-        System.out.print("Change email? (y/n): ");
-
-    }
-
-    public boolean chekEmail(String email) {
-        String regex = "^((?!\\.)[\\w\\-_.]*[^.])(@\\w+)(\\.\\w+(\\.\\w+)?[^.\\W])$";
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(email);
-        if (!matcher.find()) {
-            System.out.println("The email format is incorrect.\nTry again.");
-            return false;
-        } else {
-            for (Customer customer : customers) {
-                if (customer.getEmail().equals(email)) {
-                    System.out.println("The email is duplicate.\nTry again.");
-                    return false;
-                }
-            }
-            return true;
+        System.out.print("Change province Of Sale? (y/n): ");
+        if ("y".equalsIgnoreCase(scanner.nextLine())) {
+            System.out.print("Enter new province Of Sale: ");
+            user.setProvinceOfSale(scanner.nextLine());
         }
     }
 
@@ -126,6 +111,22 @@ public class UserSettings {
             }
             return true;
         }
+    }
+
+    public boolean chekStoreTitle(String storeTitle) {
+        for (Seller seller : sellers) {
+            if (seller.getStoreTitle().equals(storeTitle)) {
+                Color.printRed("The Store Title is duplicate.\nTry again.");
+                return false;
+            }
+        }
+        for (Seller seller : verification) {
+            if (seller.getStoreTitle().equals(storeTitle)) {
+                Color.printRed("The Store Title is duplicate.\nTry again.");
+                return false;
+            }
+        }
+        return true;
     }
 
     public boolean chekPassword(String password) {

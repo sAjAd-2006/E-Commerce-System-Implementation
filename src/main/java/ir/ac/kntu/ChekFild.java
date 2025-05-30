@@ -35,11 +35,23 @@ public class ChekFild {
                 return false;
             }
         }
+        for (Seller seller : verification) {
+            if (seller.getStoreTitle().equals(storeTitle)) {
+                Color.printRed("The Store Title is duplicate.\nTry again.");
+                return false;
+            }
+        }
         return true;
     }
 
     public boolean chekCodeMely(String codeMely) {
         for (Seller seller : sellers) {
+            if (seller.getCodeMely().equals(codeMely)) {
+                Color.printRed("The Code Mely is duplicate.\nTry again.");
+                return false;
+            }
+        }
+        for (Seller seller : verification) {
             if (seller.getCodeMely().equals(codeMely)) {
                 Color.printRed("The Code Mely is duplicate.\nTry again.");
                 return false;
@@ -76,6 +88,18 @@ public class ChekFild {
         } else {
             for (Customer customer : customers) {
                 if (customer.getPhonenumber().equals(phonenumber)) {
+                    Color.printRed("The phone number is duplicate.\nTry again.");
+                    return false;
+                }
+            }
+            for (Seller seller : sellers) {
+                if (seller.getPhonenumber().equals(phonenumber)) {
+                    Color.printRed("The phone number is duplicate.\nTry again.");
+                    return false;
+                }
+            }
+            for (Seller seller : verification) {
+                if (seller.getPhonenumber().equals(phonenumber)) {
                     Color.printRed("The phone number is duplicate.\nTry again.");
                     return false;
                 }

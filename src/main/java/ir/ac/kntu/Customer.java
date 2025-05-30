@@ -120,7 +120,7 @@ public class Customer extends Person {
                 // }
                 // }
                 if (discount(address) == 1) {
-                    shippingCost = shippingCost * 7 / 10;
+                    shippingCost = shippingCost * 66 / 100;
                 }
                 System.out.println("Price: " + shoppingCart.findTotal() + "\nShipping Cost: " + shippingCost);
                 continueShoppingNow(shippingCost, address, scanner);

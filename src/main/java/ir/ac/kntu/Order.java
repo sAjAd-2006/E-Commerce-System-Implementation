@@ -133,7 +133,7 @@ public class Order extends Timeable {
     public int showOrderCustomerLope2(int rat, Scanner scanner) {
         while (true) {
             System.out.print("\nWhat is your rating? (1 / 2 / 3 / 4 / 5): ");
-            String cmd = scanner.nextLine().trim().toLowerCase();
+            String cmd = scanner.nextLine().trim();
             if (cmd.matches("1|2|3|4|5")) {
                 this.kalas.get(rat).calculatingTheAverage(Integer.parseInt(cmd));
                 this.isVoted.set(rat, true);

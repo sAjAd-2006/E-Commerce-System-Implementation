@@ -329,6 +329,7 @@ public class Vendilo {
                 if (seller.getAgencyCode().equals(agencyCode)) {
                     if (seller.getPassword().equals(password)) {
                         Color.printYellow(seller.getReasonForRejection());
+                        editInfo(seller, scanner);
                         conti = true;
                         break;
                     }
@@ -338,6 +339,21 @@ public class Vendilo {
                 continue;
             }
             sellerLogin2(agencyCode, password, scanner);
+        }
+    }
+
+    private void editInfo(Seller seller, Scanner scanner) {
+        if ("Your authentication has not been confirmed yet.".equalsIgnoreCase(seller.getReasonForRejection())) {
+            System.out.println("Would you like to change your profile? 1>YES 2NO(Default)");
+            String choice = scanner.nextLine();
+            switch (choice) {
+                case "1":
+                    SellerSettings sellerSettings = new SellerSettings(customers, sellers, verification);
+                    sellerSettings.settings(seller, scanner);
+                    break;
+                default:
+                    break;
+            }
         }
     }
 

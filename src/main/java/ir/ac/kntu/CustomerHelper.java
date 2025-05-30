@@ -37,7 +37,8 @@ public class CustomerHelper {
                 case "4" -> walletRun(scanner);
                 case "5" -> ordersRun(scanner);
                 case "6" -> {
-                    UserSettings userSettings = new UserSettings(vendilo.getCustomers());
+                    UserSettings userSettings = new UserSettings(vendilo.getCustomers(), vendilo.getSellers(),
+                            vendilo.getSellersVerification());
                     userSettings.settings(customer, scanner);
                 }
                 case "7" -> supportRun(scanner);
