@@ -34,8 +34,9 @@ public class EnhancedFinancialReportGenerator {
             buildHeader(html);
             buildSellerIdentitySection(html);
             buildSalesSummarySection(html, currentMonthSales, yearlySales, monthlyAverage);
-            buildMonthlySalesChart(html, monthlySales);
+            buildMonthlySalesTable(html, monthlySales); // تغییر به جدول ماهانه
             buildTransactionDetails(html);
+            buildTransactionsTable(html); // اضافه کردن جدول تراکنش‌ها
             closeHtml(html);
 
             return html.toString();
@@ -51,7 +52,6 @@ public class EnhancedFinancialReportGenerator {
                 .append("<head>")
                 .append("<meta charset='UTF-8'>")
                 .append("<title>گزارش جامع فروشنده</title>")
-                .append("<script src='https://cdn.jsdelivr.net/npm/chart.js'></script>")
                 .append("<style>")
                 .append(getCssStyles())
                 .append("</style>")
@@ -90,36 +90,34 @@ public class EnhancedFinancialReportGenerator {
                 .append("</div>");
     }
 
-    private void buildMonthlySalesChart(StringBuilder html, Map<Month, Integer> monthlySales) {
-        html.append("<div class='chart-section'>")
-                .append("<h2>نمودار فروش ماه‌های سال ").append(currentYear).append("</h2>")
-                .append("<div class='chart-container'>")
-                .append("<canvas id='monthlySalesChart'></canvas>")
-                .append("</div>")
-                .append("<script>")
-                .append("const monthlyCtx = document.getElementById('monthlySalesChart').getContext('2d');")
-                .append("new Chart(monthlyCtx, {")
-                .append("type: 'bar',")
-                .append("data: {")
-                .append("labels: ").append(getMonthNames()).append(",")
-                .append("datasets: [{")
-                .append("label: 'مبلغ فروش',")
-                .append("data: ").append(getMonthlySalesData(monthlySales)).append(",")
-                .append("backgroundColor: 'rgba(54, 162, 235, 0.7)',")
-                .append("borderColor: 'rgba(54, 162, 235, 1)',")
-                .append("borderWidth: 1")
-                .append("}]")
-                .append("},")
-                .append("options: {")
-                .append("responsive: true,")
-                .append("plugins: { legend: { rtl: true } },")
-                .append("scales: {")
-                .append("y: { beginAtZero: true, title: { display: true, text: 'مبلغ (تومان)' } },")
-                .append("x: { title: { display: true, text: 'ماه‌های سال' } }")
-                .append("}")
-                .append("}")
-                .append("});")
-                .append("</script>")
+    private void buildMonthlySalesTable(StringBuilder html, Map<Month, Integer> monthlySales) {
+        html.append("<div class='table-section'>")
+                .append("<h2>فروش ماه‌های سال ").append(currentYear).append("</h2>")
+                .append("<table class='sales-table'>")
+                .append("<tr><th>ماه</th><th>مبلغ فروش</th><th>وضعیت</th></tr>");
+
+        for (Month month : Month.values()) {
+            int sales = monthlySales.getOrDefault(month, 0);
+            String status = "";
+
+            if (month == currentMonth) {
+                status = "ماه جاری";
+            } else if (month.getValue() > currentMonth.getValue()) {
+                status = "آینده";
+            } else if (sales == 0) {
+                status = "بدون فروش";
+            } else {
+                status = "تکمیل شده";
+            }
+
+            html.append("<tr>")
+                    .append("<td>").append(getPersianMonthName(month)).append("</td>")
+                    .append("<td>").append(formatCurrency(sales)).append("</td>")
+                    .append("<td>").append(status).append("</td>")
+                    .append("</tr>");
+        }
+
+        html.append("</table>")
                 .append("</div>");
     }
 
@@ -133,6 +131,59 @@ public class EnhancedFinancialReportGenerator {
                 .append("</div>");
     }
 
+    private void buildTransactionsTable(StringBuilder html) {
+        Wallet wallet = seller.getWallet();
+        if (wallet.getTransactions() == null || wallet.getTransactions().isEmpty()) {
+            html.append("<div class='table-section'>")
+                    .append("<h2>تراکنش‌ها</h2>")
+                    .append("<p>تراکنشی یافت نشد</p>")
+                    .append("</div>");
+            return;
+        }
+
+        // مرتب کردن تراکنش‌ها بر اساس تاریخ (جدیدترین اول)
+        List<Transaction> transactions = wallet.getTransactions().stream()
+                .sorted(Comparator.comparing(Transaction::getLocalDateTime).reversed())
+                .collect(Collectors.toList());
+
+        html.append("<div class='table-section'>")
+                .append("<h2>تراکنش‌ها</h2>")
+                .append("<table class='transactions-table'>")
+                .append("<tr><th>تاریخ</th><th>مبلغ</th><th>نوع</th><th>توضیحات</th></tr>");
+
+        for (Transaction transaction : transactions) {
+            html.append("<tr>")
+                    .append("<td>").append(formatDate(transaction.getLocalDateTime())).append("</td>")
+                    .append("<td>").append(formatCurrency(transaction.getPrice())).append("</td>")
+                    .append("<td>").append(getTransactionType(transaction)).append("</td>")
+                    .append("<td>").append(escapeHtml(transaction.getWhy())).append("</td>")
+                    .append("</tr>");
+        }
+
+        html.append("</table>")
+                .append("</div>");
+    }
+
+    private String formatDate(LocalDateTime dateTime) {
+        if (dateTime == null) {
+            return "نامشخص";
+        }
+        return String.format("%d/%02d/%02d - %02d:%02d",
+                dateTime.getYear(),
+                dateTime.getMonthValue(),
+                dateTime.getDayOfMonth(),
+                dateTime.getHour(),
+                dateTime.getMinute());
+    }
+
+    private String getTransactionType(Transaction transaction) {
+        if (transaction.getPrice() >= 0) {
+            return "واریز";
+        } else {
+            return "برداشت";
+        }
+    }
+
     private Map<Month, Integer> calculateMonthlySales() {
         Map<Month, Integer> monthlySales = new EnumMap<>(Month.class);
 
@@ -141,18 +192,8 @@ public class EnhancedFinancialReportGenerator {
         }
 
         seller.getOrders().stream()
-                .filter(order -> {
-                    if (order == null || order.getLocalDateTime() == null) {
-                        return false;
-                    }
-                    return true;
-                })
-                .filter(order -> {
-                    if (order.getLocalDateTime().getYear() == currentYear) {
-                        return true;
-                    }
-                    return false;
-                })
+                .filter(order -> order != null && order.getLocalDateTime() != null)
+                .filter(order -> order.getLocalDateTime().getYear() == currentYear)
                 .forEach(order -> {
                     Month month = order.getLocalDateTime().getMonth();
                     int orderValue = order.getTotalPrice();
@@ -160,12 +201,6 @@ public class EnhancedFinancialReportGenerator {
                 });
 
         return monthlySales;
-    }
-
-    private String getMonthNames() {
-        return Arrays.stream(Month.values())
-                .map(month -> "\"" + getPersianMonthName(month) + "\"")
-                .collect(Collectors.joining(",", "[", "]"));
     }
 
     private String getPersianMonthName(Month month) {
@@ -184,12 +219,6 @@ public class EnhancedFinancialReportGenerator {
         persianMonths.put(Month.DECEMBER, "اسفند");
 
         return persianMonths.getOrDefault(month, month.toString());
-    }
-
-    private String getMonthlySalesData(Map<Month, Integer> monthlySales) {
-        return Arrays.stream(Month.values())
-                .map(month -> String.valueOf(monthlySales.getOrDefault(month, 0)))
-                .collect(Collectors.joining(",", "[", "]"));
     }
 
     private String formatCurrency(int amount) {
@@ -212,17 +241,21 @@ public class EnhancedFinancialReportGenerator {
                 +
                 ".report-title { text-align: center; color: #2c3e50; margin-bottom: 30px; border-bottom: 2px solid #3498db; padding-bottom: 15px; }"
                 +
-                ".identity-section, .sales-summary, .chart-section, .transaction-section { margin-bottom: 40px; padding: 20px; background: #fff; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }"
+                ".identity-section, .sales-summary, .table-section, .transaction-section { margin-bottom: 40px; padding: 20px; background: #fff; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }"
                 +
                 "table { width: 100%; border-collapse: collapse; margin: 15px 0; }" +
                 "th, td { border: 1px solid #ddd; padding: 12px; text-align: right; }" +
                 "th { background-color: #3498db; color: white; }" +
+                "tr:nth-child(even) { background-color: #f9f9f9; }" +
+                "tr:hover { background-color: #f1f1f1; }" +
                 ".stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 20px; }" +
                 ".stat-card { background: #f8f9fa; padding: 20px; border-radius: 8px; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }"
                 +
                 ".stat-card h3 { color: #2c3e50; margin-top: 0; }" +
                 ".stat-card p { font-size: 24px; font-weight: bold; color: #3498db; margin-bottom: 0; }" +
-                ".chart-container { width: 100%; height: 400px; margin: 20px 0; }";
+                ".sales-table th:nth-child(1), .transactions-table th:nth-child(1) { width: 20%; }" +
+                ".sales-table th:nth-child(2), .transactions-table th:nth-child(2) { width: 25%; }" +
+                ".transactions-table th:nth-child(3) { width: 15%; }";
     }
 
     private String generateErrorHtml(String message) {
