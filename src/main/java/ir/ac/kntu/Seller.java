@@ -150,7 +150,7 @@ public class Seller extends Person {
             }
             System.out.println("Enter price : ");
             String price = scanner.nextLine();
-            if (isInteger(price)) {
+            if (isInteger(price) && Integer.parseInt(price) > 0) {
                 book.setPrice(Integer.parseInt(price));
             } else {
                 continue;
@@ -227,7 +227,7 @@ public class Seller extends Person {
         while (true) {
             System.out.println("Enter price : ");
             String price = scanner.nextLine();
-            if (isInteger(price)) {
+            if (isInteger(price) && Integer.parseInt(price) > 0) {
                 mobile.setPrice(Integer.parseInt(price));
                 break;
             }
@@ -290,7 +290,7 @@ public class Seller extends Person {
             }
             System.out.println("Enter price : ");
             String price = scanner.nextLine();
-            if (isInteger(price)) {
+            if (isInteger(price) && Integer.parseInt(price) > 0) {
                 laptop.setPrice(Integer.parseInt(price));
             } else {
                 continue;
@@ -318,11 +318,9 @@ public class Seller extends Person {
     }
 
     private void addBlu(Laptop laptop, Scanner scanner) {
-        // Scanner scanner = new Scanner(System.in);
         while (true) {
             System.out.println("adding bluetooth:");
             if (runBack(scanner) == 1) {
-                // scanner.close();
                 return;
             }
             System.out.println("Does the laptop have a bluetooth?\n1) YES\n2) NO");
@@ -330,11 +328,9 @@ public class Seller extends Person {
             switch (choice) {
                 case "1":
                     laptop.setBluetooth(true);
-                    // scanner.close();
                     return;
                 case "2":
                     laptop.setBluetooth(true);
-                    // scanner.close();
                     return;
                 default:
                     System.out.println("Choose the correct option.");
@@ -344,11 +340,9 @@ public class Seller extends Person {
     }
 
     private void addWebcam(Laptop laptop, Scanner scanner) {
-        // Scanner scanner = new Scanner(System.in);
         while (true) {
             System.out.println("adding Webcam:");
             if (runBack(scanner) == 1) {
-                // scanner.close();
                 return;
             }
             System.out.println("Does the laptop have a webcam?\n1) YES\n2) NO");
@@ -356,11 +350,9 @@ public class Seller extends Person {
             switch (choice) {
                 case "1":
                     laptop.setWebcam(true);
-                    // scanner.close();
                     return;
                 case "2":
                     laptop.setWebcam(false);
-                    // scanner.close();
                     return;
                 default:
                     System.out.println("Choose the correct option.");

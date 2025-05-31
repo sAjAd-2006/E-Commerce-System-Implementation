@@ -105,22 +105,8 @@ public class Customer extends Person {
                     System.out.println("You did not select an address.");
                     continue;
                 }
-                // boolean discount = true;
-                // for (Kala kala : this.shoppingCart.getKalas()) {
-                // kala.toString();
-                // if (kala.getInventory() >= 1) {
-                // if (!address.getCity().equalsIgnoreCase(kala.getSelerCity())) {
-                // discount = false;
-                // }
-                // } else {
-                // System.out.print(" ^ This item is out of stock and");
-                // System.out.println(" will be automatically removed from your shopping
-                // list.");
-                // this.shoppingCart.getKalas().remove(kala);
-                // }
-                // }
                 if (discount(address) == 1) {
-                    shippingCost = shippingCost * 66 / 100;
+                    shippingCost = shippingCost * 33 / 100;
                 }
                 System.out.println("Price: " + shoppingCart.findTotal() + "\nShipping Cost: " + shippingCost);
                 continueShoppingNow(shippingCost, address, scanner);
@@ -284,52 +270,17 @@ public class Customer extends Person {
         }
     }
 
-    // public void productSelection(List<Kala> searchingKala, String productType,
-    // int iiii, Scanner scanner) {
-    // while (true) {
-    // // Scanner scanner = new Scanner(System.in);
-    // System.out.println("Select the product you want: ");
-    // System.out.println("Press 1 to go back, 0 to exit.");
-    // String choice = scanner.nextLine();
-    // switch (choice) {
-    // case "1":
-    // // scanner.close();
-    // return;
-    // case "0":
-    // // scanner.close();
-    // // System.exit(0);
-    // ExitVendilo.exit(scanner);
-    // default:
-    // if (isInteger(choice)) {
-    // int ran = Integer.parseInt(choice) - 1;
-    // if (ran >= (iiii - 10) && ran < iiii) {
-    // displayInformationAboutTheSelectedProduct(searchingKala.get(ran),
-    // productType, scanner);
-    // } else {
-    // System.out.println("Out of range input.");
-    // }
-    // } else {
-    // System.out.println("Incorrect input. Enter a number.");
-    // }
-    // break;
-    // }
-    // }
-    // }
-
     public void displayInformationAboutTheSelectedProduct(Kala kala, String productType, Scanner scanner) {
         System.out.println(kala.toString() + " Inventory: " + kala.getInventory());
         addToCart(kala, scanner);
     }
 
     public void addToCart(Kala kala, Scanner scanner) {
-        // Scanner scanner = new Scanner(System.in);
         if (runBack(scanner) == 1) {
-            // scanner.close();
             return;
         }
         System.out.println("Do you want to add this item to your cart?\n1>YES\n2>NO(Default)");
         String choice = scanner.nextLine();
-        // scanner.close();
         switch (choice) {
             case "1":
                 this.shoppingCart.getKalas().add(kala);
@@ -352,10 +303,8 @@ public class Customer extends Person {
     }
 
     public String searchForProductType(Scanner scanner) {
-        // Scanner scanner = new Scanner(System.in);
         System.out.println("\nProduct Type:\n1)Book\n2)Digital Goods\n3)ALL(Default)");
         String choice = scanner.nextLine();
-        // scanner.close();
         switch (choice) {
             case "1":
                 return "Book";

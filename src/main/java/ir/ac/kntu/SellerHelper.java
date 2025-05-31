@@ -84,7 +84,7 @@ public class SellerHelper {
                 case "2" -> {
                     System.out.print("Enter the amount you want to Withdraw from wallet: ");
                     choice = scanner.nextLine();
-                    if (isInteger(choice)) {
+                    if (isInteger(choice) && Integer.parseInt(choice) > 0) {
                         seller.getWallet().withdrawFromWallet(Integer.parseInt(choice), "Withdraw money");
                     } else {
                         System.out.println("Incorrect input. Enter a number.");

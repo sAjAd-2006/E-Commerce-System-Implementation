@@ -172,19 +172,18 @@ public class CustomerHelper {
         if (casey == 2) {
             System.out.print("Enter the amount you want to top up your wallet: ");
             String choice = scanner.nextLine();
-            if (isInteger(choice)) {
+            if (isInteger(choice) && Integer.parseInt(choice) > 0) {
                 customer.getWallet().addToWallet(Integer.parseInt(choice));
-
             } else {
-                System.out.println("Incorrect input. Enter a number.");
+                System.out.println("Incorrect input. Enter a number.\n");
             }
         } else {
             System.out.print("Enter the amount you want to Withdraw from wallet: ");
             String choice = scanner.nextLine();
-            if (isInteger(choice)) {
+            if (isInteger(choice) && Integer.parseInt(choice) > 0) {
                 customer.getWallet().withdrawFromWallet(Integer.parseInt(choice), "Withdraw money");
             } else {
-                System.out.println("Incorrect input. Enter a number.");
+                System.out.println("Incorrect input. Enter a number.\n");
             }
         }
     }
