@@ -2,12 +2,15 @@ package ir.ac.kntu;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Scanner;
 
 public class Order extends Timeable {
-    private List<Kala> kalas;
-    private List<Boolean> isVoted;
+    // private List<Kala> kalas;
+    private LinkedHashMap<Kala, Integer> kalasMap;
+    private LinkedHashMap<Kala, Boolean> kalasVoteMap;
+    // private List<Boolean> isVoted;
     private LocalDateTime localDateTime;
     private List<String> sellersNames;
     private String customerName;
@@ -48,17 +51,52 @@ public class Order extends Timeable {
         this.shippingCost = shippingCost;
     }
 
-    public Order() {
-        kalas = new ArrayList<>();
-        sellersNames = new ArrayList<>();
+    public LinkedHashMap<Kala, Integer> getKalasMap() {
+        return kalasMap;
     }
 
-    public Order(List<Kala> kalas, LocalDateTime localDateTime, List<String> sellersNames, Address address,
+    public void setKalasMap(LinkedHashMap<Kala, Integer> kalasMap) {
+        this.kalasMap = kalasMap;
+    }
+
+    public LinkedHashMap<Kala, Boolean> getKalasVoteMap() {
+        return kalasVoteMap;
+    }
+
+    public void setKalasVoteMap(LinkedHashMap<Kala, Boolean> kalasVoteMap) {
+        this.kalasVoteMap = kalasVoteMap;
+    }
+
+    public Order() {
+        // kalas = new ArrayList<>();
+        kalasMap = new LinkedHashMap<>();
+        kalasVoteMap = new LinkedHashMap<>();
+        sellersNames = new ArrayList<>();
+        // isVoted = new ArrayList<>();
+        address = new Address();
+    }
+
+    public Order(LinkedHashMap<Kala, Integer> kalasMap, LocalDateTime localDateTime, List<String> sellersNames,
+            Address address,
             int totalPrice,
             int shippingCost, String customerName, String customerEmail) {
-        kalas = new ArrayList<>();
-        sellersNames = new ArrayList<>();
-        this.kalas = kalas;
+        // kalas = new ArrayList<>();
+        // sellersNames = new ArrayList<>();
+        // isVoted = new ArrayList<>();
+        // address = new Address();
+        // this.kalas = kalas;
+        // for (Kala kala : kalas) {
+        // if (kalasMap.containsKey(kala)) {
+        // int oldNum = kalasMap.get(kala);
+        // kalasMap.replace(kala, oldNum, oldNum + 1);
+        // } else {
+        // kalasMap.put(kala, 1);
+        // kalasVoteMap.put(kala, false);
+        // }
+        // }
+        // kalasMap = new LinkedHashMap<>();
+        // kalasVoteMap = new LinkedHashMap<>();
+        this.kalasMap = kalasMap;
         setLocalDateTime(localDateTime);
         this.sellersNames = sellersNames;
         this.address = address;
@@ -68,13 +106,13 @@ public class Order extends Timeable {
         this.customerEmail = customerEmail;
     }
 
-    public List<Kala> getKalas() {
-        return kalas;
-    }
+    // public List<Kala> getKalas() {
+    // return kalas;
+    // }
 
-    public void setKalas(List<Kala> kalas) {
-        this.kalas = kalas;
-    }
+    // public void setKalas(List<Kala> kalas) {
+    // this.kalas = kalas;
+    // }
 
     @Override
     public LocalDateTime getLocalDateTime() {
@@ -103,25 +141,27 @@ public class Order extends Timeable {
     }
 
     public void showOrderCustomer(Scanner scanner) {
-        for (int i = 0; i < kalas.size(); i++) {
-            System.out.println(i + ") " + kalas.get(i) + "\n  ^ " + kalas.get(i).getSelerName());
+        int index = 0;
+        for (Kala kala : kalasMap.keySet()) {
+            index++;
+            System.out.println(index + ") " + kala + "\n        Number: " + kalasMap.get(kala));
         }
-        System.out.println("\nTime: " + getLocalDateTime() + "\nAddress: " + getAddress());
+        System.out.println("\n      Time: " + getLocalDateTime() + "\n      Address: " + getAddress());
         System.out.println("Do you want to raise the goods? 1>YES 2>NO(Default)");
         String choice = scanner.nextLine();
         switch (choice) {
             case "1":
+                List<Kala> kalas = new ArrayList<>(kalasMap.keySet());
                 while (true) {
-                    System.out.println("Choose");
                     Paginator<Kala> paginator = new Paginator<>(kalas, 10);
                     int rat = paginator.paginate(0);
                     if (rat == -1) {
                         return;
                     }
-                    if (!this.isVoted.get(rat) && (showOrderCustomerLope2(rat, scanner) == 1)) {
+                    if (!kalasVoteMap.get(kalas.get(rat)) && (showOrderCustomerLope2(kalas.get(rat), scanner) == 1)) {
                         continue;
                     } else {
-                        System.out.println("You have already voted for this product.");
+                        Color.printRed("\nYou have already voted for this product.");
                         continue;
                     }
                 }
@@ -130,13 +170,15 @@ public class Order extends Timeable {
         }
     }
 
-    public int showOrderCustomerLope2(int rat, Scanner scanner) {
+    public int showOrderCustomerLope2(Kala kala, Scanner scanner) {
         while (true) {
             System.out.print("\nWhat is your rating? (1 / 2 / 3 / 4 / 5): ");
             String cmd = scanner.nextLine().trim();
+
             if (cmd.matches("1|2|3|4|5")) {
-                this.kalas.get(rat).calculatingTheAverage(Integer.parseInt(cmd));
-                this.isVoted.set(rat, true);
+                kala.calculatingTheAverage(Integer.parseInt(cmd));
+                // this.isVoted.set(rat, true);
+                kalasVoteMap.replace(kala, false, true);
                 return 1;
             } else {
                 System.out.println("Invalid rat.");
@@ -146,16 +188,17 @@ public class Order extends Timeable {
 
     @Override
     public String toString() {
-        return ("Time: " + getLocalDateTime() + " Address: " + getAddress() + " Total Price: " + getTotalPrice());
+        return ("Time: " + getLocalDateTime() + "\n   Address: " + getAddress() + "\n   Total Price: " + getTotalPrice()
+                + " ShippingCost: " + getShippingCost());
     }
 
-    public List<Boolean> getIsVoted() {
-        return isVoted;
-    }
+    // public List<Boolean> getIsVoted() {
+    // return isVoted;
+    // }
 
-    public void setIsVoted(List<Boolean> isVoted) {
-        this.isVoted = isVoted;
-    }
+    // public void setIsVoted(List<Boolean> isVoted) {
+    // this.isVoted = isVoted;
+    // }
 
     public boolean isInteger(String str) {
         try {

@@ -41,7 +41,6 @@ public class Supporter extends Person {
         setAgencyName(agencyName);
         setPassword(password);
     }
-    
 
     public void seeOrders(Scanner scanner, List<Customer> customers) {
         while (true) {
@@ -88,20 +87,21 @@ public class Supporter extends Person {
                 return;
             } else {
                 Order order = orders.get(ord);
-                System.out.println(order + " Customer name: " + order.getCustomerName() + "\nshipping Cost: "
+                System.out.println(order + " Customer name: " + order.getCustomerName() + "\n   shipping Cost: "
                         + order.getShippingCost());
-                System.out.println("Seler names:");
+                System.out.println("   Seler names:");
                 for (String name : order.getSellersNames()) {
-                    System.out.println(">" + name);
+                    System.out.println("   >>" + name);
                 }
-                Paginator<Kala> paginator2 = new Paginator<>(order.getKalas(), 10);
+                List<Kala> kalas = new ArrayList<>(order.getKalasMap().keySet());
+                Paginator<Kala> paginator2 = new Paginator<>(kalas, 10);
                 while (true) {
                     int kal = paginator2.paginate(jits);
                     if (kal == -1) {
                         break;
                     } else {
-                        Kala kala = order.getKalas().get(kal);
-                        System.out.println("    => " + kala + " Inventory: " + kala.getInventory());
+                        Kala kala = kalas.get(kal);
+                        System.out.println(Color.YELLOW_BOLD + "    => " + Color.RESET + kala + "\n   number: " + order.getKalasMap().get(kala) + "  Inventory: " + kala.getInventory());
                         jits = kal / 10;
                     }
                 }
@@ -118,7 +118,9 @@ public class Supporter extends Person {
             if (jjjj == -1) {
                 return;
             } else {
-                verification.get(jjjj).chap();
+                Color.printYellow("info>");
+                System.out.println(verification.get(jjjj).chap());
+                Color.printYellow(verification.get(jjjj).getReasonForRejection());
                 System.out.println("Do you approve or not? 1)YES 2)NO 3)Back");
                 String choice = scanner.nextLine();
                 switch (choice) {
@@ -128,7 +130,7 @@ public class Supporter extends Person {
                         iiii = jjjj / 10;
                         continue;
                     }
-                    default -> System.out.println("The selected option is invalid.");
+                    default -> Color.printRed("The selected option is invalid.");
                 }
             }
         }
@@ -136,8 +138,10 @@ public class Supporter extends Person {
 
     public void case12(int casey, int jjjj, Scanner scanner, Vendilo vendilo) {
         if (casey == 1) {
-            vendilo.getSellers().add(getSellersVerification().get(jjjj));
+            vendilo.getSellers().add(verification.get(jjjj));
             vendilo.getSellersVerification().remove(jjjj);
+            verification.remove(jjjj);
+            // setSellersVerification(vendilo.getSellersVerification());
         } else {
             System.out.print("Write the reason: ");
             String choice = scanner.nextLine();

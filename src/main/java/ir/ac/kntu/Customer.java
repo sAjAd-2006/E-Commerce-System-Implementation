@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Collectors;
@@ -88,7 +89,7 @@ public class Customer extends Person {
     }
 
     public void continueShopping(Scanner scanner) {
-        int shippingCost = 10;
+        int shippingCost = 30;
         Paginator<Address> paginator = new Paginator<>(addresses, 10);
         while (true) {
             if (this.shoppingCart.findTotal() == 0) {
@@ -106,7 +107,7 @@ public class Customer extends Person {
                     continue;
                 }
                 if (discount(address) == 1) {
-                    shippingCost = shippingCost * 33 / 100;
+                    shippingCost /= 3;
                 }
                 System.out.println("Price: " + shoppingCart.findTotal() + "\nShipping Cost: " + shippingCost);
                 continueShoppingNow(shippingCost, address, scanner);
@@ -119,16 +120,22 @@ public class Customer extends Person {
 
     public int discount(Address address) {
         boolean discount = true;
-        for (Kala kala : this.shoppingCart.getKalas()) {
+        for (Kala kala : this.shoppingCart.getKalasMap().keySet()) {
             kala.toString();
-            if (kala.getInventory() >= 1) {
+            if (kala.getInventory() >= this.shoppingCart.getKalasMap().get(kala)) {
                 if (!address.getCity().equalsIgnoreCase(kala.getSelerCity())) {
                     discount = false;
                 }
             } else {
-                System.out.print(" ^ This item is out of stock and");
-                System.out.println(" will be automatically removed from your shopping list.");
-                this.shoppingCart.getKalas().remove(kala);
+                if (kala.getInventory() >= 1) {
+                    System.out.println("Only " + kala.getInventory()
+                            + " of the desired item remain. The rest will be deducted from your cart.");
+                    this.shoppingCart.getKalasMap().replace(kala, kala.getInventory());
+                } else {
+                    System.out.print(" ^ This item is out of stock and");
+                    System.out.println(" will be automatically removed from your shopping list.");
+                    this.shoppingCart.getKalasMap().remove(kala);
+                }
             }
         }
         if (discount) {
@@ -144,8 +151,9 @@ public class Customer extends Person {
             case "1":
                 if (this.wallet.withdrawFromWallet((this.shoppingCart.findTotal() + shippingCost), "Shopping")) {
                     crOrder(address, this.shoppingCart.findTotal(), shippingCost);
-                    List<Kala> kalas = new ArrayList<>();
-                    shoppingCart.setKalas(kalas);
+                    // List<Kala> kalas = new ArrayList<>();
+                    LinkedHashMap<Kala, Integer> newMap = new LinkedHashMap<>();
+                    shoppingCart.setKalasMap(newMap);
                     shoppingCart.setTotalPrice(0);
                 }
                 break;
@@ -157,20 +165,24 @@ public class Customer extends Person {
 
     public void crOrder(Address address, int findTotal, int shippingCost) {
         LocalDateTime localDateTime = this.wallet.getTransactions().getLast().getLocalDateTime();
-        List<Kala> kalass = this.shoppingCart.getKalas();
+        // List<Kala> kalass = this.shoppingCart.getKalas();
+        LinkedHashMap<Kala, Integer> kalaForOrder = this.shoppingCart.getKalasMap();
+        LinkedHashMap<Kala, Boolean> kalaVoteForOrder = new LinkedHashMap<>();
         List<String> sellersNames = new ArrayList<>();
-        List<Boolean> vot = new ArrayList<>();
-        for (Kala kala : kalass) {
+        // List<Boolean> vot = new ArrayList<>();
+        for (Kala kala : kalaForOrder.keySet()) {
             sellersNames.add(kala.getSelerName());
-            kala.setInventory(kala.getInventory() - 1);
-            vot.add(false);
+            kala.setInventory(kala.getInventory() - kalaForOrder.get(kala));
+            // vot.add(false);
+            kalaVoteForOrder.put(kala, false);
         }
-        Order newOrder = new Order(kalass, localDateTime, sellersNames, address, findTotal, shippingCost,
+        Order newOrder = new Order(kalaForOrder, localDateTime, sellersNames, address, findTotal, shippingCost,
                 (getFirstname() + " " + getLastname()), getEmail());
-        newOrder.setIsVoted(vot);
+        newOrder.setKalasVoteMap(kalaVoteForOrder);
+        ;
         orders.add(newOrder);
         for (Seller seller : this.sellers) {
-            for (Kala kala : kalass) {
+            for (Kala kala : kalaForOrder.keySet()) {
                 if (seller.getAgencyCode().equals(kala.getAgencyCodeOfSelers())) {
                     crOrder2(kala, localDateTime, seller, newOrder);
                 }
@@ -181,12 +193,15 @@ public class Customer extends Person {
     public void crOrder2(Kala kala, LocalDateTime localDateTime, Seller seller, Order orderCustomer) {
         Address address = orderCustomer.getAddress();
         int shippingCost = orderCustomer.getShippingCost();
-        List<Kala> kalas = new ArrayList<>();
-        kalas.add(kala);
-        Transaction transaction = new Transaction(localDateTime, (kala.getPrice() * 9 / 10), "Sale");
+        // List<Kala> kalas = new ArrayList<>();
+        // kalas.add(kala);
+        LinkedHashMap<Kala, Integer> kalasForOrder = new LinkedHashMap<>();
+        int kalaNumber = this.shoppingCart.getKalasMap().get(kala);
+        kalasForOrder.put(kala, kalaNumber);
+        Transaction transaction = new Transaction(localDateTime, (kala.getPrice() * kalaNumber * 9 / 10), "Sale");
         seller.getWallet().getTransactions().add(transaction);
-        seller.getWallet().setCash(seller.getWallet().getCash() + (kala.getPrice() * 9 / 10));
-        Order order = new Order(kalas, localDateTime, null, address, (kala.getPrice() * 9 / 10),
+        seller.getWallet().setCash(seller.getWallet().getCash() + (kala.getPrice() * kalaNumber * 9 / 10));
+        Order order = new Order(kalasForOrder, localDateTime, null, address, (kala.getPrice() * kalaNumber * 9 / 10),
                 shippingCost, (getFirstname() + " " + getLastname()), getEmail());
         seller.getOrders().add(order);
     }
@@ -252,8 +267,8 @@ public class Customer extends Person {
             System.out.println("1)From the highest price\n2)From the lowest price\n3)Normal(Default)");
             String choice = scanner.nextLine();
             switch (choice) {
-                case "1" -> upSortList(searchingKala);
-                case "2" -> downSortList(searchingKala);
+                case "1" -> searchingKala = upSortList(searchingKala);
+                case "2" -> searchingKala = downSortList(searchingKala);
                 default -> System.out.print("");
             }
             if (runBack(scanner) == 1) {
@@ -283,22 +298,27 @@ public class Customer extends Person {
         String choice = scanner.nextLine();
         switch (choice) {
             case "1":
-                this.shoppingCart.getKalas().add(kala);
+                if (this.shoppingCart.getKalasMap().containsKey(kala)) {
+                    int oldNum = this.shoppingCart.getKalasMap().get(kala);
+                    this.shoppingCart.getKalasMap().replace(kala, oldNum, oldNum + 1);
+                } else {
+                    this.shoppingCart.getKalasMap().put(kala, 1);
+                }
                 return;
             default:
                 return;
         }
     }
 
-    public void upSortList(List<Kala> searchingKala) {
-        searchingKala = searchingKala.stream()
-                .sorted(Comparator.comparingInt(Kala::getPrice))
+    public List<Kala> upSortList(List<Kala> searchingKala) {
+        return searchingKala.stream()
+                .sorted(Comparator.comparingInt(Kala::getPrice).reversed())
                 .collect(Collectors.toList());
     }
 
-    public void downSortList(List<Kala> searchingKala) {
-        searchingKala = searchingKala.stream()
-                .sorted(Comparator.comparingInt(Kala::getPrice).reversed())
+    public List<Kala> downSortList(List<Kala> searchingKala) {
+        return searchingKala.stream()
+                .sorted(Comparator.comparingInt(Kala::getPrice))
                 .collect(Collectors.toList());
     }
 
@@ -337,7 +357,7 @@ public class Customer extends Person {
                     }
                 }
             } else {
-                if (!isInteger(range)) {
+                if (isInteger(range)) {
                     if (Integer.parseInt(range) < min) {
                         System.out.println("The maximum must not be less than the minimum.");
                         continue;

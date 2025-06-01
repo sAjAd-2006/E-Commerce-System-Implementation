@@ -131,6 +131,10 @@ public class CustomerHelper {
     }
 
     public void ordersRun(Scanner scanner) {
+        if (customer.getOrders().isEmpty()) {
+            System.out.println("no order");
+            return;
+        }
         Paginator<Order> paginator = new Paginator<>(customer.getOrders(), 10);
         int ord = paginator.paginate(0);
         if (ord == -1) {
@@ -147,7 +151,7 @@ public class CustomerHelper {
             String choice = scanner.nextLine();
             switch (choice) {
                 case "1":
-                    System.out.println("balance: " + customer.getWallet().getCash());
+                    Color.printGreen("balance: " + customer.getWallet().getCash());
                     break;
                 case "2":
                     walletRunCase23(2, scanner);
@@ -189,7 +193,6 @@ public class CustomerHelper {
     }
 
     public void viewPreviousTransactions(Scanner scanner) {
-        // Scanner scanner = new Scanner(System.in);
         List<Transaction> tran = new ArrayList<>();
         System.out.println("Set time filter ALL: y/n");
         if ("y".equalsIgnoreCase(scanner.nextLine())) {
@@ -198,7 +201,10 @@ public class CustomerHelper {
             TimeFilterHelper<Transaction> timeFilterHelper = new TimeFilterHelper<>();
             tran = timeFilterHelper.filterTimesByUserInput(customer.getWallet().getTransactions(), scanner);
         }
-        // scanner.close();
+        if (tran.isEmpty()) {
+            System.out.println("no transaction");
+            return;
+        }
         Paginator<Transaction> paginator = new Paginator<>(tran, 10);
         int iiii = 0;
         while (true) {
@@ -298,7 +304,12 @@ public class CustomerHelper {
                     System.out.println("Options: 1>Edit 2>Delete 3>Back 4>Exit");
                     String choice = scanner.nextLine();
                     switch (choice) {
-                        case "1" -> editAddress(customer.getAddresses().get(result), scanner);
+                        case "1" -> {
+                            if (customer.getAddresses().get(result) != null) {
+                                editAddress(customer.getAddresses().get(result), scanner);
+                            }
+                            Color.printRed("The requested address no longer exists.");
+                        }
                         case "2" -> customer.getAddresses().remove(result);
                         case "3" -> {
                             iiii = result / 10;
@@ -313,10 +324,8 @@ public class CustomerHelper {
     }
 
     public void editAddress(Address address, Scanner scanner) {
-        // Scanner scanner = new Scanner(System.in);
         System.out.println("Don't enter any part, it won't change.");
         if (customer.runBack(scanner) == 1) {
-            // scanner.close();
             return;
         }
         System.out.print("Enter Title: ");

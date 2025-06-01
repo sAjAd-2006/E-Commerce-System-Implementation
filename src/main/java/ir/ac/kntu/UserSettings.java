@@ -27,6 +27,9 @@ public class UserSettings {
             while (true) {
                 System.out.print("Enter new phone number: ");
                 String phonenumber = scanner.nextLine();
+                if (("".equals(phonenumber))) {
+                    break;
+                }
                 if (!chekPhonenumber(phonenumber)) {
                     continue;
                 } else {
@@ -40,6 +43,9 @@ public class UserSettings {
             while (true) {
                 System.out.print("Enter new password: ");
                 String password = scanner.nextLine();
+                if (("".equals(password))) {
+                    break;
+                }
                 if (!chekPassword(password)) {
                     continue;
                 } else {
@@ -68,6 +74,9 @@ public class UserSettings {
             while (true) {
                 System.out.print("Enter new email: ");
                 String email = scanner.nextLine();
+                if (("".equals(email))) {
+                    break;
+                }
                 if (!chekEmail(email)) {
                     continue;
                 } else {
@@ -76,8 +85,7 @@ public class UserSettings {
                 }
             }
         }
-        System.out.print("Change email? (y/n): ");
-
+        // System.out.print("Change email? (y/n): ");
     }
 
     public boolean chekEmail(String email) {
@@ -85,12 +93,12 @@ public class UserSettings {
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(email);
         if (!matcher.find()) {
-            System.out.println("The email format is incorrect.\nTry again.");
+            Color.printRed("The email format is incorrect.\nTry again.");
             return false;
         } else {
             for (Customer customer : customers) {
                 if (customer.getEmail().equals(email)) {
-                    System.out.println("The email is duplicate.\nTry again.");
+                    Color.printRed("The email is duplicate.\nTry again.");
                     return false;
                 }
             }
@@ -133,7 +141,7 @@ public class UserSettings {
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(password);
         if (!matcher.find()) {
-            System.out.println("The password format is incorrect.\nTry again.");
+            Color.printRed("The password format is incorrect.\nTry again.");
             return false;
         } else {
             return true;

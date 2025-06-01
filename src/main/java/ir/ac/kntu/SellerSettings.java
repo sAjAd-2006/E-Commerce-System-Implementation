@@ -27,6 +27,9 @@ public class SellerSettings {
             while (true) {
                 System.out.print("Enter new phone number: ");
                 String phonenumber = scanner.nextLine();
+                if (("".equals(phonenumber))) {
+                    break;
+                }
                 if (!chekPhonenumber(phonenumber)) {
                     continue;
                 } else {
@@ -40,6 +43,9 @@ public class SellerSettings {
             while (true) {
                 System.out.print("Enter new password: ");
                 String password = scanner.nextLine();
+                if (("".equals(password))) {
+                    break;
+                }
                 if (!chekPassword(password)) {
                     continue;
                 } else {
@@ -68,6 +74,9 @@ public class SellerSettings {
             while (true) {
                 System.out.print("Enter new Store Title: ");
                 String storeTitle = scanner.nextLine();
+                if (("".equals(storeTitle))) {
+                    break;
+                }
                 if (!chekStoreTitle(storeTitle)) {
                     continue;
                 } else {
@@ -134,7 +143,7 @@ public class SellerSettings {
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(password);
         if (!matcher.find()) {
-            System.out.println("The password format is incorrect.\nTry again.");
+            Color.printRed("The password format is incorrect.\nTry again.");
             return false;
         } else {
             return true;

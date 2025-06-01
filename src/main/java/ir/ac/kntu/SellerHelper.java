@@ -52,7 +52,7 @@ public class SellerHelper {
         try {
             Path path = Paths.get("seller_full_report.html");
             Files.write(path, htmlReport.getBytes(StandardCharsets.UTF_8));
-            System.out.println("Report saved successfully: " + path.toAbsolutePath());
+            Color.printGreen("Report saved successfully: " + path.toAbsolutePath());
         } catch (IOException e) {
             System.err.println("Error saving report: " + e.getMessage());
         }
@@ -67,8 +67,8 @@ public class SellerHelper {
                 return;
             } else {
                 Order order = seller.getOrders().get(ord);
-                System.out.println(order + " Customer email: " + order.getCustomerEmail() + " Customer address: "
-                        + order.getAddress());
+                Color.printYellow("\n<- - - - - - - - - >");
+                System.out.println(order + "\n   Customer email: " + order.getCustomerEmail());
                 jjjj = ord / 10;
             }
         }

@@ -97,7 +97,6 @@ public class Vendilo {
                 case "3" -> supporterLogin(scanner);
                 case "4" -> runLogin = false;
                 case "5" -> {
-                    Color.printBlue("Exiting application...");
                     ExitVendilo.exit(scanner);
                 }
                 default -> {
@@ -343,7 +342,7 @@ public class Vendilo {
     }
 
     private void editInfo(Seller seller, Scanner scanner) {
-        if ("Your authentication has not been confirmed yet.".equalsIgnoreCase(seller.getReasonForRejection())) {
+        if (!"Your authentication has not been confirmed yet.".equalsIgnoreCase(seller.getReasonForRejection())) {
             System.out.println("Would you like to change your profile? 1>YES 2NO(Default)");
             String choice = scanner.nextLine();
             switch (choice) {
