@@ -6,8 +6,8 @@ abstract class Kala {
     private int Price;
     private Type type;
     private Model model;
-    private int voteNum;
-    private int vote;
+    private double voteNum;
+    private double vote;
     private boolean voted;
     private double averageScore = 0;
     private String agencyCoSeler;
@@ -60,19 +60,19 @@ abstract class Kala {
         averageScore();
     }
 
-    public int getVoteNum() {
+    public double getVoteNum() {
         return voteNum;
     }
 
-    public void setVoteNum(int voteNum) {
+    public void setVoteNum(double voteNum) {
         this.voteNum = voteNum;
     }
 
-    public int getVote() {
+    public double getVote() {
         return vote;
     }
 
-    public void setVote(int vote) {
+    public void setVote(double vote) {
         this.vote = vote;
     }
 

@@ -3,11 +3,12 @@ package ir.ac.kntu;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 public class ShoppingCart {
     // private List<Kala> kalas = new ArrayList<>();
-    private LinkedHashMap<Kala, Integer> kalasMap;
+    private Map<Kala, Integer> kalasMap;
     private int totalPrice;
 
     public int getTotalPrice() {
@@ -18,11 +19,11 @@ public class ShoppingCart {
         this.totalPrice = totalPrice;
     }
 
-    public LinkedHashMap<Kala, Integer> getKalasMap() {
+    public Map<Kala, Integer> getKalasMap() {
         return kalasMap;
     }
 
-    public void setKalasMap(LinkedHashMap<Kala, Integer> kalasMap) {
+    public void setKalasMap(Map<Kala, Integer> kalasMap) {
         this.kalasMap = kalasMap;
     }
 
@@ -69,25 +70,29 @@ public class ShoppingCart {
             String choice = scanner.nextLine();
             switch (choice) {
                 case "1":
-                    System.out.println("1>Reduce the number 2>Remive 3>Back(Default)");
-                    choice = scanner.nextLine();
-                    switch (choice) {
-                        case "1":
-                            if (num > 1) {
-                                kalasMap.replace(kalas.get(select), num, num - 1);
-                            } else {
-                                kalasMap.remove(kalas.get(select));
-                            }
-                            break;
-                        case "2":
-                            kalasMap.remove(kalas.get(select));
-                        default:
-                            break;
-                    }
+                    seeCartCase1(scanner, num, select, kalas);
                     break;
                 default:
                     break;
             }
+        }
+    }
+
+    public void seeCartCase1(Scanner scanner, int num, int select, List<Kala> kalas) {
+        System.out.println("1>Reduce the number 2>Remive 3>Back(Default)");
+        String choice = scanner.nextLine();
+        switch (choice) {
+            case "1":
+                if (num > 1) {
+                    kalasMap.replace(kalas.get(select), num, num - 1);
+                } else {
+                    kalasMap.remove(kalas.get(select));
+                }
+                break;
+            case "2":
+                kalasMap.remove(kalas.get(select));
+            default:
+                break;
         }
     }
 

@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
@@ -166,8 +167,8 @@ public class Customer extends Person {
     public void crOrder(Address address, int findTotal, int shippingCost) {
         LocalDateTime localDateTime = this.wallet.getTransactions().getLast().getLocalDateTime();
         // List<Kala> kalass = this.shoppingCart.getKalas();
-        LinkedHashMap<Kala, Integer> kalaForOrder = this.shoppingCart.getKalasMap();
-        LinkedHashMap<Kala, Boolean> kalaVoteForOrder = new LinkedHashMap<>();
+        Map<Kala, Integer> kalaForOrder = this.shoppingCart.getKalasMap();
+        Map<Kala, Boolean> kalaVoteForOrder = new LinkedHashMap<>();
         List<String> sellersNames = new ArrayList<>();
         // List<Boolean> vot = new ArrayList<>();
         for (Kala kala : kalaForOrder.keySet()) {
@@ -179,7 +180,6 @@ public class Customer extends Person {
         Order newOrder = new Order(kalaForOrder, localDateTime, sellersNames, address, findTotal, shippingCost,
                 (getFirstname() + " " + getLastname()), getEmail());
         newOrder.setKalasVoteMap(kalaVoteForOrder);
-        ;
         orders.add(newOrder);
         for (Seller seller : this.sellers) {
             for (Kala kala : kalaForOrder.keySet()) {
@@ -195,7 +195,7 @@ public class Customer extends Person {
         int shippingCost = orderCustomer.getShippingCost();
         // List<Kala> kalas = new ArrayList<>();
         // kalas.add(kala);
-        LinkedHashMap<Kala, Integer> kalasForOrder = new LinkedHashMap<>();
+        Map<Kala, Integer> kalasForOrder = new LinkedHashMap<>();
         int kalaNumber = this.shoppingCart.getKalasMap().get(kala);
         kalasForOrder.put(kala, kalaNumber);
         Transaction transaction = new Transaction(localDateTime, (kala.getPrice() * kalaNumber * 9 / 10), "Sale");

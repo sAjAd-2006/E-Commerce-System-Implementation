@@ -4,12 +4,13 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 public class Order extends Timeable {
     // private List<Kala> kalas;
-    private LinkedHashMap<Kala, Integer> kalasMap;
-    private LinkedHashMap<Kala, Boolean> kalasVoteMap;
+    private Map<Kala, Integer> kalasMap;
+    private Map<Kala, Boolean> kalasVoteMap;
     // private List<Boolean> isVoted;
     private LocalDateTime localDateTime;
     private List<String> sellersNames;
@@ -51,19 +52,19 @@ public class Order extends Timeable {
         this.shippingCost = shippingCost;
     }
 
-    public LinkedHashMap<Kala, Integer> getKalasMap() {
+    public Map<Kala, Integer> getKalasMap() {
         return kalasMap;
     }
 
-    public void setKalasMap(LinkedHashMap<Kala, Integer> kalasMap) {
+    public void setKalasMap(Map<Kala, Integer> kalasMap) {
         this.kalasMap = kalasMap;
     }
 
-    public LinkedHashMap<Kala, Boolean> getKalasVoteMap() {
+    public Map<Kala, Boolean> getKalasVoteMap() {
         return kalasVoteMap;
     }
 
-    public void setKalasVoteMap(LinkedHashMap<Kala, Boolean> kalasVoteMap) {
+    public void setKalasVoteMap(Map<Kala, Boolean> kalasVoteMap) {
         this.kalasVoteMap = kalasVoteMap;
     }
 
@@ -76,7 +77,7 @@ public class Order extends Timeable {
         address = new Address();
     }
 
-    public Order(LinkedHashMap<Kala, Integer> kalasMap, LocalDateTime localDateTime, List<String> sellersNames,
+    public Order(Map<Kala, Integer> kalasMap, LocalDateTime localDateTime, List<String> sellersNames,
             Address address,
             int totalPrice,
             int shippingCost, String customerName, String customerEmail) {

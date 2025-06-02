@@ -22,22 +22,7 @@ public class SellerSettings {
 
     public void settings(Seller user, Scanner scanner) {
         settingHelp(user, scanner);
-        System.out.print("Change phone number? (y/n): ");
-        if ("y".equalsIgnoreCase(scanner.nextLine())) {
-            while (true) {
-                System.out.print("Enter new phone number: ");
-                String phonenumber = scanner.nextLine();
-                if (("".equals(phonenumber))) {
-                    break;
-                }
-                if (!chekPhonenumber(phonenumber)) {
-                    continue;
-                } else {
-                    user.setPhonenumber(phonenumber);
-                    break;
-                }
-            }
-        }
+        settingHelp3(user, scanner);
         System.out.print("Change password? (y/n): ");
         if ("y".equalsIgnoreCase(scanner.nextLine())) {
             while (true) {
@@ -58,6 +43,25 @@ public class SellerSettings {
         System.out.println("\nUpdated Info:\n" + user + user.chap());
     }
 
+    public void settingHelp3(Seller user, Scanner scanner) {
+        System.out.print("Change phone number? (y/n): ");
+        if ("y".equalsIgnoreCase(scanner.nextLine())) {
+            while (true) {
+                System.out.print("Enter new phone number: ");
+                String phonenumber = scanner.nextLine();
+                if (("".equals(phonenumber))) {
+                    break;
+                }
+                if (!chekPhonenumber(phonenumber)) {
+                    continue;
+                } else {
+                    user.setPhonenumber(phonenumber);
+                    break;
+                }
+            }
+        }
+    }
+
     public void settingHelp(Seller user, Scanner scanner) {
         System.out.print("Change first name? (y/n): ");
         if ("y".equalsIgnoreCase(scanner.nextLine())) {
@@ -69,6 +73,15 @@ public class SellerSettings {
             System.out.print("Enter new last name: ");
             user.setLastname(scanner.nextLine());
         }
+        settingHelp2(user, scanner);
+        System.out.print("Change province Of Sale? (y/n): ");
+        if ("y".equalsIgnoreCase(scanner.nextLine())) {
+            System.out.print("Enter new province Of Sale: ");
+            user.setProvinceOfSale(scanner.nextLine());
+        }
+    }
+
+    public void settingHelp2(Seller user, Scanner scanner) {
         System.out.print("Change Store Title? (y/n): ");
         if ("y".equalsIgnoreCase(scanner.nextLine())) {
             while (true) {
@@ -84,11 +97,6 @@ public class SellerSettings {
                     break;
                 }
             }
-        }
-        System.out.print("Change province Of Sale? (y/n): ");
-        if ("y".equalsIgnoreCase(scanner.nextLine())) {
-            System.out.print("Enter new province Of Sale: ");
-            user.setProvinceOfSale(scanner.nextLine());
         }
     }
 

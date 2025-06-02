@@ -87,12 +87,7 @@ public class Supporter extends Person {
                 return;
             } else {
                 Order order = orders.get(ord);
-                System.out.println(order + " Customer name: " + order.getCustomerName() + "\n   shipping Cost: "
-                        + order.getShippingCost());
-                System.out.println("   Seler names:");
-                for (String name : order.getSellersNames()) {
-                    System.out.println("   >>" + name);
-                }
+                seeFilterOrderHelper(order, ord);
                 List<Kala> kalas = new ArrayList<>(order.getKalasMap().keySet());
                 Paginator<Kala> paginator2 = new Paginator<>(kalas, 10);
                 while (true) {
@@ -100,14 +95,29 @@ public class Supporter extends Person {
                     if (kal == -1) {
                         break;
                     } else {
-                        Kala kala = kalas.get(kal);
-                        System.out.println(Color.YELLOW_BOLD + "    => " + Color.RESET + kala + "\n   number: " + order.getKalasMap().get(kala) + "  Inventory: " + kala.getInventory());
+                        ordKalPrint(kalas, kal, order);
                         jits = kal / 10;
                     }
                 }
                 iits = ord / 10;
             }
         }
+    }
+
+    public void seeFilterOrderHelper(Order order, int ord) {
+        Color.printYellow("\nOrder info:");
+        System.out.println(order + " Customer name: " + order.getCustomerName() + "\n   shipping Cost: "
+                + order.getShippingCost());
+        System.out.println("   Seler names:");
+        for (String name : order.getSellersNames()) {
+            System.out.println(Color.BLUE_BOLD + "   >>" + Color.RESET + name);
+        }
+    }
+
+    public void ordKalPrint(List<Kala> kalas, int kal, Order order) {
+        Kala kala = kalas.get(kal);
+        System.out.println(Color.YELLOW_BOLD + "   => " + Color.RESET + kala + "\n      number: "
+                + order.getKalasMap().get(kala) + "     Inventory: " + kala.getInventory());
     }
 
     public void sellersVerification(Scanner scanner, Vendilo vendilo) {

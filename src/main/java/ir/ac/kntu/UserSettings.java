@@ -22,22 +22,7 @@ public class UserSettings {
 
     public void settings(Customer user, Scanner scanner) {
         settingHelp(user, scanner);
-        System.out.print("Change phone number? (y/n): ");
-        if ("y".equalsIgnoreCase(scanner.nextLine())) {
-            while (true) {
-                System.out.print("Enter new phone number: ");
-                String phonenumber = scanner.nextLine();
-                if (("".equals(phonenumber))) {
-                    break;
-                }
-                if (!chekPhonenumber(phonenumber)) {
-                    continue;
-                } else {
-                    user.setPhonenumber(phonenumber);
-                    break;
-                }
-            }
-        }
+        settingHelp2(user, scanner);
         System.out.print("Change password? (y/n): ");
         if ("y".equalsIgnoreCase(scanner.nextLine())) {
             while (true) {
@@ -86,6 +71,25 @@ public class UserSettings {
             }
         }
         // System.out.print("Change email? (y/n): ");
+    }
+
+    public void settingHelp2(Person user, Scanner scanner) {
+        System.out.print("Change phone number? (y/n): ");
+        if ("y".equalsIgnoreCase(scanner.nextLine())) {
+            while (true) {
+                System.out.print("Enter new phone number: ");
+                String phonenumber = scanner.nextLine();
+                if (("".equals(phonenumber))) {
+                    break;
+                }
+                if (!chekPhonenumber(phonenumber)) {
+                    continue;
+                } else {
+                    user.setPhonenumber(phonenumber);
+                    break;
+                }
+            }
+        }
     }
 
     public boolean chekEmail(String email) {

@@ -98,8 +98,8 @@ public class CustomerHelper {
                 return;
             } else {
                 Reportage reportage = customer.getReportages().get(iiii);
-                System.out.println("\n" + reportage + " Request status>" + reportage.getCheck() + " Support response>"
-                        + reportage.getAnswer());
+                System.out.println("\n" + reportage + " - - - Request status>"
+                        + reportage.getCheck() + " - - - Support response>" + reportage.getAnswer());
                 jjjj = iiii / 10;
             }
         }
