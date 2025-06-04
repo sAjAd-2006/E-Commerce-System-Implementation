@@ -18,6 +18,15 @@ public class Customer extends Person {
     private List<Reportage> reportages;
     private List<Seller> sellers;
     private List<DiscountCode> discountCodes;
+    private boolean vendiloPlus = false;
+
+    public boolean isVendiloPlus() {
+        return vendiloPlus;
+    }
+
+    public void setVendiloPlus(boolean vendiloPlus) {
+        this.vendiloPlus = vendiloPlus;
+    }
 
     public List<DiscountCode> getDiscountCodes() {
         return discountCodes;
@@ -117,18 +126,30 @@ public class Customer extends Person {
                     System.out.println("You did not select an address.");
                     continue;
                 }
-                if (discountAddress(address) == 1) {
+                int dis = discount(address);
+                if (dis == 1 && vendiloPlus) {
+                    shippingCost = 0;
+                }
+                if (dis == 1 || vendiloPlus) {
                     shippingCost /= 3;
                 }
-                System.out.println("Price: " + shoppingCart.findTotal() + "\nShipping Cost: " + shippingCost);
-                // continueShoppingNow(shippingCost, address, scanner);
-                continueShoppingNow(shippingCost, address, scanner, useDiscountCode(scanner, shoppingCart.findTotal()));
-                // useDiscountCode(scanner, shoppingCart.findTotal());
-                
+
+                seeTotalAndContinue(scanner, address, shippingCost);
             } else {
                 System.out.println("Please register your address first.");
                 return;
             }
+        }
+    }
+
+    private void seeTotalAndContinue(Scanner scanner, Address address, int shippingCost) {
+        if (vendiloPlus) {
+            System.out.println("Price: " + shoppingCart.findTotal() * 95 / 100 + "\nShipping Cost: " + shippingCost);
+            continueShoppingNow(shippingCost, address, scanner,
+                    useDiscountCode(scanner, shoppingCart.findTotal() * 95 / 100));
+        } else {
+            System.out.println("Price: " + shoppingCart.findTotal() + "\nShipping Cost: " + shippingCost);
+            continueShoppingNow(shippingCost, address, scanner, useDiscountCode(scanner, shoppingCart.findTotal()));
         }
     }
 
@@ -159,7 +180,7 @@ public class Customer extends Person {
         }
     }
 
-    public int discountAddress(Address address) {
+    public int discount(Address address) {
         boolean discount = true;
         for (Kala kala : this.shoppingCart.getKalasMap().keySet()) {
             kala.toString();
@@ -315,6 +336,21 @@ public class Customer extends Person {
             if (runBack(scanner) == 1) {
                 break;
             }
+            display(searchingKala, productType, scanner);
+        }
+    }
+
+    public void display(List<Kala> searchingKala, String productType, Scanner scanner) {
+        if (vendiloPlus) {
+            VendiloPlusSeeKala vPlusSeeKala = new VendiloPlusSeeKala(searchingKala, 10);
+            while (true) {
+                int kal = vPlusSeeKala.paginate(0);
+                if (kal == -1) {
+                    break;
+                }
+                displayInformationAboutTheSelectedProduct(searchingKala.get(kal), productType, scanner);
+            }
+        } else {
             Paginator<Kala> paginator = new Paginator<>(searchingKala, 10);
             while (true) {
                 int kal = paginator.paginate(0);
@@ -327,7 +363,11 @@ public class Customer extends Person {
     }
 
     public void displayInformationAboutTheSelectedProduct(Kala kala, String productType, Scanner scanner) {
-        System.out.println(kala.toString() + " Inventory: " + kala.getInventory());
+        if (vendiloPlus) {
+            System.out.println(kala.vendiloPlusSee() + " Inventory: " + kala.getInventory());
+        } else {
+            System.out.println(kala.toString() + " Inventory: " + kala.getInventory());
+        }
         addToCart(kala, scanner);
     }
 

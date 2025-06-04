@@ -1,8 +1,10 @@
 package ir.ac.kntu;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 public class Vendilo {
@@ -10,6 +12,7 @@ public class Vendilo {
     private List<Seller> sellers = new ArrayList<>();
     private List<Seller> verification = new ArrayList<>();
     private List<Supporter> supporters = new ArrayList<>();
+    private Map<Customer, LocalDate> vendiloPlus;
 
     public List<Supporter> getSupporters() {
         return supporters;
@@ -194,7 +197,7 @@ public class Vendilo {
                 if (customer.getPassword().equals(password)) {
                     passwordEror = true;
                     Color.printGreen("Successful login.");
-                    CustomerHelper customerHelper = new CustomerHelper(customer, this);
+                    CustomerHelper customerHelper = new CustomerHelper(customer, this, vendiloPlus);
                     customerHelper.menu(scanner);
                 }
             }

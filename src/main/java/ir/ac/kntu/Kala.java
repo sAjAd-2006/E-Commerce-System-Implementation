@@ -145,4 +145,10 @@ abstract class Kala {
                 + getSelerName() + " Price: " + getPrice() + " Average score: " + getAverageScore()
                 + " Seller's province: " + getSelerCity());
     }
+
+    public String vendiloPlusSee() {
+        return ("Product name: " + getName() + " Product type: " + getModel() + " Seler name: "
+                + getSelerName() + " Price: " + getPrice() * 95 / 100 + " Average score: " + getAverageScore()
+                + " Seller's province: " + getSelerCity());
+    }
 }

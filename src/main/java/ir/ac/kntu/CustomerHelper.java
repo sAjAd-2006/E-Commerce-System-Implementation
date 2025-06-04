@@ -1,12 +1,16 @@
 package ir.ac.kntu;
 
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 public class CustomerHelper {
     private Customer customer;
     private Vendilo vendilo;
+    private Map<Customer, LocalDate> vendiloPlus;
 
     public Customer getCustomer() {
         return customer;
@@ -19,16 +23,19 @@ public class CustomerHelper {
     public CustomerHelper() {
     }
 
-    public CustomerHelper(Customer customer, Vendilo vendilo) {
+    public CustomerHelper(Customer customer, Vendilo vendilo, Map<Customer, LocalDate> vendiloPlus) {
         this.customer = customer;
         this.vendilo = vendilo;
+        this.vendiloPlus = vendiloPlus;
     }
 
     public void menu(Scanner scanner) {
         boolean runMenu = true;
         while (runMenu) {
+            vendiloPlusRun();
             System.out.println("- - - - Customer Menu - - - -\n1-Product Search\n2-Shopping Cart\n3-Addresses");
-            System.out.println("4-Wallet\n5-Discount Code\n6-Orders\n7-Settings\n8-Support\n9-Log out\n10-Exit\n=> ");
+            System.out.println("4-Wallet\n5-Discount Code\n6-Orders\n7-Vendilo Pluse\n8-Settings\n9-Support");
+            System.out.println("10-Log out\n11-Exit\n=>");
             String choice = scanner.nextLine();
             switch (choice) {
                 case "1" -> customer.searchKala(scanner);
@@ -37,15 +44,74 @@ public class CustomerHelper {
                 case "4" -> walletRun(scanner);
                 case "5" -> discountCodeRun(scanner);
                 case "6" -> ordersRun(scanner);
-                case "7" -> {
+                case "7" -> vPlusRun(scanner);
+                case "8" -> {
                     UserSettings userSettings = new UserSettings(vendilo.getCustomers(), vendilo.getSellers(),
                             vendilo.getSellersVerification());
                     userSettings.settings(customer, scanner);
                 }
-                case "8" -> supportRun(scanner);
-                case "9" -> runMenu = false;
-                case "10" -> ExitVendilo.exit(scanner);
+                case "9" -> supportRun(scanner);
+                case "10" -> runMenu = false;
+                case "11" -> ExitVendilo.exit(scanner);
                 default -> System.out.println("The selected option is invalid.");
+            }
+        }
+    }
+
+    public void vPlusRun(Scanner scanner) {
+        while (true) {
+            timeBetween();
+            Color.printWhiteBold("Would you like to purchase a subscription? y/n(Default)");
+            String choice = scanner.nextLine();
+            switch (choice) {
+                case "y":
+                    byVendiloPluse(scanner);
+                    break;
+                default:
+                    return;
+            }
+        }
+    }
+
+    public void byVendiloPluse(Scanner scanner) {
+        Color.printWhiteBold(
+                "Which subscription are you considering?\n1> 1-Month  price:1000\n2> 3-Month  price:2900\n3> 1-Year  price:11000\n4> Back");
+        String choice = scanner.nextLine();
+        switch (choice) {
+            case "1":
+                if (customer.getWallet().withdrawFromWallet(1000, "Buy a subscription")) {
+                    vendiloPlus.put(customer, LocalDate.now().plusMonths(1));
+                }
+                break;
+            case "2":
+                if (customer.getWallet().withdrawFromWallet(2900, "Buy a subscription")) {
+                    vendiloPlus.put(customer, LocalDate.now().plusMonths(3));
+                }
+                break;
+            case "3":
+                if (customer.getWallet().withdrawFromWallet(11000, "Buy a subscription")) {
+                    vendiloPlus.put(customer, LocalDate.now().plusYears(1));
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
+    public void timeBetween() {
+        LocalDate pastDate = vendiloPlus.get(customer);
+
+        Period period = Period.between(pastDate, LocalDate.now());
+
+        System.out.println("Year:" + Color.GREEN_BOLD + period.getYears() + Color.RESET
+                + " Month:" + Color.GREEN_BOLD + period.getMonths() + Color.RESET
+                + " Day:" + Color.GREEN_BOLD + period.getDays() + Color.RESET);
+    }
+
+    private void vendiloPlusRun() {
+        for (Customer customer : vendiloPlus.keySet()) {
+            if (LocalDate.now().isAfter(vendiloPlus.get(customer))) {
+                customer.setVendiloPlus(false);
             }
         }
     }

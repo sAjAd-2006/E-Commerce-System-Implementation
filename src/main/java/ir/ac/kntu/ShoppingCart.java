@@ -78,6 +78,34 @@ public class ShoppingCart {
         }
     }
 
+    public void seeCartVendiloPlus(Scanner scanner) {
+        while (true) {
+            if (kalasMap.keySet().isEmpty()) {
+                System.out.println("Your shopping cart is empty.");
+                return;
+            }
+            List<Kala> kalas = new ArrayList<>(kalasMap.keySet());
+            // Paginator<Kala> paginator = new Paginator<>(kalas, 10);
+            VendiloPlusSeeKala vPlusSeeKala = new VendiloPlusSeeKala(kalas, 10);
+            int select = 0;
+            select = vPlusSeeKala.paginate(select);
+            if (select == -1) {
+                return;
+            }
+            int num = kalasMap.get(kalas.get(select));
+            System.out.println("    <^>" + kalas.get(select).vendiloPlusSee() + " Number: " + num);
+            System.out.println("Remove product?\n1> YES 2> NO(Default)");
+            String choice = scanner.nextLine();
+            switch (choice) {
+                case "1":
+                    seeCartCase1(scanner, num, select, kalas);
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
     public void seeCartCase1(Scanner scanner, int num, int select, List<Kala> kalas) {
         System.out.println("1>Reduce the number 2>Remive 3>Back(Default)");
         String choice = scanner.nextLine();
