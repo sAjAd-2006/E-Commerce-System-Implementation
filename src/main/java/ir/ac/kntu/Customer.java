@@ -17,6 +17,15 @@ public class Customer extends Person {
     private List<Order> orders;
     private List<Reportage> reportages;
     private List<Seller> sellers;
+    private List<DiscountCode> discountCodes;
+
+    public List<DiscountCode> getDiscountCodes() {
+        return discountCodes;
+    }
+
+    public void setDiscountCodes(List<DiscountCode> discountCodes) {
+        this.discountCodes = discountCodes;
+    }
 
     public void setSellers(List<Seller> sellers) {
         this.sellers = sellers;
@@ -45,6 +54,7 @@ public class Customer extends Person {
         orders = new ArrayList<>();
         reportages = new ArrayList<>();
         sellers = new ArrayList<>();
+        discountCodes = new ArrayList<>();
     }
 
     public Customer(String firstname, String lastname, String email, String phonenumber, String password) {
@@ -107,11 +117,14 @@ public class Customer extends Person {
                     System.out.println("You did not select an address.");
                     continue;
                 }
-                if (discount(address) == 1) {
+                if (discountAddress(address) == 1) {
                     shippingCost /= 3;
                 }
                 System.out.println("Price: " + shoppingCart.findTotal() + "\nShipping Cost: " + shippingCost);
-                continueShoppingNow(shippingCost, address, scanner);
+                // continueShoppingNow(shippingCost, address, scanner);
+                continueShoppingNow(shippingCost, address, scanner, useDiscountCode(scanner, shoppingCart.findTotal()));
+                // useDiscountCode(scanner, shoppingCart.findTotal());
+                
             } else {
                 System.out.println("Please register your address first.");
                 return;
@@ -119,7 +132,34 @@ public class Customer extends Person {
         }
     }
 
-    public int discount(Address address) {
+    private int useDiscountCode(Scanner scanner, int totalPrice) {
+        int numUse = 0;
+        for (DiscountCode discountCode : discountCodes) {
+            if (discountCode.getNumbCanBeUsed() > 0) {
+                numUse += discountCode.getNumbCanBeUsed();
+            }
+        }
+        if (numUse == 0) {
+            return totalPrice;
+        }
+        while (true) {
+            Color.printWhiteBold("Do you want to apply a discount code? y/n(Default)");
+            String choice = scanner.nextLine();
+            switch (choice) {
+                case "y":
+                    Paginator<DiscountCode> paginator = new Paginator<>(discountCodes, 10);
+                    int select = paginator.paginate(0);
+                    if (select == -1) {
+                        return totalPrice;
+                    }
+                    return discountCodes.get(select).discountCalculation(totalPrice);
+                default:
+                    return totalPrice;
+            }
+        }
+    }
+
+    public int discountAddress(Address address) {
         boolean discount = true;
         for (Kala kala : this.shoppingCart.getKalasMap().keySet()) {
             kala.toString();
@@ -145,13 +185,14 @@ public class Customer extends Person {
         return -1;
     }
 
-    public void continueShoppingNow(int shippingCost, Address address, Scanner scanner) {
+    public void continueShoppingNow(int shippingCost, Address address, Scanner scanner, int totalPrice) {
         System.out.println("1) Complete Purchase\n2) Back\n3) Exit");
         String choice = scanner.nextLine();
         switch (choice) {
             case "1":
-                if (this.wallet.withdrawFromWallet((this.shoppingCart.findTotal() + shippingCost), "Shopping")) {
-                    crOrder(address, this.shoppingCart.findTotal(), shippingCost);
+                if (this.wallet.withdrawFromWallet((totalPrice + shippingCost), "Shopping")) {
+                    crOrder(address, shippingCost, totalPrice);
+                    // crOrder(address, this.shoppingCart.findTotal(), shippingCost);
                     // List<Kala> kalas = new ArrayList<>();
                     LinkedHashMap<Kala, Integer> newMap = new LinkedHashMap<>();
                     shoppingCart.setKalasMap(newMap);
@@ -164,7 +205,7 @@ public class Customer extends Person {
         }
     }
 
-    public void crOrder(Address address, int findTotal, int shippingCost) {
+    public void crOrder(Address address, int shippingCost, int totalPrice) {
         LocalDateTime localDateTime = this.wallet.getTransactions().getLast().getLocalDateTime();
         // List<Kala> kalass = this.shoppingCart.getKalas();
         Map<Kala, Integer> kalaForOrder = this.shoppingCart.getKalasMap();
@@ -177,7 +218,7 @@ public class Customer extends Person {
             // vot.add(false);
             kalaVoteForOrder.put(kala, false);
         }
-        Order newOrder = new Order(kalaForOrder, localDateTime, sellersNames, address, findTotal, shippingCost,
+        Order newOrder = new Order(kalaForOrder, localDateTime, sellersNames, address, totalPrice, shippingCost,
                 (getFirstname() + " " + getLastname()), getEmail());
         newOrder.setKalasVoteMap(kalaVoteForOrder);
         orders.add(newOrder);

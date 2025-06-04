@@ -28,24 +28,37 @@ public class CustomerHelper {
         boolean runMenu = true;
         while (runMenu) {
             System.out.println("- - - - Customer Menu - - - -\n1-Product Search\n2-Shopping Cart\n3-Addresses");
-            System.out.println("4-Wallet\n5-Orders\n6-Settings\n7-Support\n8-Log out\n9-Exit\n=> ");
+            System.out.println("4-Wallet\n5-Discount Code\n6-Orders\n7-Settings\n8-Support\n9-Log out\n10-Exit\n=> ");
             String choice = scanner.nextLine();
             switch (choice) {
                 case "1" -> customer.searchKala(scanner);
                 case "2" -> menuCase2(scanner);
                 case "3" -> addressRun(scanner);
                 case "4" -> walletRun(scanner);
-                case "5" -> ordersRun(scanner);
-                case "6" -> {
+                case "5" -> discountCodeRun(scanner);
+                case "6" -> ordersRun(scanner);
+                case "7" -> {
                     UserSettings userSettings = new UserSettings(vendilo.getCustomers(), vendilo.getSellers(),
                             vendilo.getSellersVerification());
                     userSettings.settings(customer, scanner);
                 }
-                case "7" -> supportRun(scanner);
-                case "8" -> runMenu = false;
-                case "9" -> ExitVendilo.exit(scanner);
+                case "8" -> supportRun(scanner);
+                case "9" -> runMenu = false;
+                case "10" -> ExitVendilo.exit(scanner);
                 default -> System.out.println("The selected option is invalid.");
             }
+        }
+    }
+
+    public void discountCodeRun(Scanner scanner) {
+        Paginator<DiscountCode> paginator = new Paginator<>(customer.getDiscountCodes(), 10);
+        int select = 0;
+        while (true) {
+            select = paginator.paginate(select);
+            if (select == -1) {
+                return;
+            }
+            select /= 10;
         }
     }
 

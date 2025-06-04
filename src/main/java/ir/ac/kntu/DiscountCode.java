@@ -1,0 +1,69 @@
+package ir.ac.kntu;
+
+public class DiscountCode {
+    private int code;
+    private Kind kind;
+    private int discountAmount;
+    private int numbCanBeUsed = 0;
+
+    public int getCode() {
+        return code;
+    }
+
+    public void setCode(int code) {
+        this.code = code;
+    }
+
+    public Kind getKind() {
+        return kind;
+    }
+
+    public void setKind(Kind kind) {
+        this.kind = kind;
+    }
+
+    public int getDiscountAmount() {
+        return discountAmount;
+    }
+
+    public void setDiscountAmount(int discountAmount) {
+        this.discountAmount = discountAmount;
+    }
+
+    public int getNumbCanBeUsed() {
+        return numbCanBeUsed;
+    }
+
+    public void setNumbCanBeUsed(int numbCanBeUsed) {
+        this.numbCanBeUsed = numbCanBeUsed;
+    }
+
+    public DiscountCode(int code, Kind kind, int discountAmount, int numbCanBeUsed) {
+        this.code = code;
+        this.kind = kind;
+        this.discountAmount = discountAmount;
+        this.numbCanBeUsed = numbCanBeUsed;
+    }
+
+    public int discountCalculation(int totalPrice) {
+        if (kind == Kind.Percentage) {
+            numbCanBeUsed--;
+            return totalPrice * discountAmount / 100;
+        } else {
+            if (totalPrice * 10 > discountAmount) {
+                numbCanBeUsed--;
+                return totalPrice - discountAmount;
+            } else {
+                Color.printYellow(
+                        "\nThe purchase amount is too small to use the discount code and the discount code is not applied.");
+                return totalPrice;
+            }
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "DiscountCode [code=" + code + ", kind=" + kind + ", DiscountAmount=" + discountAmount
+                + "$%, NumbCanBeUsed=" + numbCanBeUsed + "]";
+    }
+}
