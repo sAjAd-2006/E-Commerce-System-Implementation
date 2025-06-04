@@ -3,6 +3,7 @@ package ir.ac.kntu;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
@@ -12,7 +13,7 @@ public class Vendilo {
     private List<Seller> sellers = new ArrayList<>();
     private List<Seller> verification = new ArrayList<>();
     private List<Supporter> supporters = new ArrayList<>();
-    private Map<Customer, LocalDate> vendiloPlus;
+    private Map<Customer, LocalDate> vendiloPlus = new HashMap<>();
 
     public List<Supporter> getSupporters() {
         return supporters;

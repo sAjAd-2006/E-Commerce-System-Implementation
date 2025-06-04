@@ -80,17 +80,20 @@ public class CustomerHelper {
         switch (choice) {
             case "1":
                 if (customer.getWallet().withdrawFromWallet(1000, "Buy a subscription")) {
-                    vendiloPlus.put(customer, LocalDate.now().plusMonths(1));
+                    // vendiloPlus.put(customer, LocalDate.now().plusMonths(1));
+                    setEndTimeVendiloPlus(1);
                 }
                 break;
             case "2":
                 if (customer.getWallet().withdrawFromWallet(2900, "Buy a subscription")) {
-                    vendiloPlus.put(customer, LocalDate.now().plusMonths(3));
+                    // vendiloPlus.put(customer, LocalDate.now().plusMonths(3));
+                    setEndTimeVendiloPlus(2);
                 }
                 break;
             case "3":
                 if (customer.getWallet().withdrawFromWallet(11000, "Buy a subscription")) {
-                    vendiloPlus.put(customer, LocalDate.now().plusYears(1));
+                    // vendiloPlus.put(customer, LocalDate.now().plusYears(1));
+                    setEndTimeVendiloPlus(3);
                 }
                 break;
             default:
@@ -98,12 +101,34 @@ public class CustomerHelper {
         }
     }
 
+    public void setEndTimeVendiloPlus(int endDate) {
+        if (vendiloPlus.containsKey(customer)) {
+            LocalDate localDate = vendiloPlus.get(customer);
+            switch (endDate) {
+                case 1 -> vendiloPlus.put(customer, localDate.plusMonths(1));
+                case 2 -> vendiloPlus.put(customer, localDate.plusMonths(3));
+                case 3 -> vendiloPlus.put(customer, localDate.plusYears(1));
+                default -> vendiloPlus.put(customer, localDate);
+            }
+        } else {
+            switch (endDate) {
+                case 1 -> vendiloPlus.put(customer, LocalDate.now().plusMonths(1));
+                case 2 -> vendiloPlus.put(customer, LocalDate.now().plusMonths(3));
+                case 3 -> vendiloPlus.put(customer, LocalDate.now().plusYears(1));
+                default -> vendiloPlus.put(customer, LocalDate.now());
+            }
+        }
+    }
+
     public void timeBetween() {
-        LocalDate pastDate = vendiloPlus.get(customer);
+        if (!vendiloPlus.containsKey(customer) || vendiloPlus.get(customer).isBefore(LocalDate.now())) {
+            return;
+        }
+        LocalDate endDate = vendiloPlus.get(customer);
 
-        Period period = Period.between(pastDate, LocalDate.now());
+        Period period = Period.between(LocalDate.now(), endDate);
 
-        System.out.println("Year:" + Color.GREEN_BOLD + period.getYears() + Color.RESET
+        System.out.println("End of subscription>  " + "Year:" + Color.GREEN_BOLD + period.getYears() + Color.RESET
                 + " Month:" + Color.GREEN_BOLD + period.getMonths() + Color.RESET
                 + " Day:" + Color.GREEN_BOLD + period.getDays() + Color.RESET);
     }
