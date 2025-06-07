@@ -19,6 +19,15 @@ public class Customer extends Person {
     private List<Seller> sellers;
     private List<DiscountCode> discountCodes;
     private boolean vendiloPlus = false;
+    private List<Notification> notifications;
+
+    public List<Notification> getNotifications() {
+        return notifications;
+    }
+
+    public void setNotifications(List<Notification> notifications) {
+        this.notifications = notifications;
+    }
 
     public boolean isVendiloPlus() {
         return vendiloPlus;
@@ -64,6 +73,7 @@ public class Customer extends Person {
         reportages = new ArrayList<>();
         sellers = new ArrayList<>();
         discountCodes = new ArrayList<>();
+        notifications = new ArrayList<>();
     }
 
     public Customer(String firstname, String lastname, String email, String phonenumber, String password) {
@@ -78,6 +88,8 @@ public class Customer extends Person {
         reportages = new ArrayList<>();
         shoppingCart = new ShoppingCart();
         sellers = new ArrayList<>();
+        discountCodes = new ArrayList<>();
+        notifications = new ArrayList<>();
     }
 
     public Wallet getWallet() {
@@ -133,7 +145,6 @@ public class Customer extends Person {
                 if (dis == 1 || vendiloPlus) {
                     shippingCost /= 3;
                 }
-
                 seeTotalAndContinue(scanner, address, shippingCost);
             } else {
                 System.out.println("Please register your address first.");
@@ -149,18 +160,22 @@ public class Customer extends Person {
                     useDiscountCode(scanner, shoppingCart.findTotal() * 95 / 100));
         } else {
             System.out.println("Price: " + shoppingCart.findTotal() + "\nShipping Cost: " + shippingCost);
-            continueShoppingNow(shippingCost, address, scanner, useDiscountCode(scanner, shoppingCart.findTotal()));
+            int total = useDiscountCode(scanner, shoppingCart.findTotal());
+            continueShoppingNow(shippingCost, address, scanner, total);
         }
     }
 
     private int useDiscountCode(Scanner scanner, int totalPrice) {
-        int numUse = 0;
+        Color.printRed("-168-");
+        boolean numUse = false;
         for (DiscountCode discountCode : discountCodes) {
             if (discountCode.getNumbCanBeUsed() > 0) {
-                numUse += discountCode.getNumbCanBeUsed();
+                numUse = true;
             }
         }
-        if (numUse == 0) {
+        Color.printRed("-175-");
+        if (!numUse) {
+            Color.printRed("-177-");
             return totalPrice;
         }
         while (true) {
@@ -213,8 +228,6 @@ public class Customer extends Person {
             case "1":
                 if (this.wallet.withdrawFromWallet((totalPrice + shippingCost), "Shopping")) {
                     crOrder(address, shippingCost, totalPrice);
-                    // crOrder(address, this.shoppingCart.findTotal(), shippingCost);
-                    // List<Kala> kalas = new ArrayList<>();
                     LinkedHashMap<Kala, Integer> newMap = new LinkedHashMap<>();
                     shoppingCart.setKalasMap(newMap);
                     shoppingCart.setTotalPrice(0);
@@ -228,15 +241,12 @@ public class Customer extends Person {
 
     public void crOrder(Address address, int shippingCost, int totalPrice) {
         LocalDateTime localDateTime = this.wallet.getTransactions().getLast().getLocalDateTime();
-        // List<Kala> kalass = this.shoppingCart.getKalas();
         Map<Kala, Integer> kalaForOrder = this.shoppingCart.getKalasMap();
         Map<Kala, Boolean> kalaVoteForOrder = new LinkedHashMap<>();
         List<String> sellersNames = new ArrayList<>();
-        // List<Boolean> vot = new ArrayList<>();
         for (Kala kala : kalaForOrder.keySet()) {
             sellersNames.add(kala.getSelerName());
             kala.setInventory(kala.getInventory() - kalaForOrder.get(kala));
-            // vot.add(false);
             kalaVoteForOrder.put(kala, false);
         }
         Order newOrder = new Order(kalaForOrder, localDateTime, sellersNames, address, totalPrice, shippingCost,
@@ -255,8 +265,6 @@ public class Customer extends Person {
     public void crOrder2(Kala kala, LocalDateTime localDateTime, Seller seller, Order orderCustomer) {
         Address address = orderCustomer.getAddress();
         int shippingCost = orderCustomer.getShippingCost();
-        // List<Kala> kalas = new ArrayList<>();
-        // kalas.add(kala);
         Map<Kala, Integer> kalasForOrder = new LinkedHashMap<>();
         int kalaNumber = this.shoppingCart.getKalasMap().get(kala);
         kalasForOrder.put(kala, kalaNumber);
@@ -375,6 +383,12 @@ public class Customer extends Person {
         if (runBack(scanner) == 1) {
             return;
         }
+        if (kala.getInventory() == 0) {
+            System.out.println("This item is out of stock." +
+                    "\nWould you like to be notified when it becomes available? y/n(Default)");
+            crNotifKala(scanner, kala);
+            return;
+        }
         System.out.println("Do you want to add this item to your cart?\n1>YES\n2>NO(Default)");
         String choice = scanner.nextLine();
         switch (choice) {
@@ -388,6 +402,23 @@ public class Customer extends Person {
                 return;
             default:
                 return;
+        }
+    }
+
+    private void crNotifKala(Scanner scanner, Kala kala) {
+        String choice = scanner.nextLine();
+        if (choice.equalsIgnoreCase("y")) {
+            for (Notification notification : notifications) {
+                if (notification instanceof KalaNotification) {
+                    KalaNotification kalaNotif = (KalaNotification) notification;
+                    if (kalaNotif.getKala().equals(kala)) {
+                        notifications.remove(notification);
+                        break;
+                    }
+                }
+            }
+            KalaNotification kalaNotif = new KalaNotification(kala);
+            notifications.add(kalaNotif);
         }
     }
 

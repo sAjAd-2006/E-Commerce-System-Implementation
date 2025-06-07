@@ -11,6 +11,13 @@ public class Test {
     public static void main(String[] args) {
         Vendilo vendilo = new Vendilo();
         vendilo.getCustomers().add(new Customer("sajad", "teymoori", "sajad.t@gmail.com", "09391838534", "12345Ss!"));
+        vendilo.getCustomers().getFirst().getWallet().setCash(100000);
+        Address address = new Address();
+        address.setTitle("home");
+        address.setProvince("alborz");
+        address.setCity("tehran");
+        address.setDescription("iewinwevkc,mcmme");
+        vendilo.getCustomers().getFirst().getAddresses().add(address);
         vendilo.getSellers().add(new Seller("saaad", "jrjj", "Dino", "123456789", "09191838534", null, null));
         vendilo.getSellers().get(0).setProvinceOfSale("tehran");
         vendilo.getSellers().get(0).setAgencyCode("AASS12");

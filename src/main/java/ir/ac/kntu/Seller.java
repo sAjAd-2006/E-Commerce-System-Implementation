@@ -103,11 +103,42 @@ public class Seller extends Person {
         orders = new ArrayList<>();
     }
 
+    public void seeKala(Scanner scanner) {
+        while (true) {
+            Paginator<Kala> paginator = new Paginator<>(sellerKala, 10);
+            int select = paginator.paginate(0);
+            if (select == -1) {
+                return;
+            }
+            Color.printWhiteBold(kalas.get(select) + " inventory: " + kalas.get(select).getInventory());
+            Color.printYellow("Do you want to change the inventory? 1>YES 2>NO(Default)");
+            String choice = scanner.nextLine();
+            switch (choice) {
+                case "1":
+                    System.out.print("New number: ");
+                    choice = scanner.nextLine();
+                    if (!isInteger(choice) || Integer.parseInt(choice) < 0) {
+                        Color.printRed("The format or number is incorrect.");
+                    } else {
+                        for (Kala kala : kalas) {
+                            if (kala.equals(sellerKala.get(select))) {
+                                kala.setInventory(Integer.parseInt(choice));
+                            }
+                        }
+                        sellerKala.get(select).setInventory(Integer.parseInt(choice));
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
     public void addKala(Scanner scanner) {
         boolean runType = true, runDigital = true;
         while (runType) {
             System.out.print("Adding kala>>\n" +
-                    "What type of product are you interested in?\n1) Digital Goods\n2) Book\n3)Back\n4)Exit\n => ");
+                    "What type of product are you interested in?\n1) Digital Goods\n2) Book\n3) Back\n4) Exit\n => ");
             String choice = scanner.nextLine();
             switch (choice) {
                 case "1" -> {
@@ -143,7 +174,7 @@ public class Seller extends Person {
             book.setName(scanner.nextLine());
             System.out.println("Enter amount : ");
             String amount = scanner.nextLine();
-            if (isInteger(amount)) {
+            if (isInteger(amount) && Integer.parseInt(amount) >= 0) {
                 book.setInventory(Integer.parseInt(amount));
             } else {
                 continue;
@@ -210,7 +241,7 @@ public class Seller extends Person {
             mobile.setName(scanner.nextLine());
             System.out.println("Enter amount : ");
             String amount = scanner.nextLine();
-            if (isInteger(amount)) {
+            if (isInteger(amount) && Integer.parseInt(amount) >= 0) {
                 mobile.setInventory(Integer.parseInt(amount));
             } else {
                 continue;
@@ -283,7 +314,7 @@ public class Seller extends Person {
             laptop.setName(scanner.nextLine());
             System.out.println("Enter amount : ");
             String amount = scanner.nextLine();
-            if (isInteger(amount)) {
+            if (isInteger(amount) && Integer.parseInt(amount) >= 0) {
                 laptop.setInventory(Integer.parseInt(amount));
             } else {
                 continue;

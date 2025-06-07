@@ -18,25 +18,28 @@ public class SellerHelper {
 
     public void menu(Scanner scanner) {
         while (true) {
-            System.out.print(
-                    "- - - - Seller menu - - - -\n1.Add New Item\n2.Wallet\n3.Orders\n4.Financial report\n5.Log out\n6.Exit\n =>");
+            System.out.print("- - - - Seller menu - - - -\n1.Add New Item\n2-See old item\n3.Wallet\n4.Orders" +
+                    "\n5.Financial report\n6.Log out\n7.Exit\n => ");
             String choice = scanner.nextLine();
             switch (choice) {
                 case "1":
                     seller.addKala(scanner);
                     break;
                 case "2":
-                    walletRun(scanner);
+                    seller.seeKala(scanner);
                     break;
                 case "3":
-                    ordersRun();
+                    walletRun(scanner);
                     break;
                 case "4":
-                    reportRun();
+                    ordersRun();
                     break;
                 case "5":
-                    return;
+                    reportRun();
+                    break;
                 case "6":
+                    return;
+                case "7":
                     ExitVendilo.exit(scanner);
                 default:
                     System.out.println("The selected option is invalid.");

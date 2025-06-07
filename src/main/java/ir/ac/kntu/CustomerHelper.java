@@ -34,8 +34,9 @@ public class CustomerHelper {
         while (runMenu) {
             vendiloPlusRun();
             System.out.println("- - - - Customer Menu - - - -\n1-Product Search\n2-Shopping Cart\n3-Addresses");
-            System.out.println("4-Wallet\n5-Discount Code\n6-Orders\n7-Vendilo Pluse\n8-Settings\n9-Support");
-            System.out.println("10-Log out\n11-Exit\n=>");
+            System.out.println(
+                    "4-Wallet\n5-Discount Code\n6-Orders\n7-Vendilo Pluse\n8-Notification\n9-Settings\n10-Support");
+            System.out.println("11-Log out\n12-Exit\n=>");
             String choice = scanner.nextLine();
             switch (choice) {
                 case "1" -> customer.searchKala(scanner);
@@ -45,15 +46,57 @@ public class CustomerHelper {
                 case "5" -> discountCodeRun(scanner);
                 case "6" -> ordersRun(scanner);
                 case "7" -> vPlusRun(scanner);
-                case "8" -> {
+                case "8" -> notificationRun(scanner);
+                case "9" -> {
                     UserSettings userSettings = new UserSettings(vendilo.getCustomers(), vendilo.getSellers(),
                             vendilo.getSellersVerification());
                     userSettings.settings(customer, scanner);
                 }
-                case "9" -> supportRun(scanner);
-                case "10" -> runMenu = false;
-                case "11" -> ExitVendilo.exit(scanner);
+                case "10" -> supportRun(scanner);
+                case "11" -> runMenu = false;
+                case "12" -> ExitVendilo.exit(scanner);
                 default -> System.out.println("The selected option is invalid.");
+            }
+        }
+    }
+
+    private void notificationRun(Scanner scanner) {
+        availableKalaOrNot();
+        List<Notification> availableNotif = new ArrayList<>();
+        for (Notification notification : customer.getNotifications()) {
+            if (notification.isCanSeeOrNot() && !notification.isSeen()) {
+                availableNotif.add(notification);
+            }
+        }
+        while (true) {
+            Color.printBlue("notifications");
+            Paginator<Notification> paginator = new Paginator<>(availableNotif, 10);
+            int select = paginator.paginate(0);
+            if (select == -1) {
+                return;
+            }
+            if (availableNotif.get(select) instanceof KalaNotification) {
+                availableNotif.get(select).interNotif(customer, scanner);
+                availableNotif.remove(select);
+            }
+        }
+    }
+
+    public void availableKalaOrNot() {
+        for (Notification notification : customer.getNotifications()) {
+            if (notification instanceof KalaNotification) {
+                Kala notifKala = ((KalaNotification) notification).getKala();
+                // for (Kala kala : Seller.getKalas()) {
+                // if (kala.equals(notifKala) && kala.getInventory() > 0) {
+                // notification.setCanSeeOrNot(true);
+                // }
+                // }
+                if (notifKala.getInventory() > 0) {
+                    notification.setCanSeeOrNot(true);
+                    notification.setTimeNow();
+                } else {
+                    notification.setCanSeeOrNot(false);
+                }
             }
         }
     }
@@ -74,25 +117,22 @@ public class CustomerHelper {
     }
 
     public void byVendiloPluse(Scanner scanner) {
-        Color.printWhiteBold(
-                "Which subscription are you considering?\n1> 1-Month  price:1000\n2> 3-Month  price:2900\n3> 1-Year  price:11000\n4> Back");
+        Color.printWhiteBold("Which subscription are you considering?\n1> 1-Month  price:1000" +
+                "\n2> 3-Month  price:2900\n3> 1-Year  price:11000\n4> Back");
         String choice = scanner.nextLine();
         switch (choice) {
             case "1":
                 if (customer.getWallet().withdrawFromWallet(1000, "Buy a subscription")) {
-                    // vendiloPlus.put(customer, LocalDate.now().plusMonths(1));
                     setEndTimeVendiloPlus(1);
                 }
                 break;
             case "2":
                 if (customer.getWallet().withdrawFromWallet(2900, "Buy a subscription")) {
-                    // vendiloPlus.put(customer, LocalDate.now().plusMonths(3));
                     setEndTimeVendiloPlus(2);
                 }
                 break;
             case "3":
                 if (customer.getWallet().withdrawFromWallet(11000, "Buy a subscription")) {
-                    // vendiloPlus.put(customer, LocalDate.now().plusYears(1));
                     setEndTimeVendiloPlus(3);
                 }
                 break;
@@ -102,6 +142,7 @@ public class CustomerHelper {
     }
 
     public void setEndTimeVendiloPlus(int endDate) {
+        customer.setVendiloPlus(true);
         if (vendiloPlus.containsKey(customer)) {
             LocalDate localDate = vendiloPlus.get(customer);
             switch (endDate) {
@@ -324,7 +365,6 @@ public class CustomerHelper {
     }
 
     public void addressRun(Scanner scanner) {
-        // Scanner scanner = new Scanner(System.in);
         while (true) {
             System.out.println("1. Add Address\n2. View Current Addresses\n3. Back\n4. Exit");
             String choice = scanner.nextLine();
@@ -452,7 +492,6 @@ public class CustomerHelper {
         if (description.isEmpty()) {
             address.setDescription(description);
         }
-        // scanner.close();
     }
 
     public boolean isInteger(String str) {

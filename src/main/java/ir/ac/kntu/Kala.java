@@ -1,5 +1,7 @@
 package ir.ac.kntu;
 
+import java.util.Objects;
+
 abstract class Kala {
     private String name;
     private int Inventory;
@@ -150,5 +152,34 @@ abstract class Kala {
         return ("Product name: " + getName() + " Product type: " + getModel() + " Seler name: "
                 + getSelerName() + " Price: " + getPrice() * 95 / 100 + " Average score: " + getAverageScore()
                 + " Seller's province: " + getSelerCity());
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        Kala kala = (Kala) obj;
+        return Inventory == kala.Inventory &&
+                Price == kala.Price &&
+                Double.compare(kala.voteNum, voteNum) == 0 &&
+                Double.compare(kala.vote, vote) == 0 &&
+                voted == kala.voted &&
+                Double.compare(kala.averageScore, averageScore) == 0 &&
+                Objects.equals(name, kala.name) &&
+                Objects.equals(type, kala.type) &&
+                Objects.equals(model, kala.model) &&
+                Objects.equals(agencyCoSeler, kala.agencyCoSeler) &&
+                Objects.equals(selerCity, kala.selerCity) &&
+                Objects.equals(selerName, kala.selerName);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, Inventory, Price, type, model, voteNum, vote, voted, averageScore, agencyCoSeler,
+                selerCity, selerName);
     }
 }
