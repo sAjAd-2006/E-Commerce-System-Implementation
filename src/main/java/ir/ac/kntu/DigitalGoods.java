@@ -41,24 +41,30 @@ abstract class DigitalGoods extends Kala {
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null || getClass() != obj.getClass()) {
-            return false;
-        }
-        if (!super.equals(obj)) {
-            return false;
-        }
-        DigitalGoods that = (DigitalGoods) obj;
-        return Objects.equals(Brand, that.Brand) &&
-                Objects.equals(interMemoSize, that.interMemoSize) &&
-                Objects.equals(amountOfRAM, that.amountOfRAM);
+    public String vendiloPlusSee() {
+        return (super.vendiloPlusSee() + "\n      Additional information Digital good ->" + " Brand:" + getBrand()
+                + " Internal memory size:" + getInternalMemorySize() + "G Amount of RAM:" + getAmountOfRAM() + "G");
     }
+    // @Override
+    // public boolean equals(Object obj) {
+    // if (this == obj) {
+    // return true;
+    // }
+    // if (obj == null || getClass() != obj.getClass()) {
+    // return false;
+    // }
+    // if (!super.equals(obj)) {
+    // return false;
+    // }
+    // DigitalGoods that = (DigitalGoods) obj;
+    // return Objects.equals(Brand, that.Brand) &&
+    // Objects.equals(interMemoSize, that.interMemoSize) &&
+    // Objects.equals(amountOfRAM, that.amountOfRAM);
+    // }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), Brand, interMemoSize, amountOfRAM);
-    }
+    // @Override
+    // public int hashCode() {
+    // return Objects.hash(super.hashCode(), Brand, interMemoSize, amountOfRAM);
+    // }
+
 }

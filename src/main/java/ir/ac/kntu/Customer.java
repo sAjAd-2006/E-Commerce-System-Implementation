@@ -161,21 +161,19 @@ public class Customer extends Person {
         } else {
             System.out.println("Price: " + shoppingCart.findTotal() + "\nShipping Cost: " + shippingCost);
             int total = useDiscountCode(scanner, shoppingCart.findTotal());
+            System.out.println("Price: " + total + "\nShipping Cost: " + shippingCost);
             continueShoppingNow(shippingCost, address, scanner, total);
         }
     }
 
     private int useDiscountCode(Scanner scanner, int totalPrice) {
-        Color.printRed("-168-");
         boolean numUse = false;
         for (DiscountCode discountCode : discountCodes) {
             if (discountCode.getNumbCanBeUsed() > 0) {
                 numUse = true;
             }
         }
-        Color.printRed("-175-");
         if (!numUse) {
-            Color.printRed("-177-");
             return totalPrice;
         }
         while (true) {
@@ -205,7 +203,7 @@ public class Customer extends Person {
                 }
             } else {
                 if (kala.getInventory() >= 1) {
-                    System.out.println("Only " + kala.getInventory()
+                    Color.printYellow("Only " + kala.getInventory()
                             + " of the desired item remain. The rest will be deducted from your cart.");
                     this.shoppingCart.getKalasMap().replace(kala, kala.getInventory());
                 } else {

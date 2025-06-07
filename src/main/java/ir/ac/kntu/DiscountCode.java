@@ -5,6 +5,7 @@ public class DiscountCode {
     private Kind kind;
     private int discountAmount;
     private int numbCanBeUsed = 0;
+    private String vahed;
 
     public int getCode() {
         return code;
@@ -43,12 +44,19 @@ public class DiscountCode {
         this.kind = kind;
         this.discountAmount = discountAmount;
         this.numbCanBeUsed = numbCanBeUsed;
+        vahed = "$";
+        if (kind.equals(Kind.Percentage)) {
+            vahed = "%";
+        }
     }
 
     public int discountCalculation(int totalPrice) {
+        if (numbCanBeUsed == 0) {
+            return totalPrice;
+        }
         if (kind == Kind.Percentage) {
             numbCanBeUsed--;
-            return totalPrice * discountAmount / 100;
+            return totalPrice * (100 - discountAmount) / 100;
         } else {
             if (totalPrice * 10 > discountAmount) {
                 numbCanBeUsed--;
@@ -64,6 +72,6 @@ public class DiscountCode {
     @Override
     public String toString() {
         return "DiscountCode [code=" + code + ", kind=" + kind + ", DiscountAmount=" + discountAmount
-                + "$%, NumbCanBeUsed=" + numbCanBeUsed + "]";
+                + vahed + ", NumbCanBeUsed=" + numbCanBeUsed + "]";
     }
 }

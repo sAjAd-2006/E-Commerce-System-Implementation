@@ -53,25 +53,32 @@ public class Book extends Kala {
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null || getClass() != obj.getClass()) {
-            return false;
-        }
-        if (!super.equals(obj)) {
-            return false;
-        }
-        Book book = (Book) obj;
-        return Objects.equals(authorsName, book.authorsName) &&
-                Objects.equals(numberOfPages, book.numberOfPages) &&
-                Objects.equals(ageCategory, book.ageCategory) &&
-                Objects.equals(idISBN, book.idISBN);
+    public String vendiloPlusSee() {
+        return (super.vendiloPlusSee() + "\n      Additional information Book ->" + " Authors name:" + getAuthorsName()
+                + " Number of pages:" + getNumberOfPages() + " Age category:" + getAgeCategory() + " Id ISBN:"
+                + getIdISBN());
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), authorsName, numberOfPages, ageCategory, idISBN);
-    }
+    // @Override
+    // public boolean equals(Object obj) {
+    //     if (this == obj) {
+    //         return true;
+    //     }
+    //     if (obj == null || getClass() != obj.getClass()) {
+    //         return false;
+    //     }
+    //     if (!super.equals(obj)) {
+    //         return false;
+    //     }
+    //     Book book = (Book) obj;
+    //     return Objects.equals(authorsName, book.authorsName) &&
+    //             Objects.equals(numberOfPages, book.numberOfPages) &&
+    //             Objects.equals(ageCategory, book.ageCategory) &&
+    //             Objects.equals(idISBN, book.idISBN);
+    // }
+
+    // @Override
+    // public int hashCode() {
+    //     return Objects.hash(super.hashCode(), authorsName, numberOfPages, ageCategory, idISBN);
+    // }
 }

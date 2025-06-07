@@ -71,7 +71,9 @@ public class Vendilo {
                 }
             }
         } catch (Exception e) {
-            // TODO: handle exception
+            Color.printRed("------------");
+            e.printStackTrace();
+            Color.printRed("------------");
             System.out.println("Vendilo error");
         }
     }

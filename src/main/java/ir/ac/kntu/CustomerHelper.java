@@ -36,7 +36,7 @@ public class CustomerHelper {
             System.out.println("- - - - Customer Menu - - - -\n1-Product Search\n2-Shopping Cart\n3-Addresses");
             System.out.println(
                     "4-Wallet\n5-Discount Code\n6-Orders\n7-Vendilo Pluse\n8-Notification\n9-Settings\n10-Support");
-            System.out.println("11-Log out\n12-Exit\n=>");
+            System.out.print("11-Log out\n12-Exit\n=> ");
             String choice = scanner.nextLine();
             switch (choice) {
                 case "1" -> customer.searchKala(scanner);
@@ -195,7 +195,11 @@ public class CustomerHelper {
     }
 
     public void menuCase2(Scanner scanner) {
-        customer.getShoppingCart().seeCart(scanner);
+        if (customer.isVendiloPlus()) {
+            customer.getShoppingCart().seeCartVendiloPlus(scanner);
+        } else {
+            customer.getShoppingCart().seeCart(scanner);
+        }
         System.out.println("\nWould you like to continue shopping? 1>YES 2>NO(Default)");
         String choice = scanner.nextLine();
         switch (choice) {

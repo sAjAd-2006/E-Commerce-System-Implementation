@@ -43,24 +43,30 @@ public class Laptop extends DigitalGoods {
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null || getClass() != obj.getClass()) {
-            return false;
-        }
-        if (!super.equals(obj)) {
-            return false;
-        }
-        Laptop laptop = (Laptop) obj;
-        return bluetooth == laptop.bluetooth &&
-                webcam == laptop.webcam &&
-                Objects.equals(graphicsProcessor, laptop.graphicsProcessor);
+    public String vendiloPlusSee() {
+        return (super.vendiloPlusSee() + "\n      Additional information Laptop ->" + " Graphics Processor:"
+                + getGraphicsProcessor() + " Have Bluetooth:" + isBluetooth() + " Have Webcam:" + isWebcam());
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), graphicsProcessor, bluetooth, webcam);
-    }
+    // @Override
+    // public boolean equals(Object obj) {
+    // if (this == obj) {
+    // return true;
+    // }
+    // if (obj == null || getClass() != obj.getClass()) {
+    // return false;
+    // }
+    // if (!super.equals(obj)) {
+    // return false;
+    // }
+    // Laptop laptop = (Laptop) obj;
+    // return bluetooth == laptop.bluetooth &&
+    // webcam == laptop.webcam &&
+    // Objects.equals(graphicsProcessor, laptop.graphicsProcessor);
+    // }
+
+    // @Override
+    // public int hashCode() {
+    // return Objects.hash(super.hashCode(), graphicsProcessor, bluetooth, webcam);
+    // }
 }
