@@ -48,6 +48,8 @@ public class Address {
     public Address() {
     }
 
+    
+
     @Override
     public String toString() {
         return ("Title:" + getTitle() + " - Province:" + getProvince() + " - City:" + getCity() + " - Description:"

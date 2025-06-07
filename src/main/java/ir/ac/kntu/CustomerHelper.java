@@ -86,11 +86,6 @@ public class CustomerHelper {
         for (Notification notification : customer.getNotifications()) {
             if (notification instanceof KalaNotification) {
                 Kala notifKala = ((KalaNotification) notification).getKala();
-                // for (Kala kala : Seller.getKalas()) {
-                // if (kala.equals(notifKala) && kala.getInventory() > 0) {
-                // notification.setCanSeeOrNot(true);
-                // }
-                // }
                 if (notifKala.getInventory() > 0) {
                     notification.setCanSeeOrNot(true);
                     notification.setTimeNow();
@@ -369,24 +364,16 @@ public class CustomerHelper {
     }
 
     public void addressRun(Scanner scanner) {
-        while (true) {
+        boolean run = true;
+        while (run) {
             System.out.println("1. Add Address\n2. View Current Addresses\n3. Back\n4. Exit");
             String choice = scanner.nextLine();
             switch (choice) {
-                case "1":
-                    addAddress(scanner);
-                    break;
-                case "2":
-                    viewCurrentAddresses(scanner);
-                    break;
-                case "3":
-                    return;
-                case "4":
-                    ExitVendilo.exit(scanner);
-                    break;
-                default:
-                    System.out.println("The selected option is invalid.");
-                    break;
+                case "1" -> addAddress(scanner);
+                case "2" -> viewCurrentAddresses(scanner);
+                case "3" -> run = false;
+                case "4" -> ExitVendilo.exit(scanner);
+                default -> System.out.println("The selected option is invalid.");
             }
         }
     }

@@ -1,6 +1,6 @@
 package ir.ac.kntu;
 
-import java.util.Objects;
+// import java.util.Objects;
 
 public class Book extends Kala {
     private String authorsName;

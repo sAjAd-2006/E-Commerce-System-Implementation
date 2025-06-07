@@ -1,6 +1,6 @@
 package ir.ac.kntu;
 
-import java.util.Objects;
+// import java.util.Objects;
 
 abstract class DigitalGoods extends Kala {
     private String Brand;

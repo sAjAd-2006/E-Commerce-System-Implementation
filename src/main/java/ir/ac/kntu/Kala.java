@@ -1,6 +1,6 @@
 package ir.ac.kntu;
 
-import java.util.Objects;
+// import java.util.Objects;
 
 abstract class Kala {
     private String name;

@@ -405,7 +405,7 @@ public class Customer extends Person {
 
     private void crNotifKala(Scanner scanner, Kala kala) {
         String choice = scanner.nextLine();
-        if (choice.equalsIgnoreCase("y")) {
+        if ("y".equalsIgnoreCase(choice)) {
             for (Notification notification : notifications) {
                 if (notification instanceof KalaNotification) {
                     KalaNotification kalaNotif = (KalaNotification) notification;
