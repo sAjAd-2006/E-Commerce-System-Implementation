@@ -78,7 +78,7 @@ public abstract class Notification {
 
     @Override
     public String toString() {
-        return "Notification [declarationType=" + declarationType + ", abute=" + abute + ", crDate=" + crDate
-                + ", crTime=" + crTime + "]";
+        return "Notification [" + declarationType + ", abute=" + abute + ", Date=" + crDate
+                + ", Time=" + crTime + "]";
     }
 }

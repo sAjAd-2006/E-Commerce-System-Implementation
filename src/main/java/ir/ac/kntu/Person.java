@@ -8,6 +8,24 @@ abstract class Person {
     private String email;
     private String phonenumber;
     private String password;
+    private int accessLevel = 1;
+    private boolean ban = false;
+
+    public boolean isBan() {
+        return ban;
+    }
+
+    public void setBan(boolean ban) {
+        this.ban = ban;
+    }
+
+    public int getAccessLevel() {
+        return accessLevel;
+    }
+
+    public void setAccessLevel(int accessLevel) {
+        this.accessLevel = accessLevel;
+    }
 
     public String getFirstname() {
         return firstname;
@@ -72,8 +90,6 @@ abstract class Person {
 
     @Override
     public String toString() {
-        return "Name: " + firstname + " " + lastname +
-                "\nEmail: " + email +
-                "\nPhone: " + phonenumber;
+        return "Role:" + this.getClass().getSimpleName() + " Name: " + firstname + " " + lastname;
     }
 }

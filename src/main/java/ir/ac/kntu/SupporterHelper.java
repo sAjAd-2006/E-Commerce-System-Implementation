@@ -20,7 +20,6 @@ public class SupporterHelper {
     }
 
     public void menu(Scanner scanner) {
-        // Scanner scanner = new Scanner(System.in);
         boolean runMenu = true;
         while (runMenu) {
             System.out.println("- - - - Supporter Menu - - - -\n1-Verification\n2-Customers Report\n3-Orders");
@@ -31,13 +30,9 @@ public class SupporterHelper {
                 case "2" -> supporter.seeCustomersReport(scanner, vendilo.getCustomers());
                 case "3" -> supporter.seeOrders(scanner, vendilo.getCustomers());
                 case "4" -> runMenu = false;
-                case "5" -> {
-                    // scanner.close();
-                    System.exit(0);
-                }
+                case "5" -> System.exit(0);
                 default -> System.out.println("The selected option is invalid.");
             }
         }
-        // scanner.close();
     }
 }

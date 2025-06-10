@@ -1,17 +1,21 @@
 package ir.ac.kntu;
 
 public class DiscountCode {
-    private int code;
+    private String code;
     private Kind kind;
     private int discountAmount;
     private int numbCanBeUsed = 0;
     private String vahed;
 
-    public int getCode() {
+    public void setVahed(String vahed) {
+        this.vahed = vahed;
+    }
+
+    public String getCode() {
         return code;
     }
 
-    public void setCode(int code) {
+    public void setCode(String code) {
         this.code = code;
     }
 
@@ -39,7 +43,7 @@ public class DiscountCode {
         this.numbCanBeUsed = numbCanBeUsed;
     }
 
-    public DiscountCode(int code, Kind kind, int discountAmount, int numbCanBeUsed) {
+    public DiscountCode(String code, Kind kind, int discountAmount, int numbCanBeUsed) {
         this.code = code;
         this.kind = kind;
         this.discountAmount = discountAmount;
@@ -74,4 +78,5 @@ public class DiscountCode {
         return "DiscountCode [code=" + code + ", kind=" + kind + ", DiscountAmount=" + discountAmount
                 + vahed + ", NumbCanBeUsed=" + numbCanBeUsed + "]";
     }
+
 }

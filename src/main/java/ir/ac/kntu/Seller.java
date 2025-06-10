@@ -1,5 +1,6 @@
 package ir.ac.kntu;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -101,6 +102,17 @@ public class Seller extends Person {
         sellerKala = new ArrayList<>();
         wallet = new Wallet();
         orders = new ArrayList<>();
+    }
+
+    public int sellPerformance() {
+        LocalDateTime loDTime = LocalDateTime.now().minusMonths(1);
+        int price = 0;
+        for (Transaction transaction : this.wallet.getTransactions()) {
+            if (transaction.getLocalDateTime().isAfter(loDTime) && "Sale".equals(transaction.getWhy())) {
+                price += transaction.getPrice();
+            }
+        }
+        return price;
     }
 
     public void seeKala(Scanner scanner) {
@@ -394,7 +406,7 @@ public class Seller extends Person {
 
     @Override
     public String toString() {
-        return (" Store Title:" + getStoreTitle() + " CodeMely=>" + getCodeMely());
+        return (super.toString() + " Store Title:" + getStoreTitle() + " CodeMely=>" + getCodeMely());
     }
 
     public String chap() {

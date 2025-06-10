@@ -12,8 +12,8 @@ public class Test {
         Vendilo vendilo = new Vendilo();
         vendilo.getCustomers().add(new Customer("sajad", "teymoori", "sajad.t@gmail.com", "09391838534", "12345Ss!"));
         vendilo.getCustomers().getFirst().getWallet().setCash(100000);
-        DiscountCode discountCode1 = new DiscountCode(12003, Kind.Percentage, 10, 1);
-        DiscountCode discountCode2 = new DiscountCode(12003, Kind.Numeric, 100, 1);
+        DiscountCode discountCode1 = new DiscountCode("12003", Kind.Percentage, 10, 1);
+        DiscountCode discountCode2 = new DiscountCode("12003", Kind.Numeric, 100, 1);
         vendilo.getCustomers().getFirst().getDiscountCodes().add(discountCode2);
         vendilo.getCustomers().getFirst().getDiscountCodes().add(discountCode1);
         Address address = new Address();

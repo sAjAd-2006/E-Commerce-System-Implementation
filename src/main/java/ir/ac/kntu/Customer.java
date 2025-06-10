@@ -120,6 +120,17 @@ public class Customer extends Person {
         this.shoppingCart = shoppingCart;
     }
 
+    public int shoppingMuch() {
+        LocalDateTime loDTime = LocalDateTime.now().minusMonths(1);
+        int price = 0;
+        for (Transaction transaction : this.wallet.getTransactions()) {
+            if (transaction.getLocalDateTime().isAfter(loDTime) && "Shopping".equals(transaction.getWhy())) {
+                price += transaction.getPrice();
+            }
+        }
+        return price;
+    }
+
     public void continueShopping(Scanner scanner) {
         int shippingCost = 30;
         Paginator<Address> paginator = new Paginator<>(addresses, 10);
@@ -482,7 +493,7 @@ public class Customer extends Person {
 
     @Override
     public String toString() {
-        return ("Name: " + getFirstname() + " " + getLastname() + " Email: " + getEmail());
+        return (super.toString() + " Email: " + getEmail());
     }
 
     public boolean isInteger(String str) {
@@ -493,5 +504,4 @@ public class Customer extends Person {
             return false;
         }
     }
-
 }

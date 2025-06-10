@@ -13,7 +13,12 @@ public class Vendilo {
     private List<Seller> sellers = new ArrayList<>();
     private List<Seller> verification = new ArrayList<>();
     private List<Supporter> supporters = new ArrayList<>();
+    private List<Manager> managers = new ArrayList<>();
     private Map<Customer, LocalDate> vendiloPlus = new HashMap<>();
+
+    public Map<Customer, LocalDate> getVendiloPlus() {
+        return vendiloPlus;
+    }
 
     public List<Supporter> getSupporters() {
         return supporters;
@@ -30,6 +35,10 @@ public class Vendilo {
     // public static void setSellers(List<Seller> sellers) {
     // sellers = sellers;
     // }
+
+    public List<Manager> getManagers() {
+        return managers;
+    }
 
     public List<Seller> getSellersVerification() {
         return verification;
@@ -134,6 +143,10 @@ public class Vendilo {
                 email = true;
                 if (supporter.getPassword().equals(password)) {
                     pas = true;
+                    if (supporter.isBan()) {
+                        Color.printRed("You are banned.");
+                        return;
+                    }
                     Color.printGreen("Successful login.");
                     SupporterHelper supporterHelper = new SupporterHelper(supporter, this);
                     supporterHelper.menu(scanner);
@@ -160,7 +173,6 @@ public class Vendilo {
             Color.printRed("4-Exit");
 
             Color.printYellowInline("Please enter the desired option: ");
-
             String choiceLogin = scanner.nextLine();
             switch (choiceLogin) {
                 case "1" -> customerRegister(scanner, chekFild);
@@ -199,6 +211,10 @@ public class Vendilo {
                 emailEror = true;
                 if (customer.getPassword().equals(password)) {
                     passwordEror = true;
+                    if (customer.isBan()) {
+                        Color.printRed("You are banned.");
+                        return;
+                    }
                     Color.printGreen("Successful login.");
                     CustomerHelper customerHelper = new CustomerHelper(customer, this, vendiloPlus);
                     customerHelper.menu(scanner);
@@ -369,6 +385,10 @@ public class Vendilo {
                 code = true;
                 if (seller.getPassword().equals(password)) {
                     pas = true;
+                    if (seller.isBan()) {
+                        Color.printRed("You are banned.");
+                        return;
+                    }
                     Color.printGreen("Successful login.");
                     SellerHelper sellerHelper = new SellerHelper(seller);
                     sellerHelper.menu(scanner);

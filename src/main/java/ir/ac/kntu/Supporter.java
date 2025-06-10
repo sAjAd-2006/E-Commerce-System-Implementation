@@ -1,13 +1,20 @@
 package ir.ac.kntu;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 public class Supporter extends Person {
     private List<Seller> verification;
     private List<Customer> customersReport;
+    private Map<Report, Integer> activityMap;
     private String agencyName;
+
+    public Map<Report, Integer> getActivityMap() {
+        return activityMap;
+    }
 
     public String getAgencyName() {
         return agencyName;
@@ -40,6 +47,8 @@ public class Supporter extends Person {
         setLastname(lastname);
         setAgencyName(agencyName);
         setPassword(password);
+        activityMap = new HashMap<>();
+        activityMap.put(Report.ALL, 1);
     }
 
     public void seeOrders(Scanner scanner, List<Customer> customers) {
@@ -151,7 +160,6 @@ public class Supporter extends Person {
             vendilo.getSellers().add(verification.get(jjjj));
             vendilo.getSellersVerification().remove(jjjj);
             verification.remove(jjjj);
-            // setSellersVerification(vendilo.getSellersVerification());
         } else {
             System.out.print("Write the reason: ");
             String choice = scanner.nextLine();
@@ -173,7 +181,6 @@ public class Supporter extends Person {
     }
 
     public Report topic(Scanner scanner) {
-        // Scanner scanner = new Scanner(System.in);
         while (true) {
             System.out.println("What reports would you like to see?\n1)"
                     + Report.Discrepancy_between_order_and_delivered_product + "\n2)" + Report.Not_receiving_order
@@ -202,7 +209,6 @@ public class Supporter extends Person {
     }
 
     public Check status(Scanner scanner) {
-        // Scanner scanner = new Scanner(System.in);
         while (true) {
             System.out.println("Enter the desired status:\n1)" + Check.Closed + "\n2)" + Check.Pending + "\n3)"
                     + Check.Registered + "\n4) ALL \n5) Back \n6) Exit");
@@ -307,4 +313,11 @@ public class Supporter extends Person {
             }
         }
     }
+
+    @Override
+    public String toString() {
+        return  super.toString() + "[agencyName=" + agencyName + "]";
+    }
+
+    
 }
