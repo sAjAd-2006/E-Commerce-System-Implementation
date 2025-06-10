@@ -277,21 +277,36 @@ public class Customer extends Person {
             }
             System.out.print("Enter at least one of the following fields\nProduct Name: ");
             String productName = scanner.nextLine();
-            String productType = searchForProductType(scanner);
+            String productType = CustomerSerchFilterHelper.searchForProductType(scanner);
             List<String> sList = Arrays.asList(productName, productType);
             int min = 0, max = 0;
             while (true) {
                 System.out.println("\nEnter price range(Default:ALL)");
-                min = priceRange("min", scanner, 0);
-                max = priceRange("max", scanner, min);
+                min = CustomerSerchFilterHelper.priceRange("min", scanner, 0);
+                max = CustomerSerchFilterHelper.priceRange("max", scanner, min);
                 if (max >= min) {
                     break;
                 }
             }
             List<Kala> searchingKala = new ArrayList<>();
             searchingKala = searchingKala2(searchingKala, sList, min, max);
-            showList(searchingKala, productType, scanner);
+            List<Kala> searchingKala2 = searchingKala1(searchingKala, scanner);
+            showList(searchingKala2, productType, scanner);
         }
+    }
+
+    public List<Kala> searchingKala1(List<Kala> searchingKala, Scanner scanner) {
+        List<Kala> searchingKala2 = new ArrayList<>();
+        double minRate = 1.0, maxRate = 1.0;
+        minRate = CustomerSerchFilterHelper.rateRange("minRate", scanner, 1.0);
+        maxRate = CustomerSerchFilterHelper.rateRange("maxRate", scanner, minRate);
+        for (Kala kala : searchingKala) {
+            kala.averageScore();
+            if (kala.getAverageScore2() >= minRate && kala.getAverageScore2() <= maxRate) {
+                searchingKala2.add(kala);
+            }
+        }
+        return searchingKala;
     }
 
     public List<Kala> searchingKala2(List<Kala> searchingKala, List<String> sList, int min, int max) {
@@ -369,6 +384,9 @@ public class Customer extends Person {
         } else {
             System.out.println(kala.toString() + " Inventory: " + kala.getInventory());
         }
+        for (Coment coment : kala.getVotMap().values()) {
+            System.out.println(coment);
+        }
         addToCart(kala, scanner);
     }
 
@@ -425,54 +443,6 @@ public class Customer extends Person {
         return searchingKala.stream()
                 .sorted(Comparator.comparingInt(Kala::getPrice))
                 .collect(Collectors.toList());
-    }
-
-    public String searchForProductType(Scanner scanner) {
-        System.out.println("\nProduct Type:\n1)Book\n2)Digital Goods\n3)ALL(Default)");
-        String choice = scanner.nextLine();
-        switch (choice) {
-            case "1":
-                return "Book";
-            case "2":
-                System.out.println("\nDigital Goods Type:\n1)Mobile\n2)Laptop\n3)ALL Digital Goods(Default)");
-                choice = scanner.nextLine();
-                switch (choice) {
-                    case "1":
-                        return "Mobile";
-                    case "2":
-                        return "Laptop";
-                    default:
-                        return "Digital Goods";
-                }
-            default:
-                return "ALL";
-        }
-    }
-
-    public int priceRange(String val, Scanner scanner, int min) {
-        while (true) {
-            System.out.print(val + ": ");
-            String range = scanner.nextLine();
-            if ("".equals(range)) {
-                if ("max".equalsIgnoreCase(val)) {
-                    return Integer.MAX_VALUE;
-                } else {
-                    if ("min".equalsIgnoreCase(val)) {
-                        return 0;
-                    }
-                }
-            } else {
-                if (isInteger(range)) {
-                    if (Integer.parseInt(range) < min) {
-                        System.out.println("The maximum must not be less than the minimum.");
-                        continue;
-                    }
-                    return Integer.parseInt(range);
-                } else {
-                    System.out.println("invild input. enter a number");
-                }
-            }
-        }
     }
 
     @Override

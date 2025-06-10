@@ -1,5 +1,7 @@
 package ir.ac.kntu;
 
+import java.util.Scanner;
+
 public class Manager extends Person {
     private String agencyName;
 
@@ -19,5 +21,14 @@ public class Manager extends Person {
         setAccessLevel(accessLevel);
     }
 
-
+    public void sendingAPublicMessage(Scanner scanner, Vendilo vendilo) {
+        System.out.println("Enter your message: ");
+        UniversalNotification universNotif = new UniversalNotification(scanner.nextLine());
+        for (Customer customer : vendilo.getCustomers()) {
+            customer.getNotifications().add(universNotif);
+        }
+        for (Seller seller : vendilo.getSellers()) {
+            seller.getNotifications().add(universNotif);
+        }
+    }
 }

@@ -15,6 +15,11 @@ public class Seller extends Person {
     private Wallet wallet;
     private List<Order> orders;
     private String reasonForReject;
+    private List<Notification> notifications = new ArrayList<>();
+
+    public List<Notification> getNotifications() {
+        return notifications;
+    }
 
     public List<Order> getOrders() {
         return orders;

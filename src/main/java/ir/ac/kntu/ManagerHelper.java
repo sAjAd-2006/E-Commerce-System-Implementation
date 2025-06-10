@@ -29,7 +29,7 @@ public class ManagerHelper {
         while (runMenu) {
             System.out.println("- - - - Manager Menu - - - -\n1-Add administrator\n2-Add supporter");
             System.out.println("3-User management\n4-Reviewing sales performance\n5-User performance review");
-            System.out.println("6-Create a universal discount code\n7-Sending a public message\n => ");
+            System.out.print("6-Create a universal discount code\n7-Sending a public message\n8-Log out\n9-Exit\n=> ");
             String choice = scanner.nextLine();
             switch (choice) {
                 case "1" -> addAdministrator(scanner);
@@ -38,17 +38,11 @@ public class ManagerHelper {
                 case "4" -> salesPerformance(scanner);
                 case "5" -> userPerformance(scanner);
                 case "6" -> crDiscountCode(null, scanner, true);
-                case "7" -> sendingAPublicMessage(scanner);
+                case "7" -> manager.sendingAPublicMessage(scanner, vendilo);
+                case "8" -> runMenu = false;
+                case "9" -> ExitVendilo.exit(scanner);
                 default -> System.out.println("The selected option is invalid.");
             }
-        }
-    }
-
-    private void sendingAPublicMessage(Scanner scanner) {
-        System.out.println("Enter your message: ");
-        UniversalNotification universNotif = new UniversalNotification(scanner.nextLine());
-        for (Customer customer : vendilo.getCustomers()) {
-            customer.getNotifications().add(universNotif);
         }
     }
 
@@ -111,7 +105,7 @@ public class ManagerHelper {
         crDiscountCodeSwich(discountCode, scanner);
         if (!all) {
             while (true) {
-                System.out.print("Enter number of times it can be used (0 < x): ");
+                System.out.println("Enter number of times it can be used (0 < x): ");
                 String choice = scanner.nextLine();
                 if (!isInteger(choice) || Integer.parseInt(choice) <= 0) {
                     Color.printRed("format error");
@@ -131,6 +125,7 @@ public class ManagerHelper {
         dCNotif.setCanSeeOrNot(true);
         for (Customer customer : vendilo.getCustomers()) {
             customer.getNotifications().add(dCNotif);
+            customer.getDiscountCodes().add(discountCode);
         }
     }
 
@@ -138,6 +133,7 @@ public class ManagerHelper {
         DiscountCodeNotification dCNotif = new DiscountCodeNotification(discountCode);
         dCNotif.setCanSeeOrNot(true);
         customer.getNotifications().add(dCNotif);
+        customer.getDiscountCodes().add(discountCode);
     }
 
     private void crDiscountCodeSwich(DiscountCode discountCode, Scanner scanner) {
@@ -227,20 +223,26 @@ public class ManagerHelper {
                 return;
             }
             Color.printWhiteBold(allPersons.get(select).toString());
-            System.out.println("1>Edit 2>Blocking 3>Back(default)\n=> ");
+            System.out.print("1>Edit 2>Blocking 3>Unblocking 4>Back(default)\n=> ");
             String choice = scanner.nextLine();
             switch (choice) {
                 case "1" -> editUser(allPersons.get(select), scanner);
-                case "2" -> {
-                    Person person = allPersons.get(select);
-                    if ((person instanceof Manager)
-                            && ((Manager) person).getAccessLevel() >= this.manager.getAccessLevel()) {
-                        Color.printRed("You do not have sufficient access to ban.");
-                    } else {
-                        person.setBan(true);
-                    }
-                }
+                case "2" -> banPerson(allPersons.get(select), true);
+                case "3" -> banPerson(allPersons.get(select), false);
                 default -> System.out.println();
+            }
+        }
+    }
+
+    private void banPerson(Person person, boolean ban) {
+        if ((person instanceof Manager)
+                && ((Manager) person).getAccessLevel() >= this.manager.getAccessLevel()) {
+            Color.printRed("You do not have sufficient access to ban.");
+        } else {
+            if (ban) {
+                person.setBan(true);
+            } else {
+                person.setBan(false);
             }
         }
     }
@@ -284,7 +286,8 @@ public class ManagerHelper {
                 Supporter supporter = (Supporter) person;
                 System.out.print("Enter new supporter activity sections:\n1."
                         + Report.Discrepancy_between_order_and_delivered_product + "\n2." + Report.Not_receiving_order
-                        + "\n3." + Report.Product_qualit + "\n4." + Report.Settings + "\n5.continue");
+                        + "\n3." + Report.Product_qualit + "\n4." + Report.Settings + "\n5."
+                        + Report.Seller_authentication + "\n6.continue");
                 boolean run = true;
                 while (run) {
                     String choice = scanner.nextLine();
@@ -297,6 +300,7 @@ public class ManagerHelper {
                         case "2" -> supporter.getActivityMap().put(Report.Not_receiving_order, 1);
                         case "3" -> supporter.getActivityMap().put(Report.Product_qualit, 1);
                         case "4" -> supporter.getActivityMap().put(Report.Settings, 1);
+                        case "5" -> supporter.getActivityMap().put(Report.Seller_authentication, 1);
                         default -> {
                             System.out.println(supporter.getActivityMap());
                             run = false;
@@ -491,5 +495,4 @@ public class ManagerHelper {
             return false;
         }
     }
-
 }

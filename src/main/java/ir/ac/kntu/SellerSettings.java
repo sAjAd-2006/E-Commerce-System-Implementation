@@ -41,6 +41,7 @@ public class SellerSettings {
         }
         user.setReasonForRejection("Your authentication has not been confirmed yet.");
         System.out.println("\nUpdated Info:\n" + user + user.chap());
+        verification.add(user);
     }
 
     public void settingHelp3(Seller user, Scanner scanner) {

@@ -1,7 +1,7 @@
 package ir.ac.kntu;
 
 import java.time.LocalDate;
-// import java.time.Period;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -34,11 +34,7 @@ public class CustomerHelper {
     public void menu(Scanner scanner) {
         boolean runMenu = true;
         while (runMenu) {
-            vendiloPlusRun();
-            System.out.println("- - - - Customer Menu - - - -\n1-Product Search\n2-Shopping Cart\n3-Addresses");
-            System.out.println(
-                    "4-Wallet\n5-Discount Code\n6-Orders\n7-Vendilo Pluse\n8-Notification\n9-Settings\n10-Support");
-            System.out.print("11-Log out\n12-Exit\n=> ");
+            printOptionOfMenu();
             String choice = scanner.nextLine();
             switch (choice) {
                 case "1" -> customer.searchKala(scanner);
@@ -62,6 +58,26 @@ public class CustomerHelper {
         }
     }
 
+    private void printOptionOfMenu() {
+        vendiloPlusRun();
+        automaticResponseToRequest();
+        System.out.println("- - - - Customer Menu - - - -\n1-Product Search\n2-Shopping Cart\n3-Addresses");
+        System.out.println(
+                "4-Wallet\n5-Discount Code\n6-Orders\n7-Vendilo Pluse\n8-Notification\n9-Settings\n10-Support");
+        System.out.print("11-Log out\n12-Exit\n=> ");
+    }
+
+    private void automaticResponseToRequest() {
+        for (Reportage reportage : customer.getReportages()) {
+            LocalDateTime llt = reportage.getConstructionTime().plusDays(1);
+            if (llt.isAfter(LocalDateTime.now()) && "No answer".equals(reportage.getAnswer())) {
+                reportage.setAnswer("Our colleagues will contact you soon.");
+                ReportNotification reportNotif = new ReportNotification(reportage);
+                customer.getNotifications().add(reportNotif);
+            }
+        }
+    }
+
     private void notificationRun(Scanner scanner) {
         availableKalaOrNot();
         List<Notification> availableNotif = new ArrayList<>();
@@ -71,12 +87,13 @@ public class CustomerHelper {
             }
         }
         while (true) {
-            Color.printBlue("notifications");
+            Color.printBlue("\nnotifications");
             Paginator<Notification> paginator = new Paginator<>(availableNotif, 10);
             int select = paginator.paginate(0);
             if (select == -1) {
                 return;
             }
+            System.out.println();
             availableNotif.get(select).interNotif(customer, scanner);
             availableNotif.remove(select);
         }

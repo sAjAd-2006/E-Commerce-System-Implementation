@@ -59,6 +59,8 @@ public class Vendilo {
     public void menu() {
         Supporter supporter = new Supporter("sajad", "teymoori", "sajadilo", "12345Aa!");
         supporters.add(supporter);
+        Manager manager = new Manager("sajad", "teymoory", "momilo", "12345Pk?", Integer.MAX_VALUE);
+        managers.add(manager);
         ChekFild chekFild = new ChekFild(sellers, customers, verification);
         Color.printCyanBold("Welcome to the VENDILO.");
         boolean option = true;
@@ -69,14 +71,8 @@ public class Vendilo {
                 switch (choice) {
                     case "1" -> loginMenu(scanner);
                     case "2" -> registerMenu(scanner, chekFild);
-                    case "3" -> {
-                        ExitVendilo.exit(scanner);
-                        option = false;
-                    }
-                    default -> {
-                        Color.printRedBgWhite("The selected option is invalid!");
-                        Color.printRed("Please try again.");
-                    }
+                    case "3" -> ExitVendilo.exit(scanner);
+                    default -> Color.printRedBgWhite("The selected option is invalid!\nPlease try again.");
                 }
             }
         } catch (Exception e) {
@@ -102,16 +98,18 @@ public class Vendilo {
             Color.printCyan("1-Customer Login");
             Color.printCyan("2-Seller Login");
             Color.printCyan("3-Supporter Login");
-            Color.printYellow("4-Back");
-            Color.printRed("5-Exit");
+            Color.printCyan("4-Manager Login");
+            Color.printYellow("5-Back");
+            Color.printRed("6-Exit");
             Color.printYellowInline("Please enter the desired option: ");
             String choiceLogin = scanner.nextLine();
             switch (choiceLogin) {
                 case "1" -> customerLogin(scanner);
                 case "2" -> sellerLogin(scanner);
                 case "3" -> supporterLogin(scanner);
-                case "4" -> runLogin = false;
-                case "5" -> {
+                case "4" -> managerLogin(scanner);
+                case "5" -> runLogin = false;
+                case "6" -> {
                     ExitVendilo.exit(scanner);
                 }
                 default -> {
@@ -119,6 +117,47 @@ public class Vendilo {
                     Color.printRed("Please enter a number between 1-5.");
                 }
             }
+        }
+    }
+
+    public void managerLogin(Scanner scanner) {
+        while (true) {
+            Color.printWhiteBold("- - - - Manager Login - - - -");
+            if (runBack(scanner) == 1) {
+                break;
+            }
+            Color.printYellowInline("Enter Agency Name: ");
+            String agencyName = scanner.nextLine();
+            Color.printYellowInline("Enter password: ");
+            String password = scanner.nextLine();
+            managerLogin2(agencyName, password, scanner);
+        }
+    }
+
+    public void managerLogin2(String agencyName, String password, Scanner scanner) {
+        boolean email = false, pas = false;
+        for (Manager manager : managers) {
+            if (manager.getAgencyName().equals(agencyName)) {
+                email = true;
+                if (manager.getPassword().equals(password)) {
+                    pas = true;
+                    if (manager.isBan()) {
+                        Color.printRed("You are banned.");
+                        return;
+                    }
+                    Color.printGreen("Successful login.");
+                    ManagerHelper managerHelper = new ManagerHelper(manager, this);
+                    managerHelper.menu(scanner);
+                }
+            }
+        }
+        if (!email) {
+            Color.printRed("No user found with this email or phone number.");
+            return;
+        }
+        if (!pas) {
+            Color.printRed("No user found with this Password.");
+            return;
         }
     }
 

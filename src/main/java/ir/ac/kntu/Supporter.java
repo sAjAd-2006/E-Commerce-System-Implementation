@@ -9,6 +9,7 @@ import java.util.Scanner;
 public class Supporter extends Person {
     private List<Seller> verification;
     private List<Customer> customersReport;
+    private List<Person> personsReport = new ArrayList<>();
     private Map<Report, Integer> activityMap;
     private String agencyName;
 
@@ -129,84 +130,111 @@ public class Supporter extends Person {
                 + order.getKalasMap().get(kala) + "     Inventory: " + kala.getInventory());
     }
 
-    public void sellersVerification(Scanner scanner, Vendilo vendilo) {
-        int iiii = 0;
-        while (true) {
-            Paginator<Seller> paginator = new Paginator<>(verification, 10);
-            int jjjj = paginator.paginate(iiii);
-            if (jjjj == -1) {
-                return;
-            } else {
-                Color.printYellow("info>");
-                System.out.println(verification.get(jjjj).chap());
-                Color.printYellow(verification.get(jjjj).getReasonForRejection());
-                System.out.println("Do you approve or not? 1)YES 2)NO 3)Back");
-                String choice = scanner.nextLine();
-                switch (choice) {
-                    case "1" -> case12(1, jjjj, scanner, vendilo);
-                    case "2" -> case12(2, jjjj, scanner, vendilo);
-                    case "3" -> {
-                        iiii = jjjj / 10;
-                        continue;
-                    }
-                    default -> Color.printRed("The selected option is invalid.");
-                }
+    // public void sellersVerification(Scanner scanner, Vendilo vendilo) {
+    // int iiii = 0;
+    // while (true) {
+    // Paginator<Seller> paginator = new Paginator<>(verification, 10);
+    // int jjjj = paginator.paginate(iiii);
+    // if (jjjj == -1) {
+    // return;
+    // } else {
+    // Color.printYellow("info>");
+    // System.out.println(verification.get(jjjj).chap());
+    // Color.printYellow(verification.get(jjjj).getReasonForRejection());
+    // System.out.println("Do you approve or not? 1)YES 2)NO 3)Back");
+    // String choice = scanner.nextLine();
+    // switch (choice) {
+    // case "1" -> case12(1, jjjj, scanner, vendilo);
+    // case "2" -> case12(2, jjjj, scanner, vendilo);
+    // case "3" -> {
+    // iiii = jjjj / 10;
+    // continue;
+    // }
+    // default -> Color.printRed("The selected option is invalid.");
+    // }
+    // }
+    // }
+    // }
+
+    public void sellersVerificationReport(Scanner scanner, Vendilo vendilo, Seller seller) {
+        Color.printYellow("info>");
+        System.out.println(seller.chap());
+        Color.printYellow(seller.getReasonForRejection());
+        System.out.println("Do you approve or not? 1)YES 2)NO 3)Back");
+        String choice = scanner.nextLine();
+        switch (choice) {
+            case "1" -> case12(1, seller, scanner, vendilo);
+            case "2" -> case12(2, seller, scanner, vendilo);
+            case "3" -> {
             }
+            default -> Color.printRed("The selected option is invalid.");
         }
     }
 
-    public void case12(int casey, int jjjj, Scanner scanner, Vendilo vendilo) {
+    public void case12(int casey, Seller seller, Scanner scanner, Vendilo vendilo) {
         if (casey == 1) {
-            vendilo.getSellers().add(verification.get(jjjj));
-            vendilo.getSellersVerification().remove(jjjj);
-            verification.remove(jjjj);
+            vendilo.getSellers().add(seller);
+            vendilo.getSellersVerification().remove(seller);
+            verification.remove(seller);
         } else {
             System.out.print("Write the reason: ");
             String choice = scanner.nextLine();
-            getSellersVerification().get(jjjj).setReasonForRejection(choice);
+            seller.setReasonForRejection(choice);
         }
     }
 
-    public void seeCustomersReport(Scanner scanner, List<Customer> customers) {
-        Report report = topic(scanner);
-        if (report == null) {
-            return;
-        }
+    public void seePersonsReport(Scanner scanner, List<Customer> customers, Vendilo vendilo) {
+        // Report report = topic(scanner);
+        // if (report == null) {
+        // return;
+        // }
         Check check = status(scanner);
         if (check == null) {
             return;
         }
+        personsReport = new ArrayList<>();
         setCustomersReport(customers);
-        customersReport(report, check, scanner);
+        setSellersVerification(vendilo.getSellersVerification());
+        personsReport(check, scanner, vendilo);
     }
 
-    public Report topic(Scanner scanner) {
-        while (true) {
-            System.out.println("What reports would you like to see?\n1)"
-                    + Report.Discrepancy_between_order_and_delivered_product + "\n2)" + Report.Not_receiving_order
-                    + "\n3)" + Report.Product_qualit + "\n4)" + Report.Settings + "\n5) ALL \n6) Back\n7) Exit");
-            String choice = scanner.nextLine();
-            switch (choice) {
-                case "1":
-                    return Report.Discrepancy_between_order_and_delivered_product;
-                case "2":
-                    return Report.Not_receiving_order;
-                case "3":
-                    return Report.Product_qualit;
-                case "4":
-                    return Report.Settings;
-                case "5":
-                    return Report.ALL;
-                case "6":
-                    return null;
-                case "7":
-                    ExitVendilo.exit(scanner);
-                default:
-                    System.out.println("The selected option is invalid.");
-                    break;
-            }
-        }
-    }
+    // public Report topic(Scanner scanner) {
+    // while (true) {
+    // System.out.println("What reports would you like to see?\n1)"
+    // + Report.Discrepancy_between_order_and_delivered_product + "\n2)" +
+    // Report.Not_receiving_order
+    // + "\n3)" + Report.Product_qualit + "\n4)" + Report.Settings + "\n5) ALL \n6)
+    // Back\n7) Exit");
+    // String choice = scanner.nextLine();
+    // switch (choice) {
+    // case "1":
+    // return Report.Discrepancy_between_order_and_delivered_product;
+    // case "2":
+    // return Report.Not_receiving_order;
+    // case "3":
+    // return Report.Product_qualit;
+    // case "4":
+    // return Report.Settings;
+    // case "5":
+    // return Report.ALL;
+    // case "6":
+    // return null;
+    // case "7":
+    // ExitVendilo.exit(scanner);
+    // default:
+    // System.out.println("The selected option is invalid.");
+    // break;
+    // }
+
+    // System.out.println("What reports would you like to see?");
+    // for (int i = 0; i < activityMap.keySet().size(); i++) {
+
+    // }
+    // for (Report report : activityMap.keySet()) {
+
+    // }
+    // }
+    // }
 
     public Check status(Scanner scanner) {
         while (true) {
@@ -233,29 +261,50 @@ public class Supporter extends Person {
         }
     }
 
-    public void customersReport(Report report, Check check, Scanner scanner) {
+    public void personsReport(Check check, Scanner scanner, Vendilo vendilo) {
         int iiii = 0, jjjj = 0;
-        Paginator<Customer> paginator = new Paginator<>(customersReport, 10);
+        for (Customer customer : customersReport) {
+            if (!customer.getReportages().isEmpty()) {
+                personsReport.add(customer);
+            }
+        }
+        if (activityMap.keySet().contains(Report.Seller_authentication) ||
+                activityMap.keySet().contains(Report.ALL)) {
+            for (Seller seller : verification) {
+                personsReport.add(seller);
+            }
+        }
+        Paginator<Person> paginator = new Paginator<>(personsReport, 10);
         while (true) {
             int custom = paginator.paginate(iiii);
             if (custom == -1) {
                 return;
             } else {
-                List<Reportage> reportages = new ArrayList<>();
-                for (Reportage reportage : customersReport.get(custom).getReportages()) {
-                    if (report == Report.ALL || reportage.getReportTopic().equals(report)) {
-                        if (check == Check.ALL || reportage.getCheck().equals(check)) {
-                            reportages.add(reportage);
-                        }
-                    }
+                if (personsReport.get(custom) instanceof Customer) {
+                    personsReportIf(custom, jjjj, check, scanner);
+                    iiii = custom / 10;
+                } else {
+                    sellersVerificationReport(scanner, vendilo, ((Seller) personsReport.get(custom)));
+                    personsReport.remove(custom);
                 }
-                customersReport2(reportages, jjjj, scanner);
-                iiii = custom / 10;
             }
         }
     }
 
-    public void customersReport2(List<Reportage> reportages, int jjjj, Scanner scanner) {
+    private void personsReportIf(int custom, int jjjj, Check check, Scanner scanner) {
+        List<Reportage> reportages = new ArrayList<>();
+        for (Reportage reportage : ((Customer) personsReport.get(custom)).getReportages()) {
+            if (activityMap.keySet().contains(reportage.getReportTopic()) ||
+                    activityMap.keySet().contains(Report.ALL)) {
+                if (check == Check.ALL || reportage.getCheck().equals(check)) {
+                    reportages.add(reportage);
+                }
+            }
+        }
+        customersReport2(reportages, jjjj, scanner, ((Customer) personsReport.get(custom)));
+    }
+
+    public void customersReport2(List<Reportage> reportages, int jjjj, Scanner scanner, Customer customer) {
         Paginator<Reportage> paginator2 = new Paginator<>(reportages, 10);
         while (true) {
             int repor = paginator2.paginate(jjjj);
@@ -264,20 +313,20 @@ public class Supporter extends Person {
             } else {
                 Reportage reportage = reportages.get(repor);
                 System.out.println(reportage.toString() + " Check:" + reportage.getCheck());
-                proceed(reportage, scanner);
+                proceed(reportage, scanner, customer);
                 jjjj = repor / 10;
             }
         }
     }
 
-    public void proceed(Reportage reportage, Scanner scanner) {
+    public void proceed(Reportage reportage, Scanner scanner, Customer customer) {
         while (true) {
             System.out.println("Do you want to proceed?\n1)YES 2)NO 3)Exit" +
                     "\nIf it has already been dealt with, you will be automatically returned");
             String chose = scanner.nextLine();
             switch (chose) {
                 case "1" -> {
-                    proceedCase1(reportage, scanner);
+                    proceedCase1(reportage, scanner, customer);
                 }
                 case "2" -> {
                     return;
@@ -288,7 +337,7 @@ public class Supporter extends Person {
         }
     }
 
-    public void proceedCase1(Reportage reportage, Scanner scanner) {
+    public void proceedCase1(Reportage reportage, Scanner scanner, Customer customer) {
         if (!reportage.getCheck().equals(Check.Closed)) {
             boolean condition = true;
             while (condition) {
@@ -310,14 +359,15 @@ public class Supporter extends Person {
                     case "4" -> ExitVendilo.exit(scanner);
                     default -> System.out.println("The selected option is invalid.");
                 }
+                ReportNotification reportNotif = new ReportNotification(reportage);
+                customer.getNotifications().add(reportNotif);
             }
         }
     }
 
     @Override
     public String toString() {
-        return  super.toString() + "[agencyName=" + agencyName + "]";
+        return super.toString() + "[agencyName=" + agencyName + "]";
     }
 
-    
 }

@@ -1,5 +1,8 @@
 package ir.ac.kntu;
 
+import java.util.HashMap;
+import java.util.Map;
+
 // import java.util.Objects;
 
 abstract class Kala {
@@ -10,24 +13,20 @@ abstract class Kala {
     private Model model;
     private double voteNum;
     private double vote;
-    private boolean voted;
     private double averageScore = 0;
     private String agencyCoSeler;
     private String selerCity;
     private String selerName;
+    private Map<String, Coment> votMap;
+
+    public Map<String, Coment> getVotMap() {
+        return votMap;
+    }
 
     public void setSelerInfo(String name, String agencyCode, String city) {
         setSelerName(name);
         setAgencyCodeOfSelers(agencyCode);
         setSelerCity(city);
-    }
-
-    public boolean isVoted() {
-        return voted;
-    }
-
-    public void setVoted(boolean voted) {
-        this.voted = voted;
     }
 
     public String getSelerName() {
@@ -86,6 +85,10 @@ abstract class Kala {
         return Double.toString(averageScore);
     }
 
+    public double getAverageScore2() {
+        return this.averageScore;
+    }
+
     public void setAverageScore(int averageScore) {
         this.averageScore = averageScore;
     }
@@ -130,9 +133,6 @@ abstract class Kala {
         this.type = type;
     }
 
-    public Kala() {
-    }
-
     public String getSelerCity() {
         return selerCity;
     }
@@ -140,6 +140,12 @@ abstract class Kala {
     public void setSelerCity(String selerCity) {
         this.selerCity = selerCity;
     }
+
+    public Kala() {
+        votMap = new HashMap<>();
+    }
+
+
 
     @Override
     public String toString() {
@@ -154,32 +160,4 @@ abstract class Kala {
                 + " Seller's province: " + getSelerCity());
     }
 
-    // @Override
-    // public boolean equals(Object obj) {
-    //     if (this == obj) {
-    //         return true;
-    //     }
-    //     if (obj == null || getClass() != obj.getClass()) {
-    //         return false;
-    //     }
-    //     Kala kala = (Kala) obj;
-    //     return Inventory == kala.Inventory &&
-    //             Price == kala.Price &&
-    //             Double.compare(kala.voteNum, voteNum) == 0 &&
-    //             Double.compare(kala.vote, vote) == 0 &&
-    //             voted == kala.voted &&
-    //             Double.compare(kala.averageScore, averageScore) == 0 &&
-    //             Objects.equals(name, kala.name) &&
-    //             Objects.equals(type, kala.type) &&
-    //             Objects.equals(model, kala.model) &&
-    //             Objects.equals(agencyCoSeler, kala.agencyCoSeler) &&
-    //             Objects.equals(selerCity, kala.selerCity) &&
-    //             Objects.equals(selerName, kala.selerName);
-    // }
-
-    // @Override
-    // public int hashCode() {
-    //     return Objects.hash(name, Inventory, Price, type, model, voteNum, vote, voted, averageScore, agencyCoSeler,
-    //             selerCity, selerName);
-    // }
 }

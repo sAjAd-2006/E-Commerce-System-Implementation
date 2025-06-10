@@ -180,10 +180,21 @@ public class Order extends Timeable {
                 kala.calculatingTheAverage(Integer.parseInt(cmd));
                 // this.isVoted.set(rat, true);
                 kalasVoteMap.replace(kala, false, true);
+                coment(kala, Integer.parseInt(cmd), scanner);
                 return 1;
             } else {
                 System.out.println("Invalid rat.");
             }
+        }
+    }
+
+    public void coment(Kala kala, int rate, Scanner scanner) {
+        Color.printYellow("Do you want to comment on the product? y/n");
+        if ("y".equalsIgnoreCase(scanner.nextLine())) {
+            System.out.println("Write your comment: ");
+            String choice = scanner.nextLine();
+            Coment coment = new Coment(this.customerName, choice, rate);
+            kala.getVotMap().put(this.customerEmail, coment);
         }
     }
 

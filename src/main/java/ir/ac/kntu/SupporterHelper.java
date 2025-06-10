@@ -22,15 +22,15 @@ public class SupporterHelper {
     public void menu(Scanner scanner) {
         boolean runMenu = true;
         while (runMenu) {
-            System.out.println("- - - - Supporter Menu - - - -\n1-Verification\n2-Customers Report\n3-Orders");
-            System.out.println("4-Log out\n5-Exit");
+            System.out.println("- - - - Supporter Menu - - - -\n1-Persons Report\n2-Orders");
+            System.out.println("3-Log out\n4-Exit");
             String choice = scanner.nextLine();
             switch (choice) {
-                case "1" -> supporter.sellersVerification(scanner, vendilo);
-                case "2" -> supporter.seeCustomersReport(scanner, vendilo.getCustomers());
-                case "3" -> supporter.seeOrders(scanner, vendilo.getCustomers());
-                case "4" -> runMenu = false;
-                case "5" -> System.exit(0);
+                // case "1" -> supporter.sellersVerification(scanner, vendilo);
+                case "1" -> supporter.seePersonsReport(scanner, vendilo.getCustomers(), vendilo);
+                case "2" -> supporter.seeOrders(scanner, vendilo.getCustomers());
+                case "3" -> runMenu = false;
+                case "4" -> System.exit(0);
                 default -> System.out.println("The selected option is invalid.");
             }
         }

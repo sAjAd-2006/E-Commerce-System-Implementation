@@ -1,10 +1,21 @@
 package ir.ac.kntu;
 
+import java.time.LocalDateTime;
+
 public class Reportage {
     private Report reportTopic;
     private String text;
     private Check check;
     private String answer;
+    private LocalDateTime crDT;
+
+    public LocalDateTime getConstructionTime() {
+        return crDT;
+    }
+
+    public void setConstructionTime(LocalDateTime crDT) {
+        this.crDT = crDT;
+    }
 
     public Check getCheck() {
         return check;
@@ -43,11 +54,13 @@ public class Reportage {
         this.text = text;
         this.check = Check.Registered;
         this.answer = "No answer";
+        crDT = LocalDateTime.now();
     }
 
     public Reportage() {
         this.check = Check.Registered;
         this.answer = "No answer";
+        crDT = LocalDateTime.now();
     }
 
     @Override

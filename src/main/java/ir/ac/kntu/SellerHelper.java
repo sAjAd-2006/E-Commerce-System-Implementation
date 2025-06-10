@@ -20,7 +20,7 @@ public class SellerHelper {
         boolean run = true;
         while (run) {
             System.out.print("- - - - Seller menu - - - -\n1.Add New Item\n2-See old item\n3.Wallet\n4.Orders" +
-                    "\n5.Financial report\n6.Log out\n7.Exit\n => ");
+                    "\n5.Financial report\n6.Notifications\n7.Log out\n8.Exit\n => ");
             String choice = scanner.nextLine();
             switch (choice) {
                 case "1" -> seller.addKala(scanner);
@@ -28,10 +28,32 @@ public class SellerHelper {
                 case "3" -> walletRun(scanner);
                 case "4" -> ordersRun();
                 case "5" -> reportRun();
-                case "6" -> run = false;
-                case "7" -> ExitVendilo.exit(scanner);
+                case "6" -> notificationRun(scanner);
+                case "7" -> run = false;
+                case "8" -> ExitVendilo.exit(scanner);
                 default -> System.out.println("The selected option is invalid.");
             }
+        }
+    }
+
+    private void notificationRun(Scanner scanner) {
+        List<Notification> availableNotif = new ArrayList<>();
+        for (Notification notification : seller.getNotifications()) {
+            if (notification.isCanSeeOrNot() && !notification.isSeen()) {
+                availableNotif.add(notification);
+            }
+        }
+        while (true) {
+            Color.printBlue("\nnotifications");
+            Paginator<Notification> paginator = new Paginator<>(availableNotif, 10);
+            int select = paginator.paginate(0);
+            if (select == -1) {
+                return;
+            }
+            System.out.println();
+            Customer customer = new Customer();
+            availableNotif.get(select).interNotif(customer, scanner);
+            availableNotif.remove(select);
         }
     }
 
