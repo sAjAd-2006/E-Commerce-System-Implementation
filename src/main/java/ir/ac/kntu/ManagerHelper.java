@@ -144,20 +144,7 @@ public class ManagerHelper {
         System.out.print("Enter kind: 1.Percentage 2.Numeric(default)");
         String choice = scanner.nextLine();
         switch (choice) {
-            case "1" -> {
-                discountCode.setVahed("%");
-                discountCode.setKind(Kind.Percentage);
-                while (true) {
-                    System.out.print("Enter Percentage (0 < x <= 100): ");
-                    choice = scanner.nextLine();
-                    if (!isInteger(choice) || Integer.parseInt(choice) <= 0 || Integer.parseInt(choice) > 100) {
-                        Color.printRed("format error");
-                        continue;
-                    }
-                    discountCode.setDiscountAmount(Integer.parseInt(choice));
-                    break;
-                }
-            }
+            case "1" -> crDiscountCodeSwichCase1(discountCode, scanner);
             default -> {
                 discountCode.setKind(Kind.Numeric);
                 while (true) {
@@ -171,6 +158,21 @@ public class ManagerHelper {
                     break;
                 }
             }
+        }
+    }
+
+    private void crDiscountCodeSwichCase1(DiscountCode discountCode, Scanner scanner) {
+        discountCode.setVahed("%");
+        discountCode.setKind(Kind.Percentage);
+        while (true) {
+            System.out.print("Enter Percentage (0 < x <= 100): ");
+            String choice = scanner.nextLine();
+            if (!isInteger(choice) || Integer.parseInt(choice) <= 0 || Integer.parseInt(choice) > 100) {
+                Color.printRed("format error");
+                continue;
+            }
+            discountCode.setDiscountAmount(Integer.parseInt(choice));
+            break;
         }
     }
 
@@ -353,23 +355,25 @@ public class ManagerHelper {
                     allPersons.add(manager);
                 }
             }
-            default -> {
-                for (Customer customer : vendilo.getCustomers()) {
-                    allPersons.add(customer);
-                }
-                for (Seller seller : vendilo.getSellers()) {
-                    allPersons.add(seller);
-                }
-                for (Supporter supporter : vendilo.getSupporters()) {
-                    allPersons.add(supporter);
-                }
-                for (Manager manager : vendilo.getManagers()) {
-                    allPersons.add(manager);
-                }
-            }
-            // default -> System.out.println("The selected option is invalid.");
+            default -> allPersons = filterByClassSwiceDefault(allPersons);
         }
         return filterByName(allPersons, scanner);
+    }
+
+    private List<Person> filterByClassSwiceDefault(List<Person> allPersons) {
+        for (Customer customer : vendilo.getCustomers()) {
+            allPersons.add(customer);
+        }
+        for (Seller seller : vendilo.getSellers()) {
+            allPersons.add(seller);
+        }
+        for (Supporter supporter : vendilo.getSupporters()) {
+            allPersons.add(supporter);
+        }
+        for (Manager manager : vendilo.getManagers()) {
+            allPersons.add(manager);
+        }
+        return allPersons;
     }
 
     private void addAdministrator(Scanner scanner) {

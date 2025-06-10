@@ -11,15 +11,15 @@ import java.util.Scanner;
 import java.util.stream.Collectors;
 
 public class Customer extends Person {
-    private ShoppingCart shoppingCart;
-    private Wallet wallet;
-    private List<Address> addresses;
-    private List<Order> orders;
-    private List<Reportage> reportages;
-    private List<Seller> sellers;
-    private List<DiscountCode> discountCodes;
+    private ShoppingCart shoppingCart = new ShoppingCart();
+    private Wallet wallet = new Wallet();
+    private List<Order> orders = new ArrayList<>();
+    private List<Seller> sellers = new ArrayList<>();
+    private List<Address> addresses = new ArrayList<>();
+    private List<Reportage> reportages = new ArrayList<>();
+    private List<DiscountCode> discountCodes = new ArrayList<>();
+    private List<Notification> notifications = new ArrayList<>();
     private boolean vendiloPlus = false;
-    private List<Notification> notifications;
 
     public List<Notification> getNotifications() {
         return notifications;
@@ -66,14 +66,6 @@ public class Customer extends Person {
     }
 
     public Customer() {
-        shoppingCart = new ShoppingCart();
-        wallet = new Wallet();
-        addresses = new ArrayList<>();
-        orders = new ArrayList<>();
-        reportages = new ArrayList<>();
-        sellers = new ArrayList<>();
-        discountCodes = new ArrayList<>();
-        notifications = new ArrayList<>();
     }
 
     public Customer(String firstname, String lastname, String email, String phonenumber, String password) {
@@ -82,14 +74,6 @@ public class Customer extends Person {
         setEmail(email);
         setPhonenumber(phonenumber);
         setPassword(password);
-        wallet = new Wallet();
-        addresses = new ArrayList<>();
-        orders = new ArrayList<>();
-        reportages = new ArrayList<>();
-        shoppingCart = new ShoppingCart();
-        sellers = new ArrayList<>();
-        discountCodes = new ArrayList<>();
-        notifications = new ArrayList<>();
     }
 
     public Wallet getWallet() {
