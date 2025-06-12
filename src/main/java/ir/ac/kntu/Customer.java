@@ -20,6 +20,7 @@ public class Customer extends Person {
     private List<DiscountCode> discountCodes = new ArrayList<>();
     private List<Notification> notifications = new ArrayList<>();
     private boolean vendiloPlus = false;
+    private DiscountCode nowUsing;
 
     public List<Notification> getNotifications() {
         return notifications;
@@ -149,16 +150,17 @@ public class Customer extends Person {
     }
 
     private void seeTotalAndContinue(Scanner scanner, Address address, int shippingCost) {
+        int total = 0;
         if (vendiloPlus) {
             System.out.println("Price: " + shoppingCart.findTotal() * 95 / 100 + "\nShipping Cost: " + shippingCost);
-            continueShoppingNow(shippingCost, address, scanner,
-                    useDiscountCode(scanner, shoppingCart.findTotal() * 95 / 100));
+            total = useDiscountCode(scanner, shoppingCart.findTotal() * 95 / 100);
+            System.out.println("Price: " + total + "\nShipping Cost: " + shippingCost);
         } else {
             System.out.println("Price: " + shoppingCart.findTotal() + "\nShipping Cost: " + shippingCost);
-            int total = useDiscountCode(scanner, shoppingCart.findTotal());
+            total = useDiscountCode(scanner, shoppingCart.findTotal());
             System.out.println("Price: " + total + "\nShipping Cost: " + shippingCost);
-            continueShoppingNow(shippingCost, address, scanner, total);
         }
+        continueShoppingNow(shippingCost, address, scanner, total);
     }
 
     private int useDiscountCode(Scanner scanner, int totalPrice) {
@@ -181,6 +183,7 @@ public class Customer extends Person {
                     if (select == -1) {
                         return totalPrice;
                     }
+                    nowUsing = discountCodes.get(select);
                     return discountCodes.get(select).discountCalculation(totalPrice);
                 default:
                     return totalPrice;
@@ -215,20 +218,40 @@ public class Customer extends Person {
     }
 
     public void continueShoppingNow(int shippingCost, Address address, Scanner scanner, int totalPrice) {
-        System.out.println("1) Complete Purchase\n2) Back\n3) Exit");
+        System.out.println("1) Complete Purchase\n2) Back");
         String choice = scanner.nextLine();
         switch (choice) {
-            case "1":
+            case "1" -> {
                 if (this.wallet.withdrawFromWallet((totalPrice + shippingCost), "Shopping")) {
                     crOrder(address, shippingCost, totalPrice);
                     LinkedHashMap<Kala, Integer> newMap = new LinkedHashMap<>();
                     shoppingCart.setKalasMap(newMap);
                     shoppingCart.setTotalPrice(0);
+                    clearDiscountCode();
                 }
-                break;
+            }
+            default -> {
+                nowUsing.setNumbCanBeUsed(nowUsing.getNumbCanBeUsed() + 1);
+                nowUsing = new DiscountCode();
+            }
+        }
+    }
 
-            default:
-                break;
+    private void clearDiscountCode() {
+        for (DiscountCode discountCode : discountCodes) {
+            if (discountCode.getNumbCanBeUsed() == 0) {
+                discountCodes.remove(discountCode);
+                return;
+            }
+        }
+    }
+
+    private void discountReUse() {
+        for (DiscountCode discountCode : discountCodes) {
+            if (discountCode.getNumbCanBeUsed() == 0) {
+                discountCode.setNumbCanBeUsed(1);
+                return;
+            }
         }
     }
 

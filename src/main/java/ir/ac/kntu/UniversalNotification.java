@@ -13,6 +13,6 @@ public class UniversalNotification extends Notification {
     @Override
     public void interNotif(Customer customer, Scanner scanner) {
         setSeen(true);
-        Color.printGreen(message);
+        Color.printYellow(message);
     }
 }

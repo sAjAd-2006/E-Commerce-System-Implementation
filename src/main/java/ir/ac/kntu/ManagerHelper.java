@@ -38,7 +38,7 @@ public class ManagerHelper {
                 case "4" -> salesPerformance(scanner);
                 case "5" -> userPerformance(scanner);
                 case "6" -> crDiscountCode(null, scanner, true);
-                case "7" -> manager.sendingAPublicMessage(scanner, vendilo);
+                case "7" -> manager.sendingAPublicMessage(scanner, vendilo.getCustomers(), vendilo.getSellers());
                 case "8" -> runMenu = false;
                 case "9" -> ExitVendilo.exit(scanner);
                 default -> System.out.println("The selected option is invalid.");
@@ -121,9 +121,9 @@ public class ManagerHelper {
     }
 
     private void crNotificationAbutDiscountCodeForAll(DiscountCode discountCode) {
-        DiscountCodeNotification dCNotif = new DiscountCodeNotification(discountCode);
-        dCNotif.setCanSeeOrNot(true);
         for (Customer customer : vendilo.getCustomers()) {
+            DiscountCodeNotification dCNotif = new DiscountCodeNotification(discountCode);
+            dCNotif.setCanSeeOrNot(true);
             customer.getNotifications().add(dCNotif);
             customer.getDiscountCodes().add(discountCode);
         }
@@ -290,6 +290,7 @@ public class ManagerHelper {
                         + Report.Seller_authentication + "\n6.continue");
                 boolean run = true;
                 while (run) {
+                    System.out.print("=> ");
                     String choice = scanner.nextLine();
                     if (!"5".equals(choice)) {
                         supporter.getActivityMap().remove(Report.ALL, 1);

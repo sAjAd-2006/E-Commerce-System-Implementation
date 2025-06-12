@@ -1,5 +1,6 @@
 package ir.ac.kntu;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class Manager extends Person {
@@ -21,13 +22,19 @@ public class Manager extends Person {
         setAccessLevel(accessLevel);
     }
 
-    public void sendingAPublicMessage(Scanner scanner, Vendilo vendilo) {
+    public void sendingAPublicMessage(Scanner scanner, List<Customer> customers, List<Seller> sellers) {
         System.out.println("Enter your message: ");
-        UniversalNotification universNotif = new UniversalNotification(scanner.nextLine());
-        for (Customer customer : vendilo.getCustomers()) {
+        String masage = scanner.nextLine();
+        // UniversalNotification universNotif = new UniversalNotification(masage);
+        // universNotif.setCanSeeOrNot(true);
+        for (Customer customer : customers) {
+            UniversalNotification universNotif = new UniversalNotification(masage);
+            universNotif.setCanSeeOrNot(true);
             customer.getNotifications().add(universNotif);
         }
-        for (Seller seller : vendilo.getSellers()) {
+        for (Seller seller : sellers) {
+            UniversalNotification universNotif = new UniversalNotification(masage);
+            universNotif.setCanSeeOrNot(true);
             seller.getNotifications().add(universNotif);
         }
     }

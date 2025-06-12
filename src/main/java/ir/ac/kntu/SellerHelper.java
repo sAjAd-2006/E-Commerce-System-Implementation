@@ -92,7 +92,7 @@ public class SellerHelper {
                     "1> View balance\n2> Withdraw from wallet\n3> View previous transactions\n4> Back\n5> Exit");
             String choice = scanner.nextLine();
             switch (choice) {
-                case "1" -> System.out.println("balance: " + seller.getWallet().getCash());
+                case "1" -> Color.printGreen("balance: " + seller.getWallet().getCash());
                 case "2" -> {
                     System.out.print("Enter the amount you want to Withdraw from wallet: ");
                     choice = scanner.nextLine();

@@ -54,16 +54,19 @@ public class DiscountCode {
         }
     }
 
+    public DiscountCode() {
+    }
+
     public int discountCalculation(int totalPrice) {
         if (numbCanBeUsed == 0) {
+            Color.printRed("discount code out of use");
             return totalPrice;
         }
+        numbCanBeUsed--;
         if (kind == Kind.Percentage) {
-            numbCanBeUsed--;
             return totalPrice * (100 - discountAmount) / 100;
         } else {
-            if (totalPrice * 10 > discountAmount) {
-                numbCanBeUsed--;
+            if (totalPrice > discountAmount * 10) {
                 return totalPrice - discountAmount;
             } else {
                 Color.printYellow(

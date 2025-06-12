@@ -313,20 +313,20 @@ public class Supporter extends Person {
             } else {
                 Reportage reportage = reportages.get(repor);
                 System.out.println(reportage.toString() + " Check:" + reportage.getCheck());
-                proceed(reportage, scanner, customer);
+                proceed(reportages, reportage, scanner, customer);
                 jjjj = repor / 10;
             }
         }
     }
 
-    public void proceed(Reportage reportage, Scanner scanner, Customer customer) {
+    public void proceed(List<Reportage> reportages, Reportage reportage, Scanner scanner, Customer customer) {
         while (true) {
             System.out.println("Do you want to proceed?\n1)YES 2)NO 3)Exit" +
                     "\nIf it has already been dealt with, you will be automatically returned");
             String chose = scanner.nextLine();
             switch (chose) {
                 case "1" -> {
-                    proceedCase1(reportage, scanner, customer);
+                    proceedCase1(reportages, reportage, scanner, customer);
                 }
                 case "2" -> {
                     return;
@@ -337,7 +337,7 @@ public class Supporter extends Person {
         }
     }
 
-    public void proceedCase1(Reportage reportage, Scanner scanner, Customer customer) {
+    public void proceedCase1(List<Reportage> reportages, Reportage reportage, Scanner scanner, Customer customer) {
         if (!reportage.getCheck().equals(Check.Closed)) {
             boolean condition = true;
             while (condition) {
@@ -360,6 +360,7 @@ public class Supporter extends Person {
                     default -> System.out.println("The selected option is invalid.");
                 }
                 ReportNotification reportNotif = new ReportNotification(reportage);
+                reportNotif.setCanSeeOrNot(true);
                 customer.getNotifications().add(reportNotif);
             }
         }

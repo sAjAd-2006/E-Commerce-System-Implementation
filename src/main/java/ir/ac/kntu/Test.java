@@ -1,5 +1,7 @@
 package ir.ac.kntu;
 
+import java.util.Scanner;
+
 // import java.util.LinkedHashMap;
 
 // import java.time.LocalDateTime;
@@ -13,7 +15,7 @@ public class Test {
         vendilo.getCustomers().add(new Customer("sajad", "teymoori", "sajad.t@gmail.com", "09391838534", "12345Ss!"));
         vendilo.getCustomers().getFirst().getWallet().setCash(100000);
         DiscountCode discountCode1 = new DiscountCode("12003", Kind.Percentage, 10, 1);
-        DiscountCode discountCode2 = new DiscountCode("12003", Kind.Numeric, 100, 1);
+        DiscountCode discountCode2 = new DiscountCode("12003", Kind.Numeric, 100, 2);
         vendilo.getCustomers().getFirst().getDiscountCodes().add(discountCode2);
         vendilo.getCustomers().getFirst().getDiscountCodes().add(discountCode1);
         Address address = new Address();
@@ -26,7 +28,12 @@ public class Test {
         vendilo.getSellers().get(0).setProvinceOfSale("tehran");
         vendilo.getSellers().get(0).setAgencyCode("AASS12");
         vendilo.getSellers().get(0).setPassword("12345Bb?");
-        // vendilo.getSellersVerification().get(0).setReasonForRejection("Your authentication has not been confirmed yet.");
+        // Scanner scanner = new Scanner(System.in);
+        // Manager manager = new Manager("sajad", "teymoory", "momilo", "12345Pk?", Integer.MAX_VALUE);
+        // vendilo.getManagers().add(manager);
+        // vendilo.getManagers().getFirst().sendingAPublicMessage(scanner, vendilo.getCustomers(), vendilo.getSellers());
+        // vendilo.getSellersVerification().get(0).setReasonForRejection("Your
+        // authentication has not been confirmed yet.");
         // // Book book = new Book();
         // Book book2 = new Book();
         // book.setSelerName("sajjjjjjjjad");
@@ -43,7 +50,8 @@ public class Test {
         // name.add("soooooooo2");
         // name.add("soooooooo3");
         // // order.getIsVoted().add(false);
-        // Order order = new Order(bookMap, LocalDateTime.now(), name, null, 10000, 100, null, null);
+        // Order order = new Order(bookMap, LocalDateTime.now(), name, null, 10000, 100,
+        // null, null);
         // // order.setIsVoted(booleans);
         // order.setKalasVoteMap(voteMap);
         // vendilo.getCustomers().getFirst().getOrders().add(order);
