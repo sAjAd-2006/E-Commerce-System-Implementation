@@ -1,6 +1,6 @@
 package ir.ac.kntu;
 
-import java.util.Scanner;
+// import java.util.Scanner;
 
 // import java.util.LinkedHashMap;
 
@@ -28,7 +28,14 @@ public class Test {
         vendilo.getSellers().get(0).setProvinceOfSale("tehran");
         vendilo.getSellers().get(0).setAgencyCode("AASS12");
         vendilo.getSellers().get(0).setPassword("12345Bb?");
-        // Scanner scanner = new Scanner(System.in);
+
+
+        // Seller.getKalas().add(new )
+        // vendilo.customerLogin(null);
+        vendilo.menu();
+    }
+
+            // Scanner scanner = new Scanner(System.in);
         // Manager manager = new Manager("sajad", "teymoory", "momilo", "12345Pk?", Integer.MAX_VALUE);
         // vendilo.getManagers().add(manager);
         // vendilo.getManagers().getFirst().sendingAPublicMessage(scanner, vendilo.getCustomers(), vendilo.getSellers());
@@ -59,9 +66,4 @@ public class Test {
         // Scanner scanner = new Scanner(System.in);
         // order.showOrderCustomer(scanner);
         // // vendilo.getCustomers().getFirst().getShoppingCart().seeCart(scanner);
-
-        // Seller.getKalas().add(new )
-        // vendilo.customerLogin(null);
-        vendilo.menu();
-    }
 }

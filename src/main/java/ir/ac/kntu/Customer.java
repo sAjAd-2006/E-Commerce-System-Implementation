@@ -246,14 +246,14 @@ public class Customer extends Person {
         }
     }
 
-    private void discountReUse() {
-        for (DiscountCode discountCode : discountCodes) {
-            if (discountCode.getNumbCanBeUsed() == 0) {
-                discountCode.setNumbCanBeUsed(1);
-                return;
-            }
-        }
-    }
+    // private void discountReUse() {
+    //     for (DiscountCode discountCode : discountCodes) {
+    //         if (discountCode.getNumbCanBeUsed() == 0) {
+    //             discountCode.setNumbCanBeUsed(1);
+    //             return;
+    //         }
+    //     }
+    // }
 
     public void crOrder(Address address, int shippingCost, int totalPrice) {
         LocalDateTime localDateTime = this.wallet.getTransactions().getLast().getLocalDateTime();
