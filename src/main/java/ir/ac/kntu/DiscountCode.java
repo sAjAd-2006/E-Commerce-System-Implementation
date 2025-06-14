@@ -11,6 +11,10 @@ public class DiscountCode {
         this.vahed = vahed;
     }
 
+    public String getVahed() {
+        return vahed;
+    }
+
     public String getCode() {
         return code;
     }
