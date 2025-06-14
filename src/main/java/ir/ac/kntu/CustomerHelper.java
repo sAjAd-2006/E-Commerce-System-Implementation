@@ -70,7 +70,7 @@ public class CustomerHelper {
     private void automaticResponseToRequest() {
         for (Reportage reportage : customer.getReportages()) {
             LocalDateTime llt = reportage.getConstructionTime().plusDays(1);
-            if (llt.isAfter(LocalDateTime.now()) && "No answer".equals(reportage.getAnswer())) {
+            if (llt.isBefore(LocalDateTime.now()) && "No answer".equals(reportage.getAnswer())) {
                 reportage.setAnswer("Our colleagues will contact you soon.");
                 ReportNotification reportNotif = new ReportNotification(reportage);
                 customer.getNotifications().add(reportNotif);

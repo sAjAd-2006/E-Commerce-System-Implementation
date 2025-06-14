@@ -71,6 +71,7 @@ public class DiscountCode {
             } else {
                 Color.printYellow(
                         "\nThe purchase amount is too small to use the discount code and the discount code is not applied.");
+                numbCanBeUsed++;
                 return totalPrice;
             }
         }

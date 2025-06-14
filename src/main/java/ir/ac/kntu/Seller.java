@@ -15,7 +15,16 @@ public class Seller extends Person {
     private Wallet wallet;
     private List<Order> orders;
     private String reasonForReject;
+    private Reportage reportage = new Reportage("a");
     private List<Notification> notifications = new ArrayList<>();
+
+    public Reportage getReportage() {
+        return reportage;
+    }
+
+    public void setReportage(Reportage reportage) {
+        this.reportage = reportage;
+    }
 
     public List<Notification> getNotifications() {
         return notifications;
@@ -213,8 +222,16 @@ public class Seller extends Person {
     public Book addBook2(Book book, Scanner scanner) {
         System.out.println("Enter author name : ");
         book.setAuthorsName(scanner.nextLine());
-        System.out.println("Enter number of pages : ");
-        book.setNumberOfPages(scanner.nextLine());
+        while (true) {
+            System.out.println("Enter number of pages : ");
+            String pages = scanner.nextLine();
+            if (isInteger(pages) && Integer.parseInt(pages) > 0) {
+                book.setNumberOfPages(pages);
+                break;
+            } else {
+                continue;
+            }
+        }
         addAge(book, scanner);
         System.out.println("Enter ISBN id : ");
         book.setIdISBN(scanner.nextLine());

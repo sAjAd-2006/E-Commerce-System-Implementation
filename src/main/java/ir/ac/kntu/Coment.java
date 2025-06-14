@@ -40,7 +40,7 @@ public class Coment {
 
     @Override
     public String toString() {
-        return "Coment [Customer name=" + name + ", coment=" + coment + ", rate=" + rate + "]";
+        return "Coment [CustomerN1ame=" + name + ", coment=" + coment + ", rate=" + rate + "]";
     }
 
 }

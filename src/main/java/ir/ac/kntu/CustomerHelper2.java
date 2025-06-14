@@ -152,12 +152,12 @@ public class CustomerHelper2 {
 
     private void viewPreviousTransactions(Scanner scanner) {
         List<Transaction> tran = new ArrayList<>();
-        System.out.println("Set time filter ALL: y/n");
+        System.out.println("Set time filter: y/n");
         if ("y".equalsIgnoreCase(scanner.nextLine())) {
-            tran = customer.getWallet().getTransactions();
-        } else {
             TimeFilterHelper<Transaction> timeFilterHelper = new TimeFilterHelper<>();
             tran = timeFilterHelper.filterTimesByUserInput(customer.getWallet().getTransactions(), scanner);
+        } else {
+            tran = customer.getWallet().getTransactions();
         }
         if (tran.isEmpty()) {
             System.out.println("no transaction");

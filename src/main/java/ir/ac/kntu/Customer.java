@@ -20,7 +20,7 @@ public class Customer extends Person {
     private List<DiscountCode> discountCodes = new ArrayList<>();
     private List<Notification> notifications = new ArrayList<>();
     private boolean vendiloPlus = false;
-    private DiscountCode nowUsing;
+    private DiscountCode nowUsing = new DiscountCode("0000", Kind.Numeric, 1, 1);
 
     public List<Notification> getNotifications() {
         return notifications;
@@ -184,7 +184,11 @@ public class Customer extends Person {
                         return totalPrice;
                     }
                     nowUsing = discountCodes.get(select);
-                    return discountCodes.get(select).discountCalculation(totalPrice);
+                    int pool = discountCodes.get(select).discountCalculation(totalPrice);
+                    if (pool == totalPrice && nowUsing.getKind() == Kind.Numeric) {
+                        nowUsing = new DiscountCode("0000", Kind.Percentage, 1, 1);
+                    }
+                    return pool;
                 default:
                     return totalPrice;
             }
@@ -232,7 +236,7 @@ public class Customer extends Person {
             }
             default -> {
                 nowUsing.setNumbCanBeUsed(nowUsing.getNumbCanBeUsed() + 1);
-                nowUsing = new DiscountCode();
+                nowUsing = new DiscountCode("0000", Kind.Percentage, 1, 1);
             }
         }
     }
@@ -247,12 +251,12 @@ public class Customer extends Person {
     }
 
     // private void discountReUse() {
-    //     for (DiscountCode discountCode : discountCodes) {
-    //         if (discountCode.getNumbCanBeUsed() == 0) {
-    //             discountCode.setNumbCanBeUsed(1);
-    //             return;
-    //         }
-    //     }
+    // for (DiscountCode discountCode : discountCodes) {
+    // if (discountCode.getNumbCanBeUsed() == 0) {
+    // discountCode.setNumbCanBeUsed(1);
+    // return;
+    // }
+    // }
     // }
 
     public void crOrder(Address address, int shippingCost, int totalPrice) {
@@ -329,7 +333,7 @@ public class Customer extends Person {
                 searchingKala2.add(kala);
             }
         }
-        return searchingKala;
+        return searchingKala2;
     }
 
     public List<Kala> searchingKala2(List<Kala> searchingKala, List<String> sList, int min, int max) {

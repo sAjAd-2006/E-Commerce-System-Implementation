@@ -63,8 +63,16 @@ public class Reportage {
         crDT = LocalDateTime.now();
     }
 
+    public Reportage(String seller) {
+        this.check = Check.Registered;
+        this.reportTopic = Report.Seller_authentication;
+        this.answer = "No answer";
+        crDT = LocalDateTime.now();
+        seller.concat("2"); 
+    }
+
     @Override
     public String toString() {
-        return ("ReportTopic: " + getReportTopic() + " Text: " + getText());
+        return ("ReportTopic: " + reportTopic + " Text: " + text);
     }
 }

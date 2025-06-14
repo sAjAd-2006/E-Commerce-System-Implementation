@@ -64,26 +64,26 @@ public class CustomerSerchFilterHelper {
                     return 5.0;
                 } else {
                     if ("minRate".equalsIgnoreCase(val)) {
-                        return 1.0;
+                        return 0.0;
                     }
                 }
             } else {
                 if (isDouble(range)) {
-                    if (Double.parseDouble(range) < min) {
+                    if (Double.parseDouble(range) < min || Double.parseDouble(range) < 1.0) {
                         if ("maxRate".equalsIgnoreCase(val)) {
-                            System.out.println("The maximum must not be less than the " + min);
+                            Color.printRed("The maximum must not be less than the " + min);
                         } else {
-                            System.out.println("The miximum must not be less than the 1.0");
+                            Color.printRed("The miximum must not be less than the 1.0");
                         }
                         continue;
                     }
                     if (Double.parseDouble(range) > 5.0) {
-                        System.out.println("The extremum cannot be greater than 5.0");
+                        Color.printRed("The extremum cannot be greater than 5.0");
                         continue;
                     }
                     return Double.parseDouble(range);
                 } else {
-                    System.out.println("invild input. enter a number");
+                    Color.printRed("invild input. enter a number");
                 }
             }
         }

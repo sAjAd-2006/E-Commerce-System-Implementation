@@ -114,12 +114,12 @@ public class SellerHelper {
 
     public void viewPreviousTransactions(Scanner scanner) {
         List<Transaction> tran = new ArrayList<>();
-        System.out.println("Set time filter ALL: y/n");
+        System.out.println("Set time filter: y/n");
         if ("y".equalsIgnoreCase(scanner.nextLine())) {
-            tran = seller.getWallet().getTransactions();
-        } else {
             TimeFilterHelper<Transaction> timeFilterHelper = new TimeFilterHelper<>();
             tran = timeFilterHelper.filterTimesByUserInput(seller.getWallet().getTransactions(), scanner);
+        } else {
+            tran = seller.getWallet().getTransactions();
         }
         Paginator<Transaction> paginator = new Paginator<>(tran, 10);
         int iiii = 0;

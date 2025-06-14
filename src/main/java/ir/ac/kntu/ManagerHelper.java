@@ -60,13 +60,15 @@ public class ManagerHelper {
             }
         } else {
             Paginator<Customer> paginator = new Paginator<>(vendilo.getCustomers(), 10);
-            int select = paginator.paginate(0);
-            if (select == -1) {
-                return;
+            while (true) {
+                int select = paginator.paginate(0);
+                if (select == -1) {
+                    return;
+                }
+                Customer customer = vendilo.getCustomers().get(select);
+                System.out.println(customer + " Last month's sales: " + customer.shoppingMuch());
+                customerRiward(customer, scanner);
             }
-            Customer customer = vendilo.getCustomers().get(select);
-            System.out.println(customer + " Last month's sales: " + customer.shoppingMuch());
-            customerRiward(customer, scanner);
         }
     }
 
@@ -82,7 +84,7 @@ public class ManagerHelper {
             while (true) {
                 System.out.println("Enter the number of months of membership (0 < x): ");
                 choice = scanner.nextLine();
-                if (!isInteger(choice) || Integer.parseInt(choice) <= 0) {
+                if (!ManagerHelper2.isInteger(choice) || Integer.parseInt(choice) <= 0) {
                     Color.printRed("format error");
                     continue;
                 }
@@ -107,7 +109,7 @@ public class ManagerHelper {
             while (true) {
                 System.out.println("Enter number of times it can be used (0 < x): ");
                 String choice = scanner.nextLine();
-                if (!isInteger(choice) || Integer.parseInt(choice) <= 0) {
+                if (!ManagerHelper2.isInteger(choice) || Integer.parseInt(choice) <= 0) {
                     Color.printRed("format error");
                     continue;
                 }
@@ -146,7 +148,7 @@ public class ManagerHelper {
                 while (true) {
                     System.out.print("Enter Percentage (0 < x): ");
                     choice = scanner.nextLine();
-                    if (!isInteger(choice) || Integer.parseInt(choice) <= 0) {
+                    if (!ManagerHelper2.isInteger(choice) || Integer.parseInt(choice) <= 0) {
                         Color.printRed("format error");
                         continue;
                     }
@@ -163,7 +165,7 @@ public class ManagerHelper {
         while (true) {
             System.out.print("Enter Percentage (0 < x <= 100): ");
             String choice = scanner.nextLine();
-            if (!isInteger(choice) || Integer.parseInt(choice) <= 0 || Integer.parseInt(choice) > 100) {
+            if (!ManagerHelper2.isInteger(choice) || Integer.parseInt(choice) <= 0 || Integer.parseInt(choice) > 100) {
                 Color.printRed("format error");
                 continue;
             }
@@ -179,20 +181,22 @@ public class ManagerHelper {
             System.out.print("Enter the desired vendor code: ");
             choice = scanner.nextLine();
             for (Seller seller : vendilo.getSellers()) {
-                if (seller.getAgencyCode().equals(choice)) {
+                if (seller.getAgencyCode().equalsIgnoreCase(choice)) {
                     System.out.println(seller + " Last month's sales: " + seller.sellPerformance());
                     sellerRiward(seller, scanner);
                 }
             }
         } else {
             Paginator<Seller> paginator = new Paginator<>(vendilo.getSellers(), 10);
-            int select = paginator.paginate(0);
-            if (select == -1) {
-                return;
+            while (true) {
+                int select = paginator.paginate(0);
+                if (select == -1) {
+                    return;
+                }
+                Seller seller = vendilo.getSellers().get(select);
+                System.out.println(seller + " Last month's sales: " + seller.sellPerformance());
+                sellerRiward(seller, scanner);
             }
-            Seller seller = vendilo.getSellers().get(select);
-            System.out.println(seller + " Last month's sales: " + seller.sellPerformance());
-            sellerRiward(seller, scanner);
         }
     }
 
@@ -203,7 +207,7 @@ public class ManagerHelper {
             while (true) {
                 System.out.print("Enter the bonus amount: ");
                 choice = scanner.nextLine();
-                if (isInteger(choice) && Integer.parseInt(choice) > 0) {
+                if (ManagerHelper2.isInteger(choice) && Integer.parseInt(choice) > 0) {
                     seller.getWallet().addToWallet(Integer.parseInt(choice));
                     return;
                 } else {
@@ -276,15 +280,15 @@ public class ManagerHelper {
                 }
             }
         }
-        editUser2(person, scanner);
+        editUser2(person, scanner, true);
     }
 
-    private void editUser2(Person person, Scanner scanner) {
+    private void editUser2(Person person, Scanner scanner, boolean one) {
         if (person instanceof Supporter) {
             System.out.print("Change supporter activity sections? (y/n): ");
             if ("y".equalsIgnoreCase(scanner.nextLine())) {
                 Supporter supporter = (Supporter) person;
-                System.out.print("Enter new supporter activity sections:\n1."
+                System.out.println("\nEnter new supporter activity sections:\n1."
                         + Report.Discrepancy_between_order_and_delivered_product + "\n2." + Report.Not_receiving_order
                         + "\n3." + Report.Product_qualit + "\n4." + Report.Settings + "\n5."
                         + Report.Seller_authentication + "\n6.continue");
@@ -292,8 +296,9 @@ public class ManagerHelper {
                 while (run) {
                     System.out.print("=> ");
                     String choice = scanner.nextLine();
-                    if (!"5".equals(choice)) {
-                        supporter.getActivityMap().remove(Report.ALL, 1);
+                    if (choice.matches("1|2|3|4|5") && one) {
+                        supporter.getActivityMap().clear();
+                        one = false;
                     }
                     switch (choice) {
                         case "1" ->
@@ -323,8 +328,8 @@ public class ManagerHelper {
             Color.printYellowInline("Enter lastname: ");
             String lastname = scanner.nextLine();
             for (Person person : allPersons) {
-                if (person.getFirstname().equalsIgnoreCase(firstname)
-                        && person.getLastname().equalsIgnoreCase(lastname)) {
+                if (person.getFirstname().contains(firstname.trim())
+                        && person.getLastname().contains(lastname.trim())) {
                     allPersons2.add(person);
                 }
             }
@@ -488,12 +493,4 @@ public class ManagerHelper {
         }
     }
 
-    private boolean isInteger(String str) {
-        try {
-            Integer.parseInt(str);
-            return true;
-        } catch (NumberFormatException e) {
-            return false;
-        }
-    }
 }

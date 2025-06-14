@@ -159,6 +159,10 @@ public class Supporter extends Person {
     public void sellersVerificationReport(Scanner scanner, Vendilo vendilo, Seller seller) {
         Color.printYellow("info>");
         System.out.println(seller.chap());
+        if (vendilo.getSellers().contains(seller)) {
+            System.out.println("Check:" + Check.Closed);
+            return;
+        }
         Color.printYellow(seller.getReasonForRejection());
         System.out.println("Do you approve or not? 1)YES 2)NO 3)Back");
         String choice = scanner.nextLine();
@@ -180,7 +184,9 @@ public class Supporter extends Person {
             System.out.print("Write the reason: ");
             String choice = scanner.nextLine();
             seller.setReasonForRejection(choice);
+            seller.getReportage().setAnswer("failed");
         }
+        seller.getReportage().setCheck(Check.Closed);
     }
 
     public void seePersonsReport(Scanner scanner, List<Customer> customers, Vendilo vendilo) {
@@ -255,7 +261,7 @@ public class Supporter extends Person {
                 case "6":
                     ExitVendilo.exit(scanner);
                 default:
-                    System.out.println("The selected option is invalid.");
+                    Color.printRed("The selected option is invalid.");
                     break;
             }
         }
@@ -263,17 +269,7 @@ public class Supporter extends Person {
 
     public void personsReport(Check check, Scanner scanner, Vendilo vendilo) {
         int iiii = 0, jjjj = 0;
-        for (Customer customer : customersReport) {
-            if (!customer.getReportages().isEmpty()) {
-                personsReport.add(customer);
-            }
-        }
-        if (activityMap.keySet().contains(Report.Seller_authentication) ||
-                activityMap.keySet().contains(Report.ALL)) {
-            for (Seller seller : verification) {
-                personsReport.add(seller);
-            }
-        }
+        selectPerson(check, vendilo);
         Paginator<Person> paginator = new Paginator<>(personsReport, 10);
         while (true) {
             int custom = paginator.paginate(iiii);
@@ -285,7 +281,27 @@ public class Supporter extends Person {
                     iiii = custom / 10;
                 } else {
                     sellersVerificationReport(scanner, vendilo, ((Seller) personsReport.get(custom)));
-                    personsReport.remove(custom);
+                }
+            }
+        }
+    }
+
+    private void selectPerson(Check check, Vendilo vendilo) {
+        for (Customer customer : customersReport) {
+            if (!customer.getReportages().isEmpty()) {
+                personsReport.add(customer);
+            }
+        }
+        if (activityMap.keySet().contains(Report.Seller_authentication)
+                || activityMap.keySet().contains(Report.ALL)) {
+            for (Seller seller : verification) {
+                if (check == Check.ALL || (seller.getReportage().getCheck() == check)) {
+                    personsReport.add(seller);
+                }
+            }
+            for (Seller seller : vendilo.getSellers()) {
+                if (check == Check.ALL || (seller.getReportage().getCheck() == check)) {
+                    personsReport.add(seller);
                 }
             }
         }
@@ -312,7 +328,8 @@ public class Supporter extends Person {
                 break;
             } else {
                 Reportage reportage = reportages.get(repor);
-                System.out.println(reportage.toString() + " Check:" + reportage.getCheck());
+                System.out.println(
+                        reportage.toString() + " Answer:" + reportage.getAnswer() + " Check:" + reportage.getCheck());
                 proceed(reportages, reportage, scanner, customer);
                 jjjj = repor / 10;
             }
@@ -321,8 +338,8 @@ public class Supporter extends Person {
 
     public void proceed(List<Reportage> reportages, Reportage reportage, Scanner scanner, Customer customer) {
         while (true) {
-            System.out.println("Do you want to proceed?\n1)YES 2)NO 3)Exit" +
-                    "\nIf it has already been dealt with, you will be automatically returned");
+            System.out.println("Do you want to proceed?\n1)YES 2)NO 3)Exit");
+            Color.printYellow("If it has already been dealt with, you will be automatically returned");
             String chose = scanner.nextLine();
             switch (chose) {
                 case "1" -> {
@@ -363,6 +380,8 @@ public class Supporter extends Person {
                 reportNotif.setCanSeeOrNot(true);
                 customer.getNotifications().add(reportNotif);
             }
+        } else {
+            Color.printRed("auto return");
         }
     }
 

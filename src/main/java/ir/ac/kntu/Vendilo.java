@@ -1,6 +1,7 @@
 package ir.ac.kntu;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -62,7 +63,7 @@ public class Vendilo {
         Manager manager = new Manager("sajad", "teymoory", "momilo", "12345Pk?", Integer.MAX_VALUE);
         managers.add(manager);
         ChekFild chekFild = new ChekFild(sellers, customers, verification);
-        Color.printCyanBold("Welcome to the VENDILO.");
+        Color.printCyanBold("\nWelcome to the VENDILO.");
         boolean option = true;
         try (Scanner scanner = new Scanner(System.in)) {
             while (option) {
@@ -83,15 +84,26 @@ public class Vendilo {
         }
     }
 
-    public void menuPrint() {
-        Color.printWhiteBold("\nMain Menu:");
+    private void menuPrint() {
+        automaticResponseToRequest();
+        Color.printWhiteBold("Main Menu:");
         Color.printGreen("1-Login");
         Color.printGreen("2-Register");
         Color.printGreen("3-Exit");
         Color.printYellowInline("Please enter the desired option: ");
     }
 
-    public void loginMenu(Scanner scanner) {
+    private void automaticResponseToRequest() {
+        for (Seller seller : verification) {
+            Reportage reportage = seller.getReportage();
+            LocalDateTime llt = reportage.getConstructionTime().plusDays(1);
+            if (llt.isBefore(LocalDateTime.now()) && "No answer".equals(reportage.getAnswer())) {
+                reportage.setAnswer("Our colleagues will contact you soon.");
+            }
+        }
+    }
+
+    private void loginMenu(Scanner scanner) {
         boolean runLogin = true;
         while (runLogin) {
             Color.printWhiteBold("\nLogin Menu:");
@@ -120,7 +132,7 @@ public class Vendilo {
         }
     }
 
-    public void managerLogin(Scanner scanner) {
+    private void managerLogin(Scanner scanner) {
         while (true) {
             Color.printWhiteBold("- - - - Manager Login - - - -");
             if (runBack(scanner) == 1) {
@@ -134,7 +146,7 @@ public class Vendilo {
         }
     }
 
-    public void managerLogin2(String agencyName, String password, Scanner scanner) {
+    private void managerLogin2(String agencyName, String password, Scanner scanner) {
         boolean email = false, pas = false;
         for (Manager manager : managers) {
             if (manager.getAgencyName().equals(agencyName)) {
@@ -161,7 +173,7 @@ public class Vendilo {
         }
     }
 
-    public void supporterLogin(Scanner scanner) {
+    private void supporterLogin(Scanner scanner) {
         while (true) {
             Color.printWhiteBold("- - - - Supporter Login - - - -");
             if (runBack(scanner) == 1) {
@@ -175,7 +187,7 @@ public class Vendilo {
         }
     }
 
-    public void supporterLogin2(String agencyName, String password, Scanner scanner) {
+    private void supporterLogin2(String agencyName, String password, Scanner scanner) {
         boolean email = false, pas = false;
         for (Supporter supporter : supporters) {
             if (supporter.getAgencyName().equals(agencyName)) {
@@ -202,7 +214,7 @@ public class Vendilo {
         }
     }
 
-    public void registerMenu(Scanner scanner, ChekFild chekFild) {
+    private void registerMenu(Scanner scanner, ChekFild chekFild) {
         boolean runRegister = true;
         while (runRegister) {
             Color.printWhiteBold("\nRegistration Menu:");
@@ -228,7 +240,7 @@ public class Vendilo {
         }
     }
 
-    public void customerLogin(Scanner scanner) {
+    private void customerLogin(Scanner scanner) {
         while (true) {
             Color.printWhiteBold("- - - - Customer Login - - - -");
             if (runBack(scanner) == 1) {
@@ -242,7 +254,7 @@ public class Vendilo {
         }
     }
 
-    public void customerLogin2(String emailOrPhone, String password, Scanner scanner) {
+    private void customerLogin2(String emailOrPhone, String password, Scanner scanner) {
         boolean emailEror = false, passwordEror = false;
         for (Customer customer : customers) {
             if (customer.getEmail().equals(emailOrPhone)
@@ -270,7 +282,7 @@ public class Vendilo {
         }
     }
 
-    public void customerRegister(Scanner scanner, ChekFild chekFild) {
+    private void customerRegister(Scanner scanner, ChekFild chekFild) {
         while (true) {
             if (runBack(scanner) == 1) {
                 break;
@@ -290,7 +302,7 @@ public class Vendilo {
         }
     }
 
-    public Customer customerRegister2(Scanner scanner, ChekFild chekFild, String firstname, String lastname) {
+    private Customer customerRegister2(Scanner scanner, ChekFild chekFild, String firstname, String lastname) {
         while (true) {
             if (runBack(scanner) == 1) {
                 return null;
@@ -314,7 +326,7 @@ public class Vendilo {
         }
     }
 
-    public void sellerRegister(Scanner scanner, ChekFild chekFild) {
+    private void sellerRegister(Scanner scanner, ChekFild chekFild) {
         while (true) {
             Color.printWhiteBold("- - - - Seller Register - - - -");
             if (runBack(scanner) == 1) {
@@ -343,7 +355,7 @@ public class Vendilo {
         }
     }
 
-    public Seller sellerRegister2(Scanner scanner, ChekFild chekFild, List<String> name, String storeTitle) {
+    private Seller sellerRegister2(Scanner scanner, ChekFild chekFild, List<String> name, String storeTitle) {
         String firstname = name.get(0), lastname = name.get(1);
         while (true) {
             if (runBack(scanner) == 1) {
@@ -389,6 +401,7 @@ public class Vendilo {
                 if (seller.getAgencyCode().equals(agencyCode)) {
                     if (seller.getPassword().equals(password)) {
                         Color.printYellow(seller.getReasonForRejection());
+                        Color.printYellow(seller.getReportage().getAnswer());
                         editInfo(seller, scanner);
                         conti = true;
                         break;
@@ -417,7 +430,7 @@ public class Vendilo {
         }
     }
 
-    public void sellerLogin2(String agencyCode, String password, Scanner scanner) {
+    private void sellerLogin2(String agencyCode, String password, Scanner scanner) {
         boolean code = false, pas = false;
         for (Seller seller : sellers) {
             if (seller.getAgencyCode().equals(agencyCode)) {
@@ -444,7 +457,7 @@ public class Vendilo {
         }
     }
 
-    public int runBack(Scanner scanner) {
+    private int runBack(Scanner scanner) {
         while (true) {
             Color.printWhiteBold("\nOptions:");
             Color.printCyan("1) Back");
