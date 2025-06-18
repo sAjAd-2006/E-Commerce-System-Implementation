@@ -160,6 +160,7 @@ public class Vendilo {
                     Color.printGreen("Successful login.");
                     ManagerHelper managerHelper = new ManagerHelper(manager, this);
                     managerHelper.menu(scanner);
+                    return;
                 }
             }
         }
